@@ -1,62 +1,48 @@
-import { Button, DatePicker, Flex, Input, Table } from "antd";
+import { Button, DatePicker, Flex, Input, Select, Table, Tabs } from "antd";
 import { useOrderColumns } from "./useOrderColumns";
-import { order_status } from "../../../../enums";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
 
 const statuses = [
-  "Не назначено",
-  "В процессе",
-  "Заказ готов",
-  "Принято",
-  "На выполнении",
-  "Завершено",
-  "Все",
+  { key: "all", label: <span>Все (99)</span> },
+  { key: "exception", label: <span>Исключения (3)</span> },
+  { key: "failed_attempt", label: <span>Неудачная попытка (1)</span> },
+  { key: "expired", label: <span>Истёк срок (6)</span> },
+  { key: "out_for_delivery", label: <span>В пути к получателю (0)</span> },
+  { key: "delivered", label: <span>Доставлено (70)</span> },
+  { key: "pending", label: <span>Ожидает отправки (11)</span> },
 ];
-
-const getStatusColor = (status) => {
-  switch (status) {
-    case order_status.NOT_ASSIGNED:
-      return "default";
-    case order_status.IN_PROCESS:
-      return "yellow";
-    case order_status.READY:
-      return "orange";
-    case order_status.ACCEPTED:
-      return "pink";
-    case order_status.IN_PROGRESS:
-      return "green";
-    case order_status.COMPLETED:
-      return "blue";
-    default:
-      return "default";
-  }
-};
 
 export const OrderTable = () => {
   const { columns } = useOrderColumns();
 
+  const onChange = (key) => {
+    console.log(key);
+  };
+
   return (
     <>
       <Flex
-        className={clsx(styles.filter, "wrapper")}
+        vertical
+        className={clsx(styles.filter)}
         justify="space-between"
         gap="small"
       >
-        <Flex gap="small">
-          <Input placeholder="Поиск" />
-          <DatePicker placeholder="Выберите дату" />
-          <DatePicker placeholder="Выберите дату" />
-        </Flex>
-        <Flex gap="small">
+        <Tabs defaultActiveKey="1" items={statuses} onChange={onChange} />
+        {/* <Flex>
           {statuses.map((item) => (
-            <Button color={getStatusColor(item)} variant="filled">
-              {item} [12]
-            </Button>
+            <div className={clsx(styles.status)}>{item.title}</div>
           ))}
+        </Flex> */}
+        <Flex gap="small" className={clsx("mb-4")}>
+          <Input placeholder="Поиск" />
+          <Flex>
+            <Select options={statuses} placeholder="Статус" />
+            <Select options={statuses} placeholder="Курьеры" />
+          </Flex>
         </Flex>
       </Flex>
-      <div className={clsx("wrapper")}>
+      <div className={clsx("")}>
         <Table columns={columns} />
       </div>
     </>

@@ -3,21 +3,13 @@ export const useOrderColumns = () => {
     {
       key: "id",
       dataIndex: "id",
-      title: "№",
+      title: "№ заказа",
     },
-    { key: "client", dataIndex: "client", title: "Клиент" },
-    { key: "phone", dataIndex: "phone", title: "Телефон" },
-    { key: "date", dataIndex: "date", title: "Дата/время" },
+    { key: "status", dataIndex: "status", title: "Клиент" },
     { key: "courier", dataIndex: "courier", title: "Курьер" },
-    { key: "from", dataIndex: "from", title: "Откуда" },
-    { key: "order", dataIndex: "order", title: "Заказ" },
+    { key: "from_to", dataIndex: "from_to", title: "Откуда/Куда" },
+    { key: "date", dataIndex: "date", title: "Дата/время" },
     { key: "sum", dataIndex: "sum", title: "Сумма" },
-    { key: "office", dataIndex: "office", title: "Офис" },
-    { key: "to", dataIndex: "to", title: "Куда" },
-    { key: "partner", dataIndex: "partner", title: "Партнер" },
-    { key: "comment", dataIndex: "comment", title: "Комментарий" },
-    { key: "order_num", dataIndex: "order_num", title: "№ заказа" },
-    { key: "order_type", dataIndex: "order_type", title: "Тип заказа" },
   ];
 
   return { columns };
