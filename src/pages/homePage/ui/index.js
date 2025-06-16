@@ -1,1 +1,3 @@
-export * from "./OrderTable";
+export * from "./StatusCard";
+export * from "./BarChart";
+export * from "./PieGraf";

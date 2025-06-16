@@ -28,18 +28,20 @@ export const OrderTable = () => {
         justify="space-between"
         gap="small"
       >
-        <Tabs defaultActiveKey="1" items={statuses} onChange={onChange} />
-        {/* <Flex>
-          {statuses.map((item) => (
-            <div className={clsx(styles.status)}>{item.title}</div>
-          ))}
-        </Flex> */}
-        <Flex gap="small" className={clsx("mb-4")}>
-          <Input placeholder="Поиск" />
-          <Flex>
-            <Select options={statuses} placeholder="Статус" />
-            <Select options={statuses} placeholder="Курьеры" />
+        <Flex justify="space-between" align="center">
+          <Tabs defaultActiveKey="1" items={statuses} onChange={onChange} />
+          <Button type="primary">Добавить заказ</Button>
+        </Flex>
+        <Flex justify="space-between">
+          <Flex gap="small" className={clsx("mb-4")}>
+            <Input placeholder="Поиск" className={clsx(styles.search)} />
+            <Flex gap="small">
+              <Select options={statuses} placeholder="Статус" />
+              <Select options={statuses} placeholder="Курьер" />
+              <Select options={statuses} placeholder="Место назначения" />
+            </Flex>
           </Flex>
+          <Select options={statuses} placeholder="Сортировать по" />
         </Flex>
       </Flex>
       <div className={clsx("")}>

@@ -1,0 +1,35 @@
+.card {
+  width: 100%;
+  // width: 400px;
+  border: 2px solid #e9eceb;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 15px;
+}
+
+.card_item {
+  padding-right: 15px;
+  border-right: 2px solid #cfd1d0;
+}
+
+.title {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.count {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.icon_btn {
+  padding: 30px 10px;
+  border-radius: 24px;
+
+  svg {
+    font-size: 36px;
+  }
+}
