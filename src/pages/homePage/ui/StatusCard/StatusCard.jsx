@@ -6,15 +6,9 @@ import { BsCashStack } from "react-icons/bs";
 
 export const StatusCard = () => {
   return (
-    <Flex
-      // className={clsx(styles.card)}
-      justify="center"
-      align="center"
-      gap="large"
-      wrap="wrap"
-    >
-      <Flex vertical gap="middle">
-        <h2>Платежи за груз</h2>
+    <Flex gap="large" wrap="wrap">
+      <Flex vertical gap="middle" className={clsx("")}>
+        <h2 className={clsx("text-xl font-bold")}>Платежи за груз</h2>
         <Flex className={clsx(styles.card)}>
           <Flex vertical className={clsx(styles.card_item)}>
             <span className={clsx(styles.title)}>
@@ -32,7 +26,7 @@ export const StatusCard = () => {
         </Flex>
       </Flex>
       <Flex vertical gap="middle">
-        <h2>Информация о грузах</h2>
+        <h2 className={clsx("text-xl font-bold")}>Информация о грузах</h2>
         <Flex className={clsx(styles.card)}>
           <Flex vertical className={clsx(styles.card_item)}>
             <span className={clsx(styles.title)}>
@@ -50,7 +44,7 @@ export const StatusCard = () => {
         </Flex>
       </Flex>
       <Flex vertical gap="middle">
-        <h2>Финансовая информация</h2>
+        <h2 className={clsx("text-xl font-bold")}>Финансовая информация</h2>
         <Flex className={clsx(styles.card)}>
           <Flex vertical className={clsx(styles.card_item)}>
             <span className={clsx(styles.title)}>
@@ -59,19 +53,19 @@ export const StatusCard = () => {
             <span className={clsx(styles.count)}>344 500, 00 сом</span>
           </Flex>
 
-          <Flex vertical className={clsx(styles.card_item)}>
+          <Flex vertical className={clsx()}>
             <span className={clsx(styles.title)}>
               <BsCashStack /> Общий доход
             </span>
             <span className={clsx(styles.count)}>34 500, 00 сом</span>
           </Flex>
 
-          <Flex vertical>
+          {/* <Flex vertical>
             <span className={clsx(styles.title)}>
               <BsCashStack /> Общий расход
             </span>
             <span className={clsx(styles.count)}>14 500, 00 сом</span>
-          </Flex>
+          </Flex> */}
         </Flex>
       </Flex>
     </Flex>
