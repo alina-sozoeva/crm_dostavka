@@ -1,12 +1,6 @@
 import clsx from "clsx";
 import { Flex } from "antd";
-import {
-  ClockCircleFilled,
-  CompassFilled,
-  CheckCircleFilled,
-  DropboxCircleFilled,
-} from "@ant-design/icons";
-import { BarGraf, PieGraf, StatusCard } from "./ui";
+import { BarGraf, StatusCard } from "./ui";
 import { useNavigate } from "react-router-dom";
 import { pathName } from "../../enums";
 import styles from "./HomePage.module.scss";

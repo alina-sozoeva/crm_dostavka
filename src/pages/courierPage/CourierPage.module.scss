@@ -1,0 +1,13 @@
+:global {
+  .ant-table,
+  .ant-table-cell,
+  .ant-table-thead > tr > th {
+    padding: 2px 15px !important;
+  }
+}
+
+.actions {
+  svg {
+    font-size: 14px;
+  }
+}

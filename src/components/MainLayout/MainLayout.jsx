@@ -8,7 +8,9 @@ import {
   MenuUnfoldOutlined,
   StarFilled,
   StockOutlined,
+  TeamOutlined,
   TruckFilled,
+  UserDeleteOutlined,
 } from "@ant-design/icons";
 import { Button, Flex, Layout, Menu } from "antd";
 import clsx from "clsx";
@@ -25,18 +27,22 @@ export const MainLayout = () => {
 
   const title = (() => {
     switch (location.pathname) {
-      case "/":
+      case pathName.home:
         return pageName.home;
-      case "/orders":
+      case pathName.orders:
         return pageName.orders;
-      case "/notifications":
+      case pathName.notifications:
         return pageName.notifications;
-      case "/tracking":
+      case pathName.tracking:
         return pageName.tracking;
-      case "/reviews":
+      case pathName.reviews:
         return pageName.reviews;
-      case "/analytics":
+      case pathName.analytics:
         return pageName.analytics;
+      case pathName.couriers:
+        return pageName.couriers;
+      case pathName.blackList:
+        return pageName.blackList;
       default:
         return pageName.home;
     }
@@ -77,18 +83,28 @@ export const MainLayout = () => {
             },
             {
               key: "4",
+              icon: <TeamOutlined />,
+              label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
+            },
+            {
+              key: "5",
               icon: <EnvironmentFilled />,
               label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
             },
             {
-              key: "5",
+              key: "6",
               icon: <StarFilled />,
               label: <Link to={pathName.reviews}>{pageName.reviews}</Link>,
             },
             {
-              key: "6",
+              key: "7",
               icon: <BarChartOutlined />,
               label: <Link to={pathName.analytics}>{pageName.analytics}</Link>,
+            },
+            {
+              key: "8",
+              icon: <UserDeleteOutlined />,
+              label: <Link to={pathName.blackList}>{pageName.blackList}</Link>,
             },
           ]}
         />

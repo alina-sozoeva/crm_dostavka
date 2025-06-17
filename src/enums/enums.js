@@ -15,6 +15,8 @@ export const pageName = {
   tracking: "Треккинг",
   reviews: "Отзывы",
   analytics: "Аналитика",
+  blackList: "Черный список",
+  couriers: "Курьеры",
 };
 
 export const pathName = {
@@ -25,4 +27,6 @@ export const pathName = {
   tracking: "/tracking",
   reviews: "/reviews",
   analytics: "/analytics",
+  blackList: "/black-list",
+  couriers: "/couriers",
 };
