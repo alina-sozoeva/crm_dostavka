@@ -4,6 +4,7 @@ import { BarGraf, StatusCard } from "./ui";
 import { useNavigate } from "react-router-dom";
 import { pathName } from "../../enums";
 import styles from "./HomePage.module.scss";
+import { useGetOrdersQuery } from "../../store";
 
 const orders = [
   {
@@ -99,6 +100,10 @@ export const HomePage = () => {
   const onOrder = () => {
     navigate(`${pathName.orders}`);
   };
+
+  const { data } = useGetOrdersQuery();
+
+  console.log(data, "data");
 
   return (
     <main className={clsx("")}>
