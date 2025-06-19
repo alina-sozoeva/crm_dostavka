@@ -103,8 +103,6 @@ export const HomePage = () => {
 
   const { data } = useGetOrdersQuery();
 
-  console.log(data, "data");
-
   return (
     <main className={clsx("")}>
       <div className={clsx("mb-10")}>
