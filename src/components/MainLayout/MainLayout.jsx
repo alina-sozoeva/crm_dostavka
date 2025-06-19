@@ -74,17 +74,17 @@ export const MainLayout = () => {
             },
             {
               key: "3",
+              icon: <TeamOutlined />,
+              label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
+            },
+            {
+              key: "4",
               icon: <BellFilled />,
               label: (
                 <Link to={pathName.notifications}>
                   {pageName.notifications}
                 </Link>
               ),
-            },
-            {
-              key: "4",
-              icon: <TeamOutlined />,
-              label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
             },
             {
               key: "5",

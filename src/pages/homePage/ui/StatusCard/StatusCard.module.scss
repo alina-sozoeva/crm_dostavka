@@ -1,5 +1,5 @@
 .card {
-  width: 100%;
+  width: 300px;
   border: 2px solid #e9eceb;
   padding: 15px;
   border-radius: 10px;
@@ -7,9 +7,26 @@
   gap: 15px;
 }
 
-.card_item {
-  padding-right: 15px;
-  border-right: 2px solid #cfd1d0;
+.btn {
+  width: 70px;
+  border: 2px solid #e9eceb;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  gap: 15px;
+  background-color: #f7f7f7;
+  font-size: 24px;
+}
+
+.icon {
+  background-color: #f6ffed;
+  padding: 10px;
+  border-radius: 24px;
+
+  svg {
+    font-size: 24px;
+    color: #7fd360;
+  }
 }
 
 .title {
@@ -21,14 +38,5 @@
 
 .count {
   font-size: 20px;
-  font-weight: 500;
-}
-
-.icon_btn {
-  padding: 30px 10px;
-  border-radius: 24px;
-
-  svg {
-    font-size: 36px;
-  }
+  font-weight: 700;
 }

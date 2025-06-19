@@ -1,5 +1,14 @@
-import { Tooltip } from "antd";
-import { Bar, BarChart, CartesianGrid, Legend, XAxis, YAxis } from "recharts";
+import { Flex, Tooltip } from "antd";
+import clsx from "clsx";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const data = [
   {
@@ -37,20 +46,35 @@ const data = [
     uv: 3490,
     pv: 4300,
   },
+  {
+    name: "Page K",
+    uv: 5490,
+    pv: 7300,
+  },
+  {
+    name: "Page L",
+    uv: 1490,
+    pv: 9300,
+  },
 ];
 
 export const BarGraf = () => {
   return (
-    <>
-      <BarChart width={800} height={350} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
-      </BarChart>
-    </>
+    <div className="flex flex-col h-[35vh] min-h-[250px] w-full">
+      <h3 className={clsx("text-xl font-bold mb-2")}>Аналитика отгрузок</h3>
+      <div className="flex-1">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="pv" fill="#a3bffa" />
+            <Bar dataKey="uv" fill="#8fbce6" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   );
 };
