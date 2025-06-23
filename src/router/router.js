@@ -2,10 +2,17 @@ import { createBrowserRouter } from "react-router-dom";
 import * as Pages from "../pages";
 import { MainLayout } from "../components";
 import { pathName } from "../enums";
+import { PrivateRoute } from "./PrivateRoute";
 
 export const router = createBrowserRouter([
+  { path: pathName.login, element: <Pages.LoginPage /> },
   {
-    element: <MainLayout />,
+    path: "/",
+    element: (
+      <PrivateRoute>
+        <MainLayout />
+      </PrivateRoute>
+    ),
     children: [
       { path: pathName.home, element: <Pages.HomePage /> },
       { path: pathName.orders, element: <Pages.OrdersPage /> },

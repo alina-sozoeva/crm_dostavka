@@ -23,7 +23,7 @@ export const OrderCard = ({ item }) => {
     console.log("onChangeComplete: ", value);
   };
   return (
-    <Flex vertical gap="small" className={clsx(styles.card)}>
+    <Flex key={item?.guid} vertical gap="small" className={clsx(styles.card)}>
       <Flex gap="large" align="center">
         <span className={clsx("font-bold")}>{item.guid}</span>
         <button className={clsx(styles.btn)}>В пути</button>

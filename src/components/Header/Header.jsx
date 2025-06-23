@@ -6,35 +6,45 @@ import {
 } from "@ant-design/icons";
 import styles from "./Header.module.scss";
 import clsx from "clsx";
-
-const items = [
-  {
-    label: (
-      <a
-        href="https://www.antgroup.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Username
-      </a>
-    ),
-    key: "0",
-  },
-
-  {
-    type: "divider",
-  },
-  {
-    label: (
-      <Space>
-        Выйти <LogoutOutlined rotate={270} />
-      </Space>
-    ),
-    key: "3",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { removeToken, useGetUsersQuery } from "../../store";
 
 export const Header = () => {
+  const dispatch = useDispatch();
+  const { data } = useGetUsersQuery();
+
+  console.log(data, "data");
+
+  const logOut = () => {
+    dispatch(removeToken());
+  };
+
+  const userId = useSelector((state) => state.user.userId);
+
+  console.log(typeof userId, "userId");
+
+  const user = data?.data.find((item) => item.codeid === userId);
+
+  console.log(user);
+
+  const items = [
+    {
+      label: <p>{user?.login}</p>,
+      key: "0",
+    },
+
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <Space onClick={logOut}>
+          Выйти <LogoutOutlined rotate={270} />
+        </Space>
+      ),
+      key: "3",
+    },
+  ];
   return (
     <header className={clsx(styles.header, "pr-6")}>
       <Flex align="center" justify="center" gap="large">
@@ -46,7 +56,7 @@ export const Header = () => {
             <Space>
               <button className={clsx(styles.btn)}>U</button>
               <Flex vertical gap={4}>
-                <p className={clsx(styles.user_info)}>User@gmail.com</p>
+                <p className={clsx(styles.user_info)}>{user?.login}</p>
               </Flex>
               <CaretDownOutlined />
             </Space>

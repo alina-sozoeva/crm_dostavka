@@ -205,8 +205,8 @@ export const HomePage = () => {
         <Col span={8} className={clsx("wrap w-full h-full")}>
           <h3 className={clsx("text-xl font-bold mb-2")}>Заказы</h3>
           <div className="h-[70vh] p-2 flex flex-col gap-3 overflow-y-auto ">
-            {items.map((item, idx) => (
-              <OrderCard key={idx} item={item} />
+            {data?.data?.map((item) => (
+              <OrderCard key={item?.guid} item={item} />
             ))}
           </div>
         </Col>

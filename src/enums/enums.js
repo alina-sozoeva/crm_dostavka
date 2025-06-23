@@ -6,6 +6,7 @@ export const order_status = {
   IN_PROGRESS: "На выполнении",
   COMPLETED: "Завершено",
   ALL: "Все",
+  LOGIN: "Логин",
 };
 
 export const pageName = {
@@ -17,6 +18,7 @@ export const pageName = {
   analytics: "Аналитика",
   blackList: "Черный список",
   couriers: "Курьеры",
+  login: "Логин",
 };
 
 export const pathName = {
@@ -29,4 +31,5 @@ export const pathName = {
   analytics: "/analytics",
   blackList: "/black-list",
   couriers: "/couriers",
+  login: "/login",
 };

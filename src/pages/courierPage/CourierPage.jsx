@@ -2,6 +2,8 @@ import { Button, Flex, Input, Table } from "antd";
 import { useCourierColumns } from "./useCourierColumns";
 import styles from "./CourierPage.module.scss";
 import clsx from "clsx";
+import { useGetUsersQuery } from "../../store";
+import { useMemo } from "react";
 
 const courier = [
   {
@@ -23,6 +25,12 @@ const courier = [
 export const CourierPage = () => {
   const { columns } = useCourierColumns();
 
+  const { data, isLoading } = useGetUsersQuery();
+
+  const filteredData = useMemo(() => {
+    return data?.data.filter((item) => item.codeid === "2");
+  }, [data]);
+
   return (
     <main>
       <Flex gap="large" vertical className={clsx(styles.wrap)}>
@@ -30,7 +38,12 @@ export const CourierPage = () => {
           <Input placeholder="Поиск" style={{ width: "300px" }} />
           <Button type="primary">Добавить</Button>
         </Flex>
-        <Table columns={columns} dataSource={courier} />
+        <Table
+          loading={isLoading}
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="guid"
+        />
       </Flex>
     </main>
   );

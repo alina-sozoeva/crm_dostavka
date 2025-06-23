@@ -19,11 +19,9 @@ const statuses = [
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
   const { columns } = useOrderColumns();
-  const { data } = useGetOrdersQuery();
+  const { data, isLoading } = useGetOrdersQuery();
 
-  const onChange = (key) => {
-    console.log(key);
-  };
+  const onChange = (key) => {};
 
   return (
     <>
@@ -57,7 +55,13 @@ export const OrderTable = () => {
         </Flex>
       </Flex>
       <div className={clsx("")}>
-        <Table columns={columns} dataSource={data?.data} scroll={{ x: 1600 }} />
+        <Table
+          loading={isLoading}
+          columns={columns}
+          dataSource={data?.data}
+          rowKey="guid"
+          scroll={{ x: 1600 }}
+        />
       </div>
       <OrderModal open={openModal} onCancel={() => setOpenModal(false)} />
     </>

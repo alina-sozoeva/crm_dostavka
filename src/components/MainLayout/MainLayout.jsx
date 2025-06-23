@@ -21,9 +21,8 @@ import { pageName, pathName } from "../../enums";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(false);
-
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const title = (() => {
     switch (location.pathname) {
@@ -109,19 +108,23 @@ export const MainLayout = () => {
           ]}
         />
       </Sider>
+
       <Layout>
-        <Header className={clsx(styles.header)}>
-          <Flex justify="space-between">
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              className={clsx(styles.btn)}
-            />
-            <CustomHeader.Header />
-          </Flex>
-        </Header>
-        <h1 className={clsx(styles.title, "text-2xl")}>{title}</h1>
+        <>
+          <Header className={clsx(styles.header)}>
+            <Flex justify="space-between">
+              <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                className={clsx(styles.btn)}
+              />
+              <CustomHeader.Header />
+            </Flex>
+          </Header>
+          <h1 className={clsx(styles.title, "text-2xl")}>{title}</h1>
+        </>
+
         <Content className={clsx(styles.constent)}>
           <Outlet />
         </Content>
