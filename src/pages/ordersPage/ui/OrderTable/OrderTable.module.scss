@@ -4,3 +4,12 @@
 .search {
   width: 400px;
 }
+
+.assign {
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    color: #1677ff;
+  }
+}

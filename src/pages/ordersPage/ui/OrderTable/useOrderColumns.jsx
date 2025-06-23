@@ -1,9 +1,13 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { order_status } from "../../../../enums";
+import clsx from "clsx";
+import styles from "./OrderTable.module.scss";
+import { Select } from "antd";
 
 dayjs.extend(utc);
 
-export const useOrderColumns = () => {
+export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
   const columns = [
     {
       key: "guid",
@@ -67,6 +71,33 @@ export const useOrderColumns = () => {
       dataIndex: "summa",
       title: "Сумма",
       sorter: (a, b) => a.sum - b.sum,
+    },
+    {
+      key: "status",
+      dataIndex: "status",
+      title: "Статус",
+      width: 180,
+      render: (_, record) => {
+        if (record.status === 1 || record.status === 0) {
+          return (
+            <Select
+              allowClear
+              onChange={() => onUpdateStatus(record.guid)}
+              showSearch
+              optionFilterProp="label"
+              placeholder="Назначить курьера"
+              className={clsx(styles.assign)}
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              options={filteredData}
+            />
+          );
+        }
+        return order_status[Number(record.status)];
+      },
     },
   ];
 

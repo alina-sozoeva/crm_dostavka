@@ -21,11 +21,7 @@ export const Header = () => {
 
   const userId = useSelector((state) => state.user.userId);
 
-  console.log(typeof userId, "userId");
-
   const user = data?.data.find((item) => item.codeid === userId);
-
-  console.log(user);
 
   const items = [
     {

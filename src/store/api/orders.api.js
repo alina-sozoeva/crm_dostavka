@@ -12,7 +12,15 @@ export const ordersApi = createApi({
       }),
       providesTags: ["OrdersList"],
     }),
+    updateStatusCourier: builder.mutation({
+      query: (courier) => ({
+        url: "/orders/update-status",
+        method: "POST",
+        body: courier,
+      }),
+      invalidatesTags: ["OrderList"],
+    }),
   }),
 });
 
-export const { useGetOrdersQuery } = ordersApi;
+export const { useGetOrdersQuery, useUpdateStatusCourierMutation } = ordersApi;

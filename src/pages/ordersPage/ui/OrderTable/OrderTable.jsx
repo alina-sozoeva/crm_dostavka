@@ -2,24 +2,51 @@ import { Button, Flex, Input, Select, Table, Tabs } from "antd";
 import { useOrderColumns } from "./useOrderColumns";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { OrderModal } from "../OrderModal";
-import { useGetOrdersQuery } from "../../../../store";
+import {
+  useGetOrdersQuery,
+  useGetUsersQuery,
+  useUpdateStatusCourierMutation,
+} from "../../../../store";
+import { order_status } from "../../../../enums";
+import { useSelector } from "react-redux";
 
 const statuses = [
-  { key: "all", label: <span>Все (99)</span> },
-  { key: "exception", label: <span>Исключения (3)</span> },
-  { key: "failed_attempt", label: <span>Неудачная попытка (1)</span> },
-  { key: "expired", label: <span>Истёк срок (6)</span> },
-  { key: "out_for_delivery", label: <span>В пути к получателю (0)</span> },
-  { key: "delivered", label: <span>Доставлено (70)</span> },
-  { key: "pending", label: <span>Ожидает отправки (11)</span> },
+  { key: "0", label: <span>{order_status.all} (70)</span> },
+  { key: "1", label: <span>{order_status[1]} (60)</span> },
+  { key: "2", label: <span>{order_status[2]} (3)</span> },
+  { key: "3", label: <span>{order_status[3]} (1)</span> },
+  { key: "4", label: <span>{order_status[4]} (6)</span> },
+  { key: "5", label: <span>{order_status[5]} (0)</span> },
+  { key: "6", label: <span>{order_status[6]} (9)</span> },
 ];
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { columns } = useOrderColumns();
   const { data, isLoading } = useGetOrdersQuery();
+  const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
+  const userId = useSelector((state) => state.user.userId);
+  const [updateStatus] = useUpdateStatusCourierMutation();
+
+  const onUpdateStatus = (orderGuid) => {
+    updateStatus({
+      code_user: userId,
+      code_status: "2",
+      guid_order: orderGuid,
+    });
+  };
+
+  const filteredData = useMemo(() => {
+    return users?.data
+      .filter((item) => item.codeid === "2")
+      .map((item) => ({
+        label: item.nameid,
+        value: item.codeid,
+      }));
+  }, [users]);
+
+  const { columns } = useOrderColumns({ filteredData, onUpdateStatus });
 
   const onChange = (key) => {};
 

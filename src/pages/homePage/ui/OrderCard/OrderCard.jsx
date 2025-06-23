@@ -11,6 +11,7 @@ import {
   GlobalOutlined,
   TruckFilled,
 } from "@ant-design/icons";
+import { order_status } from "../../../../enums";
 
 dayjs.extend(utc);
 
@@ -26,7 +27,9 @@ export const OrderCard = ({ item }) => {
     <Flex key={item?.guid} vertical gap="small" className={clsx(styles.card)}>
       <Flex gap="large" align="center">
         <span className={clsx("font-bold")}>{item.guid}</span>
-        <button className={clsx(styles.btn)}>В пути</button>
+        <button className={clsx(styles.btn)}>
+          {order_status[Number(item.status)]}
+        </button>
       </Flex>
       <Flex>
         <span>
