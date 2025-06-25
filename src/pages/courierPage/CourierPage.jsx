@@ -39,6 +39,7 @@ export const CourierPage = () => {
           <Button type="primary">Добавить</Button>
         </Flex>
         <Table
+          bordered
           loading={isLoading}
           columns={columns}
           dataSource={filteredData}

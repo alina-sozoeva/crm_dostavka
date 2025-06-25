@@ -44,18 +44,18 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
           {record.nameid_city_to}, {record.address_to}
         </span>
       ),
-      filters: [
-        {
-          text: "Manasa",
-          value: "Manasa",
-        },
-        {
-          text: "Alamedin",
-          value: "Alamedin",
-        },
-      ],
-      filterMode: "tree",
-      filterSearch: true,
+      // filters: [
+      //   {
+      //     text: "Manasa",
+      //     value: "Manasa",
+      //   },
+      //   {
+      //     text: "Alamedin",
+      //     value: "Alamedin",
+      //   },
+      // ],
+      // filterMode: "tree",
+      // filterSearch: true,
       onFilter: (value, record) => record.from.startsWith(value),
     },
     {
@@ -75,7 +75,8 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
     {
       key: "status",
       dataIndex: "status",
-      title: "Статус",
+      title: "Курьер",
+      align: "center",
       width: 180,
       render: (_, record) => {
         if (record.status === 1 || record.status === 0) {
@@ -98,6 +99,14 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
         }
         return order_status[Number(record.status)];
       },
+    },
+    {
+      key: "status",
+      dataIndex: "status",
+      title: "Статус",
+      align: "center",
+      width: 180,
+      render: (_, record) => order_status[Number(record.status)],
     },
   ];
 

@@ -11,24 +11,24 @@ import clsx from "clsx";
 export const useCourierColumns = () => {
   const columns = [
     {
-      key: "id",
-      dataIndex: "id",
+      key: "guid",
+      dataIndex: "guid",
       title: "№",
       align: "center",
       width: 30,
-      render: (index) => {
-        return index++;
+      render: (_, __, index) => {
+        return index + 1;
       },
     },
     {
-      key: "fio",
-      dataIndex: "fio",
+      key: "nameid",
+      dataIndex: "nameid",
       title: "ФИО",
     },
     {
-      key: "order",
-      dataIndex: "order",
-      title: "Заказ",
+      key: "nameid_sp_filial",
+      dataIndex: "nameid_sp_filial",
+      title: "Филиал",
     },
     {
       key: "office",

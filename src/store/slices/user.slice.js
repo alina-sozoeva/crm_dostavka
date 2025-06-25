@@ -17,8 +17,9 @@ export const userSlice = createSlice({
       state.userId = action.payload;
       localStorage.setItem("userId", state.userId);
     },
-    removeToken: (state, action) => {
-      state.token = action.payload;
+    removeToken: (state) => {
+      state.token = null;
+      state.userId = null;
       localStorage.removeItem("tokenUser");
       localStorage.removeItem("userId");
     },

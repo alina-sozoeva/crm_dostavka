@@ -25,7 +25,7 @@ const statuses = [
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
   const { data, isLoading } = useGetOrdersQuery();
-  const { data: users, isLoading: isLoadingUsers } = useGetUsersQuery();
+  const { data: users } = useGetUsersQuery();
   const userId = useSelector((state) => state.user.userId);
   const [updateStatus] = useUpdateStatusCourierMutation();
 
@@ -61,7 +61,7 @@ export const OrderTable = () => {
         <Flex justify="space-between" align="center" wrap="wrap">
           <Tabs
             className={clsx("flex-wrap")}
-            defaultActiveKey="1"
+            defaultActiveKey="0"
             items={statuses}
             onChange={onChange}
           />
@@ -83,6 +83,7 @@ export const OrderTable = () => {
       </Flex>
       <div className={clsx("")}>
         <Table
+          bordered
           loading={isLoading}
           columns={columns}
           dataSource={data?.data}

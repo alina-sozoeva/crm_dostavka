@@ -18,7 +18,7 @@ export const ordersApi = createApi({
         method: "POST",
         body: courier,
       }),
-      invalidatesTags: ["OrderList"],
+      invalidatesTags: ["OrdersList"],
     }),
   }),
 });
