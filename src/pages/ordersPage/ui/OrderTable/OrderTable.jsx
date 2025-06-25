@@ -29,11 +29,11 @@ export const OrderTable = () => {
   const userId = useSelector((state) => state.user.userId);
   const [updateStatus] = useUpdateStatusCourierMutation();
 
-  const onUpdateStatus = (orderGuid) => {
+  const onUpdateStatus = (value, record) => {
     updateStatus({
-      code_user: userId,
+      code_user: value,
       code_status: "2",
-      guid_order: orderGuid,
+      guid_order: record?.guid,
     });
   };
 

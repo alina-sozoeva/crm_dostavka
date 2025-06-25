@@ -4,10 +4,17 @@ import { order_status } from "../../../../enums";
 import clsx from "clsx";
 import styles from "./OrderTable.module.scss";
 import { Select } from "antd";
+import { useGetCourierInfo } from "../../../../hooks";
+import { useState } from "react";
 
 dayjs.extend(utc);
 
 export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
+  const [courier, setcCourier] = useState();
+  const courierInfo = useGetCourierInfo(String(courier));
+
+  console.log(courierInfo, "courierInfo");
+
   const columns = [
     {
       key: "guid",
@@ -79,11 +86,12 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
       align: "center",
       width: 180,
       render: (_, record) => {
+        setcCourier(record.code_sp_courier);
         if (record.status === 1 || record.status === 0) {
           return (
             <Select
               allowClear
-              onChange={() => onUpdateStatus(record.guid)}
+              onChange={(value) => onUpdateStatus(value, record)}
               showSearch
               optionFilterProp="label"
               placeholder="Назначить курьера"
@@ -97,7 +105,7 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
             />
           );
         }
-        return order_status[Number(record.status)];
+        return courierInfo?.nameid;
       },
     },
     {
