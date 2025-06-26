@@ -7,6 +7,7 @@ import { OrderModal } from "../OrderModal";
 import {
   useGetOrdersQuery,
   useGetUsersQuery,
+  useTakeOrderMutation,
   useUpdateStatusCourierMutation,
 } from "../../../../store";
 import { order_status } from "../../../../enums";
@@ -28,6 +29,7 @@ export const OrderTable = () => {
   const { data: users } = useGetUsersQuery();
   const userId = useSelector((state) => state.user.userId);
   const [updateStatus] = useUpdateStatusCourierMutation();
+  const [takeOrder] = useTakeOrderMutation();
 
   const onUpdateStatus = (value, record) => {
     updateStatus({
@@ -35,11 +37,16 @@ export const OrderTable = () => {
       code_status: "2",
       guid_order: record?.guid,
     });
+
+    takeOrder({
+      code_sp_courier: value,
+      guid_order: record?.guid,
+    });
   };
 
   const filteredData = useMemo(() => {
     return users?.data
-      .filter((item) => item.codeid === "2")
+      .filter((item) => item.code_sp_user_position === 2)
       .map((item) => ({
         label: item.nameid,
         value: item.codeid,

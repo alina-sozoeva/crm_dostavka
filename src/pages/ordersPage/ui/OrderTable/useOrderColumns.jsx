@@ -4,16 +4,17 @@ import { order_status } from "../../../../enums";
 import clsx from "clsx";
 import styles from "./OrderTable.module.scss";
 import { Select } from "antd";
-import { useGetCourierInfo } from "../../../../hooks";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useGetUsersQuery } from "../../../../store";
 
 dayjs.extend(utc);
 
 export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
-  const [courier, setcCourier] = useState();
-  const courierInfo = useGetCourierInfo(String(courier));
+  const { data } = useGetUsersQuery();
 
-  console.log(courierInfo, "courierInfo");
+  const couriers = useMemo(() => {
+    return data?.data?.filter((item) => item.code_sp_user_position === 2) || [];
+  }, [data]);
 
   const columns = [
     {
@@ -86,7 +87,6 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
       align: "center",
       width: 180,
       render: (_, record) => {
-        setcCourier(record.code_sp_courier);
         if (record.status === 1 || record.status === 0) {
           return (
             <Select
@@ -105,7 +105,11 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
             />
           );
         }
-        return courierInfo?.nameid;
+        const courier = couriers.find(
+          (item) => +item.codeid === +record.code_sp_courier
+        );
+
+        return courier?.nameid;
       },
     },
     {

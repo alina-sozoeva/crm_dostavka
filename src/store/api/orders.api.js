@@ -20,7 +20,19 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["OrdersList"],
     }),
+    takeOrder: builder.mutation({
+      query: (courier) => ({
+        url: "/courier/take-order",
+        method: "POST",
+        body: courier,
+      }),
+      invalidatesTags: ["OrdersList"],
+    }),
   }),
 });
 
-export const { useGetOrdersQuery, useUpdateStatusCourierMutation } = ordersApi;
+export const {
+  useGetOrdersQuery,
+  useUpdateStatusCourierMutation,
+  useTakeOrderMutation,
+} = ordersApi;
