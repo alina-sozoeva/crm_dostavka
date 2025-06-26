@@ -31,14 +31,17 @@ export const useCourierColumns = () => {
       title: "Филиал",
     },
     {
-      key: "office",
-      dataIndex: "office",
-      title: "В офис",
+      key: "phone",
+      dataIndex: "phone",
+      title: "Телефон",
     },
     {
       key: "delivery",
       dataIndex: "delivery",
       title: "Доставка",
+      render: (_, __, index) => {
+        return index + 2;
+      },
     },
     {
       key: "id",

@@ -1,16 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  BarChartOutlined,
   BellFilled,
   EnvironmentFilled,
   HomeFilled,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  StarFilled,
   StockOutlined,
   TeamOutlined,
   TruckFilled,
-  UserDeleteOutlined,
 } from "@ant-design/icons";
 import { Button, Flex, Layout, Menu } from "antd";
 import clsx from "clsx";
@@ -18,11 +15,17 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import * as CustomHeader from "../Header";
 import styles from "./MainLayout.module.scss";
 import { pageName, pathName } from "../../enums";
+import { useGetOrdersQuery } from "../../store";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const { data } = useGetOrdersQuery();
+
+  const filteredData = useMemo(() => {
+    return data?.data?.filter((item) => item.status === 1);
+  }, [data]);
 
   const title = (() => {
     switch (location.pathname) {
@@ -81,7 +84,10 @@ export const MainLayout = () => {
               icon: <BellFilled />,
               label: (
                 <Link to={pathName.notifications}>
-                  {pageName.notifications}
+                  <Flex justify="space-between">
+                    <span>{pageName.notifications}</span>
+                    <span>{filteredData?.length}</span>
+                  </Flex>
                 </Link>
               ),
             },
@@ -90,21 +96,21 @@ export const MainLayout = () => {
               icon: <EnvironmentFilled />,
               label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
             },
-            {
-              key: "6",
-              icon: <StarFilled />,
-              label: <Link to={pathName.reviews}>{pageName.reviews}</Link>,
-            },
-            {
-              key: "7",
-              icon: <BarChartOutlined />,
-              label: <Link to={pathName.analytics}>{pageName.analytics}</Link>,
-            },
-            {
-              key: "8",
-              icon: <UserDeleteOutlined />,
-              label: <Link to={pathName.blackList}>{pageName.blackList}</Link>,
-            },
+            // {
+            //   key: "6",
+            //   icon: <StarFilled />,
+            //   label: <Link to={pathName.reviews}>{pageName.reviews}</Link>,
+            // },
+            // {
+            //   key: "7",
+            //   icon: <BarChartOutlined />,
+            //   label: <Link to={pathName.analytics}>{pageName.analytics}</Link>,
+            // },
+            // {
+            //   key: "8",
+            //   icon: <UserDeleteOutlined />,
+            //   label: <Link to={pathName.blackList}>{pageName.blackList}</Link>,
+            // },
           ]}
         />
       </Sider>

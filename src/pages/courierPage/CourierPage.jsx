@@ -28,7 +28,7 @@ export const CourierPage = () => {
   const { data, isLoading } = useGetUsersQuery();
 
   const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.codeid === "2");
+    return data?.data.filter((item) => item.code_sp_user_position === 2);
   }, [data]);
 
   return (

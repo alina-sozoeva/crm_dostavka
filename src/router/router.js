@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     children: [
       { path: pathName.home, element: <Pages.HomePage /> },
       { path: pathName.orders, element: <Pages.OrdersPage /> },
-      { path: pathName.notifications, element: <Pages.WIPPage /> },
+      { path: pathName.notifications, element: <Pages.NotificationsPage /> },
       { path: pathName.tracking, element: <Pages.TrackingPage /> },
       { path: pathName.reviews, element: <Pages.WIPPage /> },
       { path: pathName.analytics, element: <Pages.WIPPage /> },
