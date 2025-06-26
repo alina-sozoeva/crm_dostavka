@@ -20,8 +20,8 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
     {
       key: "guid",
       dataIndex: "guid",
-      title: "№ заказа",
-      width: 100,
+      title: "№",
+      width: 50,
       align: "center",
       render: (_, __, idx) => <span>{idx + 1}</span>,
     },
@@ -45,6 +45,7 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
       key: "from_to",
       dataIndex: "from_to",
       title: "Откуда/Куда",
+      width: 500,
       render: (_, record) => (
         <span>
           {record.nameid_oblasty_from} обл., {record.nameid_city_from},{" "}
@@ -85,7 +86,7 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
       dataIndex: "status",
       title: "Курьер",
       align: "center",
-      width: 180,
+      width: 200,
       render: (_, record) => {
         if (record.status === 1 || record.status === 0) {
           return (

@@ -186,14 +186,18 @@ export const OrderTable = () => {
           </Flex>
         </Flex>
       </Flex>
-      <div className={clsx("")}>
+      <div className={clsx(styles.table_wrapper)}>
         <Table
           bordered
           loading={isLoading}
           columns={columns}
           dataSource={filteredOrders}
           rowKey="guid"
-          scroll={{ x: 1950 }}
+          scroll={{ x: 1950, y: 450 }}
+          pagination={{
+            pageSize: 16,
+            showSizeChanger: false,
+          }}
         />
       </div>
       <OrderModal open={openModal} onCancel={() => setOpenModal(false)} />
