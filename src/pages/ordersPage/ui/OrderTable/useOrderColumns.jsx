@@ -9,7 +9,7 @@ import { useGetUsersQuery } from "../../../../store";
 
 dayjs.extend(utc);
 
-export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
+export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
   const { data } = useGetUsersQuery();
 
   const couriers = useMemo(() => {
@@ -88,7 +88,14 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
       align: "center",
       width: 200,
       render: (_, record) => {
-        if (record.status === 1 || record.status === 0) {
+        console.log(record.status);
+
+        console.log(
+          filteredUsers,
+          "filteredDatafilteredDatafilteredDatafilteredData"
+        );
+
+        if (record.status === 1) {
           return (
             <Select
               allowClear
@@ -102,13 +109,15 @@ export const useOrderColumns = ({ filteredData, onUpdateStatus }) => {
                   .toLowerCase()
                   .localeCompare((optionB?.label ?? "").toLowerCase())
               }
-              options={filteredData}
+              options={filteredUsers}
             />
           );
         }
         const courier = couriers.find(
           (item) => +item.codeid === +record.code_sp_courier
         );
+
+        console.log(courier);
 
         return courier?.nameid;
       },
