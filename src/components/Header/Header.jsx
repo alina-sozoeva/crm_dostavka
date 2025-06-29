@@ -13,8 +13,6 @@ export const Header = () => {
   const dispatch = useDispatch();
   const { data } = useGetUsersQuery();
 
-  console.log(data, "data");
-
   const logOut = () => {
     dispatch(removeToken());
   };

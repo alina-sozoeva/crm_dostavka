@@ -33,21 +33,28 @@ export const OrderTable = () => {
   }, [countries]);
 
   const mapRegions = useMemo(() => {
-    return regions?.data
-      ?.filter((item) => item?.code_country === countryId)
-      ?.map((item) => ({
-        value: item.codeid,
-        label: item.region_name,
-      }));
+    const filteredData = regions?.data || [];
+
+    if (countryId) {
+      filteredData?.filter((item) => item?.code_country === countryId);
+    }
+
+    return filteredData?.map((item) => ({
+      value: item.codeid,
+      label: item.region_name,
+    }));
   }, [regions, countryId]);
 
   const mapCities = useMemo(() => {
-    return cities?.data
-      ?.filter((item) => item.code_region === regionId)
-      ?.map((item) => ({
-        value: item.codeid,
-        label: item.gorod_name,
-      }));
+    const filteredData = cities?.data || [];
+
+    if (regionId) {
+      filteredData?.filter((item) => item.code_region === regionId);
+    }
+    return filteredData?.map((item) => ({
+      value: item.codeid,
+      label: item.gorod_name,
+    }));
   }, [cities, regionId]);
 
   const onUpdateStatus = (value, record) => {
@@ -118,6 +125,34 @@ export const OrderTable = () => {
     setRegionId(value);
   };
 
+  const bg_color = (status) => {
+    switch (status) {
+      case 1:
+        return styles.red;
+      case 2:
+        return styles.orange;
+      case 3:
+        return styles.green;
+      case 4:
+        return styles.blue;
+      case 5:
+        return styles.sinii;
+      case 6:
+        return styles.purple;
+      default:
+        return "";
+    }
+  };
+
+  const coloredTabs = statuses.map((item) => ({
+    ...item,
+    label: (
+      <span className={styles.tab_label + " " + bg_color(item.key)}>
+        {item.label}
+      </span>
+    ),
+  }));
+
   return (
     <>
       <Flex
@@ -128,9 +163,9 @@ export const OrderTable = () => {
       >
         <Flex justify="space-between" align="center" wrap="wrap">
           <Tabs
-            className={clsx("flex-wrap")}
+            className={clsx(bg_color, "flex-wrap")}
             defaultActiveKey={0}
-            items={statuses}
+            items={coloredTabs}
             onChange={onChange}
           />
           <Button type="primary" onClick={() => setOpenModal(true)}>
@@ -197,6 +232,15 @@ export const OrderTable = () => {
           pagination={{
             pageSize: 16,
             showSizeChanger: false,
+          }}
+          rowClassName={(record) => {
+            if (record.status === 1) return styles.red;
+            if (record.status === 2) return styles.orange;
+            if (record.status === 3) return styles.green;
+            if (record.status === 4) return styles.blue;
+            if (record.status === 5) return styles.sinii;
+            if (record.status === 6) return styles.purple;
+            return "";
           }}
         />
       </div>

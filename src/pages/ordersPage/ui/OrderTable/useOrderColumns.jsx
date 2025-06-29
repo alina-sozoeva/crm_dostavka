@@ -88,13 +88,6 @@ export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
       align: "center",
       width: 200,
       render: (_, record) => {
-        console.log(record.status);
-
-        console.log(
-          filteredUsers,
-          "filteredDatafilteredDatafilteredDatafilteredData"
-        );
-
         if (record.status === 1) {
           return (
             <Select
@@ -116,20 +109,17 @@ export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
         const courier = couriers.find(
           (item) => +item.codeid === +record.code_sp_courier
         );
-
-        console.log(courier);
-
         return courier?.nameid;
       },
     },
-    {
-      key: "status",
-      dataIndex: "status",
-      title: "Статус",
-      align: "center",
-      width: 180,
-      render: (_, record) => order_status[Number(record.status)],
-    },
+    // {
+    //   key: "status",
+    //   dataIndex: "status",
+    //   title: "Статус",
+    //   align: "center",
+    //   width: 180,
+    //   render: (_, record) => order_status[Number(record.status)],
+    // },
   ];
 
   return { columns };
