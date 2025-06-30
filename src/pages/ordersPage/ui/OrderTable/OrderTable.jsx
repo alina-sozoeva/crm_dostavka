@@ -12,6 +12,7 @@ import {
 import { order_status } from "../../../../enums";
 import { useLocationsData } from "../../../../hooks";
 import { AddOrderModal } from "../../../../components";
+import { toast } from "react-toastify";
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -57,22 +58,24 @@ export const OrderTable = () => {
     }));
   }, [cities, regionId]);
 
-  const onUpdateStatus = (value, record) => {
+  const onUpdateStatus = async (value, record) => {
     debugger;
-    const status = {
-      code_user: value,
-      code_status: "2",
-      guid_order: record?.guid,
-    };
+    try {
+      await takeOrder({
+        code_sp_courier: value,
+        guid_order: record?.guid,
+      });
 
-    console.log(status);
+      await updateStatus({
+        code_user: value,
+        code_status: "2",
+        guid_order: record?.guid,
+      });
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса или взятии заказа", error);
+    }
 
-    // updateStatus(status);
-
-    // takeOrder({
-    //   code_sp_courier: value,
-    //   guid_order: record?.guid,
-    // });
+    toast.success("Вы успешно назначили курьера!");
   };
 
   const filteredUsers = useMemo(() => {
@@ -133,10 +136,7 @@ export const OrderTable = () => {
 
   const filteredOrders = useMemo(() => {
     if (isStatus) {
-      return orders?.data?.filter((item) => {
-        const filterData = item.status === isStatus;
-        return filterData;
-      });
+      return orders?.data?.filter((item) => item.status === isStatus);
     }
     return orders?.data;
   }, [orders, isStatus]);

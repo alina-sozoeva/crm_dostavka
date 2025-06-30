@@ -121,7 +121,7 @@ export const useOrderColumns = ({
         <span
           className={styles.tab_label + " " + bg_color(Number(record.status))}
         >
-          {order_status[Number(record.status)]}
+          {order_status[record.status]}
         </span>
       ),
     },
