@@ -3,7 +3,8 @@ import { useCourierColumns } from "./useCourierColumns";
 import styles from "./CourierPage.module.scss";
 import clsx from "clsx";
 import { useGetUsersQuery } from "../../store";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { AddCourierModal } from "../../components";
 
 const courier = [
   {
@@ -24,8 +25,8 @@ const courier = [
 
 export const CourierPage = () => {
   const { columns } = useCourierColumns();
-
   const { data, isLoading } = useGetUsersQuery();
+  const [openModal, setOpenModal] = useState(false);
 
   const filteredData = useMemo(() => {
     return data?.data.filter((item) => item.code_sp_user_position === 2);
@@ -36,7 +37,9 @@ export const CourierPage = () => {
       <Flex gap="large" vertical className={clsx(styles.wrap)}>
         <Flex gap="small">
           <Input placeholder="Поиск" style={{ width: "300px" }} />
-          <Button type="primary">Добавить</Button>
+          <Button type="primary" onClick={() => setOpenModal(true)}>
+            Добавить
+          </Button>
         </Flex>
         <Table
           bordered
@@ -46,6 +49,7 @@ export const CourierPage = () => {
           rowKey="guid"
         />
       </Flex>
+      <AddCourierModal open={openModal} onCansel={() => setOpenModal(false)} />
     </main>
   );
 };

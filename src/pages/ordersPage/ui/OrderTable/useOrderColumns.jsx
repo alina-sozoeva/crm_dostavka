@@ -9,7 +9,11 @@ import { useGetUsersQuery } from "../../../../store";
 
 dayjs.extend(utc);
 
-export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
+export const useOrderColumns = ({
+  filteredUsers,
+  onUpdateStatus,
+  bg_color,
+}) => {
   const { data } = useGetUsersQuery();
 
   const couriers = useMemo(() => {
@@ -75,17 +79,12 @@ export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
         <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm")}</span>
       ),
     },
-    {
-      key: "summa",
-      dataIndex: "summa",
-      title: "Сумма",
-      sorter: (a, b) => a.sum - b.sum,
-    },
+
     {
       key: "status",
       dataIndex: "status",
       title: "Курьер",
-      align: "center",
+      // align: "center",
       width: 200,
       render: (_, record) => {
         if (record.status === 1) {
@@ -112,14 +111,27 @@ export const useOrderColumns = ({ filteredUsers, onUpdateStatus }) => {
         return courier?.nameid;
       },
     },
-    // {
-    //   key: "status",
-    //   dataIndex: "status",
-    //   title: "Статус",
-    //   align: "center",
-    //   width: 180,
-    //   render: (_, record) => order_status[Number(record.status)],
-    // },
+    {
+      key: "status",
+      dataIndex: "status",
+      title: "Статус",
+      // align: "center",
+      width: 200,
+      render: (_, record) => (
+        <span
+          className={styles.tab_label + " " + bg_color(Number(record.status))}
+        >
+          {order_status[Number(record.status)]}
+        </span>
+      ),
+    },
+    {
+      key: "summa",
+      dataIndex: "summa",
+      title: "Сумма",
+      width: 180,
+      sorter: (a, b) => a.sum - b.sum,
+    },
   ];
 
   return { columns };

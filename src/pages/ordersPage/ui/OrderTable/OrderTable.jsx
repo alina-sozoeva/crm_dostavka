@@ -79,7 +79,30 @@ export const OrderTable = () => {
       }));
   }, [users]);
 
-  const { columns } = useOrderColumns({ filteredUsers, onUpdateStatus });
+  const bg_color = (status) => {
+    switch (status) {
+      case 1:
+        return styles.red;
+      case 2:
+        return styles.orange;
+      case 3:
+        return styles.green;
+      case 4:
+        return styles.blue;
+      case 5:
+        return styles.sinii;
+      case 6:
+        return styles.purple;
+      default:
+        return "";
+    }
+  };
+
+  const { columns } = useOrderColumns({
+    filteredUsers,
+    onUpdateStatus,
+    bg_color,
+  });
 
   const statuses = useMemo(() => {
     const all = orders?.data || [];
@@ -123,25 +146,6 @@ export const OrderTable = () => {
 
   const handleChangeRegion = (value) => {
     setRegionId(value);
-  };
-
-  const bg_color = (status) => {
-    switch (status) {
-      case 1:
-        return styles.red;
-      case 2:
-        return styles.orange;
-      case 3:
-        return styles.green;
-      case 4:
-        return styles.blue;
-      case 5:
-        return styles.sinii;
-      case 6:
-        return styles.purple;
-      default:
-        return "";
-    }
   };
 
   const coloredTabs = statuses.map((item) => ({
@@ -233,77 +237,9 @@ export const OrderTable = () => {
             pageSize: 16,
             showSizeChanger: false,
           }}
-          rowClassName={(record) => {
-            if (record.status === 1) return styles.red;
-            if (record.status === 2) return styles.orange;
-            if (record.status === 3) return styles.green;
-            if (record.status === 4) return styles.blue;
-            if (record.status === 5) return styles.sinii;
-            if (record.status === 6) return styles.purple;
-            return "";
-          }}
         />
       </div>
       <OrderModal open={openModal} onCancel={() => setOpenModal(false)} />
     </>
   );
 };
-
-// const statuses = [
-//   {
-//     key: 0,
-//     label: (
-//       <span>
-//         {order_status[0]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 1,
-//     label: (
-//       <span>
-//         {order_status[1]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 2,
-//     label: (
-//       <span>
-//         {order_status[2]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 3,
-//     label: (
-//       <span>
-//         {order_status[3]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 4,
-//     label: (
-//       <span>
-//         {order_status[4]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 5,
-//     label: (
-//       <span>
-//         {order_status[5]} ({length})
-//       </span>
-//     ),
-//   },
-//   {
-//     key: 6,
-//     label: (
-//       <span>
-//         {order_status[6]} ({length})
-//       </span>
-//     ),
-//   },
-// ];
