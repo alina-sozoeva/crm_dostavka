@@ -4,11 +4,11 @@ import styles from "./AddCourierModal.module.scss";
 import clsx from "clsx";
 import { useAddUserMutation } from "../../store";
 
-export const AddCourierModal = ({ open, onCansel }) => {
+export const AddCourierModal = ({ open, onCancel }) => {
   const [form] = useForm();
   const [addUser] = useAddUserMutation();
 
-  const handleOnFinish = (values) => {
+  const onFinish = (values) => {
     addUser({
       codeid: "0",
       nameid: values.nameid,
@@ -18,19 +18,19 @@ export const AddCourierModal = ({ open, onCansel }) => {
       code_sp_user_position: "2",
       code_sp_filial: "2",
     });
-    onCansel();
+    onCancel();
     form.resetFields();
   };
 
   const onClose = () => {
-    onCansel();
+    onCancel();
     form.resetFields();
   };
 
   return (
-    <Modal centered open={open} onCancel={onCansel} footer={false}>
+    <Modal centered open={open} onCancel={onCancel} footer={false}>
       <Typography.Title level={4}>Добавить курьера</Typography.Title>
-      <Form layout="vertical" form={form} onFinish={handleOnFinish}>
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item
           label="ФИО курьера"
           name="nameid"

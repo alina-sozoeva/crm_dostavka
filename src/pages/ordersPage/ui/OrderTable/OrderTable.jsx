@@ -3,7 +3,6 @@ import { useOrderColumns } from "./useOrderColumns";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
 import { useMemo, useState } from "react";
-import { OrderModal } from "../OrderModal";
 import {
   useGetOrdersQuery,
   useGetUsersQuery,
@@ -12,6 +11,7 @@ import {
 } from "../../../../store";
 import { order_status } from "../../../../enums";
 import { useLocationsData } from "../../../../hooks";
+import { AddOrderModal } from "../../../../components";
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -58,16 +58,21 @@ export const OrderTable = () => {
   }, [cities, regionId]);
 
   const onUpdateStatus = (value, record) => {
-    updateStatus({
+    debugger;
+    const status = {
       code_user: value,
       code_status: "2",
       guid_order: record?.guid,
-    });
+    };
 
-    takeOrder({
-      code_sp_courier: value,
-      guid_order: record?.guid,
-    });
+    console.log(status);
+
+    // updateStatus(status);
+
+    // takeOrder({
+    //   code_sp_courier: value,
+    //   guid_order: record?.guid,
+    // });
   };
 
   const filteredUsers = useMemo(() => {
@@ -239,7 +244,7 @@ export const OrderTable = () => {
           }}
         />
       </div>
-      <OrderModal open={openModal} onCancel={() => setOpenModal(false)} />
+      <AddOrderModal open={openModal} onCancel={() => setOpenModal(false)} />
     </>
   );
 };

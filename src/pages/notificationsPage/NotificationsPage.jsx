@@ -1,21 +1,31 @@
 import { Flex, Input, Select, Table } from "antd";
 import { useMemo } from "react";
-import { useGetOrdersQuery } from "../../store";
+import { useGetOrdersQuery, useGetUsersQuery } from "../../store";
 import { useNotificationsColumns } from "./useNotificationsColumns";
 import { order_status } from "../../enums";
 import styles from "./NotificationsPage.module.scss";
 import clsx from "clsx";
 
-const statuses = [{ key: 0, label: "test" }];
-
 export const NotificationsPage = () => {
   const { data, isLoading } = useGetOrdersQuery();
+  const { data: users } = useGetUsersQuery();
 
   const filteredData = useMemo(() => {
     return data?.data.filter((item) => item.status === 1);
   }, [data]);
 
   const { columns } = useNotificationsColumns();
+
+  const filteredUsers = useMemo(() => {
+    return users?.data
+      .filter((item) => +item.code_sp_user_position === 2)
+      .map((item) => ({
+        value: item.codeid,
+        label: item.nameid,
+      }));
+  }, [users]);
+
+  console.log(filteredUsers, "filteredUsers");
 
   return (
     <>
@@ -29,11 +39,18 @@ export const NotificationsPage = () => {
           <Flex gap="small" className={clsx("mb-4")}>
             <Input placeholder="Поиск" className={clsx(styles.search)} />
             <Flex gap="small">
-              <Select options={statuses} placeholder="Курьер" />
-              <Select options={statuses} placeholder="Место назначения" />
+              <Select
+                style={{ width: "150px" }}
+                options={filteredUsers}
+                placeholder="Курьер"
+              />
+              <Select
+                style={{ width: "200px" }}
+                options={filteredUsers}
+                placeholder="Место назначения"
+              />
             </Flex>
           </Flex>
-          <Select options={statuses} placeholder="Сортировать по" />
         </Flex>
       </Flex>
       <div className={clsx("")}>

@@ -49,7 +49,7 @@ export const CourierPage = () => {
           rowKey="guid"
         />
       </Flex>
-      <AddCourierModal open={openModal} onCansel={() => setOpenModal(false)} />
+      <AddCourierModal open={openModal} onCancel={() => setOpenModal(false)} />
     </main>
   );
 };
