@@ -171,12 +171,15 @@ export const OrderTable = () => {
         gap="small"
       >
         <Flex justify="space-between" align="center" wrap="wrap">
-          <Tabs
-            className={clsx(bg_color, "flex-wrap")}
-            defaultActiveKey={0}
-            items={coloredTabs}
-            onChange={onChange}
-          />
+          <Flex className={clsx(styles.tabs)}>
+            <Tabs
+              className={clsx(bg_color, "flex-wrap")}
+              defaultActiveKey={0}
+              items={coloredTabs}
+              onChange={onChange}
+            />
+          </Flex>
+
           <Button type="primary" onClick={() => setOpenModal(true)}>
             Добавить заказ
           </Button>
@@ -237,7 +240,7 @@ export const OrderTable = () => {
           columns={columns}
           dataSource={filteredOrders}
           rowKey="guid"
-          scroll={{ x: 1950, y: 450 }}
+          scroll={{ x: 1950, y: 400 }}
           pagination={{
             pageSize: 16,
             showSizeChanger: false,

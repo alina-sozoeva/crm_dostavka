@@ -53,3 +53,48 @@
   background-color: rgba(186, 104, 200, 0.5) !important;
   color: #702d7a !important;
 }
+
+@media (max-width: 1600px) {
+  .tabs {
+    width: 90vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 1400px) {
+  .tabs {
+    width: 80vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 1024px) {
+  .tabs {
+    width: 60vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs {
+    width: 50vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    width: 40vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 400px) {
+  .tabs {
+    width: 35vh;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 320px) {
+}
