@@ -173,7 +173,7 @@ export const OrderTable = () => {
         <Flex justify="space-between" align="center" wrap="wrap">
           <Flex className={clsx(styles.tabs)}>
             <Tabs
-              className={clsx(bg_color, "flex-wrap")}
+              className={clsx(bg_color)}
               defaultActiveKey={0}
               items={coloredTabs}
               onChange={onChange}

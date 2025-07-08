@@ -4,10 +4,11 @@ import {
   LogoutOutlined,
   QuestionCircleFilled,
 } from "@ant-design/icons";
-import styles from "./Header.module.scss";
-import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { removeToken, useGetUsersQuery } from "../../store";
+import logo_pony from "../../assets/images/logo_pony.png";
+import styles from "./Header.module.scss";
+import clsx from "clsx";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,9 @@ export const Header = () => {
             </Space>
           </div>
         </Dropdown>
+        <a href="https://www.ponyexpress.kg/" target="_blank">
+          <img src={logo_pony} alt={logo_pony} style={{ width: "100px" }} />
+        </a>
       </Flex>
     </header>
   );
