@@ -1,11 +1,21 @@
 import { RouterProvider } from "react-router-dom";
-import "./App.css";
 import { router } from "./router";
 import { ToastContainer } from "react-toastify";
+import { useGetOrdersQuery } from "./store";
+import "./App.css";
+
+function GlobalPolling() {
+  const { data } = useGetOrdersQuery(undefined, {
+    pollingInterval: 15000,
+  });
+
+  return null;
+}
 
 function App() {
   return (
     <>
+      <GlobalPolling />
       <RouterProvider router={router} />
       <ToastContainer />
     </>

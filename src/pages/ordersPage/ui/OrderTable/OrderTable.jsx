@@ -1,4 +1,13 @@
-import { Button, Flex, Input, Select, Table, Tabs } from "antd";
+import {
+  Button,
+  DatePicker,
+  Flex,
+  Input,
+  Select,
+  Spin,
+  Table,
+  Tabs,
+} from "antd";
 import { useOrderColumns } from "./useOrderColumns";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
@@ -16,13 +25,14 @@ import { toast } from "react-toastify";
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { data: orders, isLoading } = useGetOrdersQuery();
+  const { data: orders, isLoading, isFetching } = useGetOrdersQuery();
   const { data: users } = useGetUsersQuery();
   const [updateStatus] = useUpdateStatusCourierMutation();
   const [takeOrder] = useTakeOrderMutation();
   const [isStatus, setIsStatus] = useState();
   const [countryId, setCountryId] = useState();
   const [regionId, setRegionId] = useState();
+  const [search, setSearch] = useState();
 
   const { countries, regions, cities } = useLocationsData();
 
@@ -162,6 +172,17 @@ export const OrderTable = () => {
     ),
   }));
 
+  // const filteredSearch = useMemo(() => {
+  //   if (search) {
+  //     return filteredOrders?.filter(
+  //       (item) => item?.fio_from?.toLowerCase() === search?.toLowerCase()
+  //     );
+  //   }
+  //   return filteredOrders;
+  // }, [filteredOrders, search]);
+
+  // console.log(search, "setSearch");
+
   return (
     <>
       <Flex
@@ -171,7 +192,11 @@ export const OrderTable = () => {
         gap="small"
       >
         <Flex justify="space-between" align="center" wrap="wrap">
-          <Flex className={clsx(styles.tabs)}>
+          <Flex
+            justify="space-between"
+            align="center"
+            className={clsx(styles.tabs)}
+          >
             <Tabs
               className={clsx(bg_color)}
               defaultActiveKey={0}
@@ -186,12 +211,16 @@ export const OrderTable = () => {
         </Flex>
         <Flex justify="space-between">
           <Flex gap="small" className={clsx("mb-4")}>
-            <Input placeholder="Поиск" className={clsx(styles.search)} />
+            <Input
+              placeholder="Поиск по ФИО отправителя/получателя, номер телефона..."
+              className={clsx(styles.search)}
+              onChange={(e) => setSearch(e.target.value)}
+            />
             <Flex gap="small">
               <Select
                 allowClear
                 showSearch
-                placeholder="Cтрана"
+                placeholder="Выберите страну"
                 style={{ width: "150px" }}
                 optionFilterProp="label"
                 filterSort={(optionA, optionB) =>
@@ -206,7 +235,7 @@ export const OrderTable = () => {
                 allowClear
                 showSearch
                 style={{ width: "150px" }}
-                placeholder="Область"
+                placeholder="Выберите область"
                 optionFilterProp="label"
                 filterSort={(optionA, optionB) =>
                   (optionA?.label ?? "")
@@ -220,7 +249,7 @@ export const OrderTable = () => {
                 allowClear
                 showSearch
                 style={{ width: "150px" }}
-                placeholder="Город"
+                placeholder="Выберите город"
                 optionFilterProp="label"
                 filterSort={(optionA, optionB) =>
                   (optionA?.label ?? "")
@@ -229,6 +258,7 @@ export const OrderTable = () => {
                 }
                 options={mapCities}
               />
+              <DatePicker placeholder="Выберите дату" />
             </Flex>
           </Flex>
         </Flex>
@@ -236,7 +266,7 @@ export const OrderTable = () => {
       <div className={clsx(styles.table_wrapper)}>
         <Table
           bordered
-          loading={isLoading}
+          loading={isLoading || isFetching}
           columns={columns}
           dataSource={filteredOrders}
           rowKey="guid"
