@@ -24,7 +24,6 @@ export const AddOrderModal = ({ open, onCancel }) => {
   const [countryId, setCountryId] = useState();
   const [regionId, setRegionId] = useState();
   const [addOrder] = useAddOrderMutation();
-  const { data: clients } = useGetClientsQuery();
   const [value, setValue] = useState();
 
   const mapCountries = useMemo(() => {

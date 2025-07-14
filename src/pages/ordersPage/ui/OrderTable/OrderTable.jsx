@@ -148,6 +148,7 @@ export const OrderTable = () => {
     if (isStatus) {
       return orders?.data?.filter((item) => item.status === isStatus);
     }
+
     return orders?.data;
   }, [orders, isStatus]);
 
@@ -192,22 +193,22 @@ export const OrderTable = () => {
         gap="small"
       >
         <Flex justify="space-between" align="center" wrap="wrap">
-          <Flex
-            justify="space-between"
-            align="center"
-            className={clsx(styles.tabs)}
-          >
+          <Flex justify="space-between" className={clsx(styles.tabs)}>
             <Tabs
               className={clsx(bg_color)}
               defaultActiveKey={0}
               items={coloredTabs}
               onChange={onChange}
             />
-          </Flex>
 
-          <Button type="primary" onClick={() => setOpenModal(true)}>
-            Добавить заказ
-          </Button>
+            <Button
+              className={clsx("mt-2 ml-2")}
+              type="primary"
+              onClick={() => setOpenModal(true)}
+            >
+              Добавить заказ
+            </Button>
+          </Flex>
         </Flex>
         <Flex justify="space-between">
           <Flex gap="small" className={clsx("mb-4")}>
@@ -270,6 +271,7 @@ export const OrderTable = () => {
           columns={columns}
           dataSource={filteredOrders}
           rowKey="guid"
+          className={clsx(styles.table)}
           scroll={{ x: 1950, y: 400 }}
           pagination={{
             pageSize: 16,

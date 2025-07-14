@@ -69,6 +69,8 @@ export const useNotificationsColumns = () => {
       render: (text) => (
         <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm")}</span>
       ),
+      sorter: (a, b) =>
+        new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
     },
     {
       key: "summa",

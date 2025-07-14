@@ -7,7 +7,7 @@ import styles from "./NotificationsPage.module.scss";
 import clsx from "clsx";
 
 export const NotificationsPage = () => {
-  const { data, isLoading } = useGetOrdersQuery();
+  const { data, isLoading, isFetching } = useGetOrdersQuery();
   const { data: users } = useGetUsersQuery();
 
   const filteredData = useMemo(() => {
@@ -56,7 +56,7 @@ export const NotificationsPage = () => {
       <div className={clsx("")}>
         <Table
           bordered
-          loading={isLoading}
+          loading={isLoading || isFetching}
           columns={columns}
           dataSource={filteredData}
           rowKey="guid"
