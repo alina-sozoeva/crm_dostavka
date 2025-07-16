@@ -5,9 +5,12 @@ import { useGetOrdersQuery } from "./store";
 import "./App.css";
 
 function GlobalPolling() {
-  const { data } = useGetOrdersQuery(undefined, {
-    pollingInterval: 15000,
-  });
+  const { data } = useGetOrdersQuery(
+    {},
+    {
+      pollingInterval: 15000,
+    }
+  );
 
   return null;
 }

@@ -13,6 +13,7 @@ export const useOrderColumns = ({
   filteredUsers,
   onUpdateStatus,
   bg_color,
+  color,
 }) => {
   const { data } = useGetUsersQuery();
 
@@ -33,9 +34,9 @@ export const useOrderColumns = ({
       key: "fio_from_to",
       dataIndex: "fio_from_to",
       title: "Отправителя/получатель",
-      render: (_, item) => (
-        <span>
-          {item.fio_from}/{item.fio_to}
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.fio_from}/{record.fio_to}
         </span>
       ),
     },
@@ -43,15 +44,27 @@ export const useOrderColumns = ({
       key: "phone_from",
       dataIndex: "phone_from",
       title: "Tелефон отправителя",
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.phone_from}
+        </span>
+      ),
     },
-    { key: "phone_to", dataIndex: "phone_to", title: "Tелефон получателя" },
+    {
+      key: "phone_to",
+      dataIndex: "phone_to",
+      title: "Tелефон получателя",
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>{record.phone_to}</span>
+      ),
+    },
     {
       key: "from_to",
       dataIndex: "from_to",
       title: "Откуда/Куда",
-      width: 500,
+      width: 600,
       render: (_, record) => (
-        <span>
+        <span className={color(Number(record.status))}>
           {record.nameid_oblasty_from} обл., {record.nameid_city_from},{" "}
           {record.address_from} / {record.nameid_oblasty_to} обл.,{" "}
           {record.nameid_city_to}, {record.address_to}
@@ -75,8 +88,10 @@ export const useOrderColumns = ({
       key: "delivery_to_time",
       dataIndex: "delivery_to_time",
       title: "Дата/время",
-      render: (text) => (
-        <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}</span>
+      render: (text, record) => (
+        <span className={color(Number(record.status))}>
+          {dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}
+        </span>
       ),
       sorter: (a, b) =>
         new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
@@ -109,29 +124,36 @@ export const useOrderColumns = ({
         const courier = couriers.find(
           (item) => +item.codeid === +record.code_sp_courier
         );
-        return courier?.nameid;
+        return (
+          <span className={color(Number(record.status))}>
+            {courier?.nameid}
+          </span>
+        );
       },
     },
-    {
-      key: "status",
-      dataIndex: "status",
-      title: "Статус",
-      // align: "center",
-      width: 200,
-      render: (_, record) => (
-        <span
-          className={styles.tab_label + " " + bg_color(Number(record.status))}
-        >
-          {order_status_col[record.status]}
-        </span>
-      ),
-    },
+    // {
+    //   key: "status",
+    //   dataIndex: "status",
+    //   title: "Статус",
+    //   // align: "center",
+    //   width: 200,
+    //   render: (_, record) => (
+    //     <span
+    //       className={styles.tab_label + " " + bg_color(Number(record.status))}
+    //     >
+    //       {order_status_col[record.status]}
+    //     </span>
+    //   ),
+    // },
     {
       key: "summa",
       dataIndex: "summa",
       title: "Сумма",
       width: 180,
       sorter: (a, b) => a.sum - b.sum,
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>{record.summa}</span>
+      ),
     },
   ];
 

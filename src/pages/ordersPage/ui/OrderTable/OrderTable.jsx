@@ -8,7 +8,6 @@ import {
   useUpdateStatusCourierMutation,
 } from "../../../../store";
 import { order_status } from "../../../../enums";
-import { useLocationsData, useMapToOptions } from "../../../../hooks";
 import { AddOrderModal } from "../../../../components";
 import { toast } from "react-toastify";
 import styles from "./OrderTable.module.scss";
@@ -16,24 +15,23 @@ import clsx from "clsx";
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { data: orders, isLoading, isFetching } = useGetOrdersQuery();
   const { data: users } = useGetUsersQuery();
   const [updateStatus] = useUpdateStatusCourierMutation();
   const [takeOrder] = useTakeOrderMutation();
   const [isStatus, setIsStatus] = useState();
-  const [countryId, setCountryId] = useState();
-  const [regionId, setRegionId] = useState();
   const [search, setSearch] = useState();
+  const [courierId, setCourierId] = useState();
+  const { data: allOrders } = useGetOrdersQuery({});
 
-  const { countries, regions, cities } = useLocationsData(countryId, regionId);
-
-  const mapCountries = useMapToOptions(countries?.data, "country_name");
-
-  const mapRegions = useMapToOptions(regions?.data, "region_name");
-
-  const mapCities = useMapToOptions(cities?.data, "gorod_name", [
-    "code_region",
-  ]);
+  const {
+    data: orders,
+    isLoading,
+    isFetching,
+  } = useGetOrdersQuery({
+    ...(search && { search }),
+    ...(courierId && { code_sp_courier: courierId }),
+    ...(isStatus && { status: isStatus }),
+  });
 
   const onUpdateStatus = async (value, record) => {
     try {
@@ -52,6 +50,10 @@ export const OrderTable = () => {
     }
 
     toast.success("Вы успешно назначили курьера!");
+  };
+
+  const onChange = (key) => {
+    setIsStatus(key);
   };
 
   const filteredUsers = useMemo(() => {
@@ -82,14 +84,34 @@ export const OrderTable = () => {
     }
   };
 
+  const color = (status) => {
+    switch (status) {
+      case 1:
+        return styles.red_text;
+      case 2:
+        return styles.orange_text;
+      case 3:
+        return styles.green_text;
+      case 4:
+        return styles.blue_text;
+      case 5:
+        return styles.sinii_text;
+      case 6:
+        return styles.purple_text;
+      default:
+        return "";
+    }
+  };
+
   const { columns } = useOrderColumns({
     filteredUsers,
     onUpdateStatus,
     bg_color,
+    color,
   });
 
   const statuses = useMemo(() => {
-    const all = orders?.data || [];
+    const all = allOrders?.data || [];
 
     const statusCounts = all.reduce((acc, item) => {
       acc[item.status] = (acc[item.status] || 0) + 1;
@@ -108,29 +130,7 @@ export const OrderTable = () => {
           label: `${label} (${statusCounts[key] || 0})`,
         })),
     ];
-  }, [orders]);
-
-  const filteredOrders = useMemo(() => {
-    if (isStatus) {
-      return orders?.data?.filter((item) => item.status === isStatus);
-    }
-
-    return orders?.data;
-  }, [orders, isStatus]);
-
-  console.log(filteredOrders, "filteredOrders");
-
-  const onChange = (key) => {
-    setIsStatus(key);
-  };
-
-  const handleChangeCountry = (value) => {
-    setCountryId(value);
-  };
-
-  const handleChangeRegion = (value) => {
-    setRegionId(value);
-  };
+  }, [allOrders]);
 
   const coloredTabs = statuses.map((item) => ({
     ...item,
@@ -140,17 +140,6 @@ export const OrderTable = () => {
       </span>
     ),
   }));
-
-  // const filteredSearch = useMemo(() => {
-  //   if (search) {
-  //     return filteredOrders?.filter(
-  //       (item) => item?.fio_from?.toLowerCase() === search?.toLowerCase()
-  //     );
-  //   }
-  //   return filteredOrders;
-  // }, [filteredOrders, search]);
-
-  // console.log(search, "setSearch");
 
   return (
     <>
@@ -189,7 +178,7 @@ export const OrderTable = () => {
               <Select
                 allowClear
                 showSearch
-                placeholder="Выберите страну"
+                placeholder="Выберите курьера"
                 style={{ width: "150px" }}
                 optionFilterProp="label"
                 filterSort={(optionA, optionB) =>
@@ -197,37 +186,11 @@ export const OrderTable = () => {
                     .toLowerCase()
                     .localeCompare((optionB?.label ?? "").toLowerCase())
                 }
-                options={mapCountries}
-                onChange={handleChangeCountry}
+                options={filteredUsers}
+                onChange={(value) => setCourierId(value)}
               />
-              <Select
-                allowClear
-                showSearch
-                style={{ width: "150px" }}
-                placeholder="Выберите область"
-                optionFilterProp="label"
-                filterSort={(optionA, optionB) =>
-                  (optionA?.label ?? "")
-                    .toLowerCase()
-                    .localeCompare((optionB?.label ?? "").toLowerCase())
-                }
-                options={mapRegions}
-                onChange={handleChangeRegion}
-              />
-              <Select
-                allowClear
-                showSearch
-                style={{ width: "150px" }}
-                placeholder="Выберите город"
-                optionFilterProp="label"
-                filterSort={(optionA, optionB) =>
-                  (optionA?.label ?? "")
-                    .toLowerCase()
-                    .localeCompare((optionB?.label ?? "").toLowerCase())
-                }
-                options={mapCities}
-              />
-              <DatePicker placeholder="Выберите дату" />
+
+              {/* <DatePicker placeholder="Выберите дату" /> */}
             </Flex>
           </Flex>
         </Flex>
@@ -237,7 +200,7 @@ export const OrderTable = () => {
           bordered
           loading={isLoading || isFetching}
           columns={columns}
-          dataSource={filteredOrders}
+          dataSource={orders?.data || []}
           rowKey="guid"
           className={clsx(styles.table)}
           scroll={{ x: 1950, y: 400 }}

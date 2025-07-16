@@ -6,9 +6,10 @@ export const ordersApi = createApi({
   tagTypes: ["OrdersList", "GuidList"],
   endpoints: (builder) => ({
     getOrders: builder.query({
-      query: () => ({
+      query: ({ search, code_sp_courier, status }) => ({
         url: "/orders",
         method: "GET",
+        params: { search, code_sp_courier, status },
       }),
       providesTags: ["OrdersList"],
     }),
