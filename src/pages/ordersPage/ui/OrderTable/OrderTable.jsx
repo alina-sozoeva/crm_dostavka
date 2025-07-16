@@ -1,6 +1,6 @@
-import { Button, DatePicker, Flex, Input, Select, Table, Tabs } from "antd";
+import { Button, Flex, Input, Select, Table, Tabs } from "antd";
 import { useOrderColumns } from "./useOrderColumns";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   useGetOrdersQuery,
   useGetUsersQuery,
@@ -10,6 +10,7 @@ import {
 import { order_status } from "../../../../enums";
 import { AddOrderModal } from "../../../../components";
 import { toast } from "react-toastify";
+import debounce from "lodash.debounce";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
 
@@ -32,6 +33,15 @@ export const OrderTable = () => {
     ...(courierId && { code_sp_courier: courierId }),
     ...(isStatus && { status: isStatus }),
   });
+
+  const debouncedSetSearch = useMemo(
+    () => debounce((value) => setSearch(value), 400),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    debouncedSetSearch(e.target.value);
+  };
 
   const onUpdateStatus = async (value, record) => {
     try {
@@ -141,6 +151,12 @@ export const OrderTable = () => {
     ),
   }));
 
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSetSearch]);
+
   return (
     <>
       <Flex
@@ -172,8 +188,8 @@ export const OrderTable = () => {
             <Input
               placeholder="Поиск по ФИО отправителя/получателя, номер телефона..."
               className={clsx(styles.search)}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+              onChange={handleSearchChange}
+              />
             <Flex gap="small">
               <Select
                 allowClear
