@@ -3,6 +3,7 @@ import {
   BellFilled,
   EnvironmentFilled,
   HomeFilled,
+  InfoCircleOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   StockOutlined,
@@ -21,7 +22,7 @@ const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const { data } = useGetOrdersQuery();
+  const { data } = useGetOrdersQuery({});
 
   const filteredData = useMemo(() => {
     return data?.data?.filter((item) => item.status === 1);
@@ -45,6 +46,8 @@ export const MainLayout = () => {
         return pageName.couriers;
       case pathName.blackList:
         return pageName.blackList;
+      case pathName.cancelOders:
+        return pageName.cancelOders;
       default:
         return pageName.home;
     }
@@ -95,6 +98,13 @@ export const MainLayout = () => {
               key: "5",
               icon: <EnvironmentFilled />,
               label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
+            },
+            {
+              key: "6",
+              icon: <InfoCircleOutlined />,
+              label: (
+                <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>
+              ),
             },
             // {
             //   key: "6",

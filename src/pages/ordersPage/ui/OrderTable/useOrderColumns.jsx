@@ -1,4 +1,3 @@
-import { order_status, order_status_col } from "../../../../enums";
 import { Select } from "antd";
 import { useMemo } from "react";
 import { useGetUsersQuery } from "../../../../store";
@@ -6,12 +5,15 @@ import styles from "./OrderTable.module.scss";
 import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
 import clsx from "clsx";
+import { CloseOutlined, WarningOutlined } from "@ant-design/icons";
 
 dayjs.extend(utc);
 
 export const useOrderColumns = ({
   filteredUsers,
+  onOpenCancelModal,
   onUpdateStatus,
+  onOpenWarnModal,
   bg_color,
   color,
 }) => {
@@ -70,18 +72,6 @@ export const useOrderColumns = ({
           {record.nameid_city_to}, {record.address_to}
         </span>
       ),
-      // filters: [
-      //   {
-      //     text: "Manasa",
-      //     value: "Manasa",
-      //   },
-      //   {
-      //     text: "Alamedin",
-      //     value: "Alamedin",
-      //   },
-      // ],
-      // filterMode: "tree",
-      // filterSearch: true,
       onFilter: (value, record) => record.from.startsWith(value),
     },
     {
@@ -107,7 +97,7 @@ export const useOrderColumns = ({
           return (
             <Select
               allowClear
-              onChange={(value) => onUpdateStatus(value, record)}
+              onChange={(value) => onUpdateStatus(value, record?.guid)}
               showSearch
               optionFilterProp="label"
               placeholder="Назначить курьера"
@@ -131,29 +121,45 @@ export const useOrderColumns = ({
         );
       },
     },
-    // {
-    //   key: "status",
-    //   dataIndex: "status",
-    //   title: "Статус",
-    //   // align: "center",
-    //   width: 200,
-    //   render: (_, record) => (
-    //     <span
-    //       className={styles.tab_label + " " + bg_color(Number(record.status))}
-    //     >
-    //       {order_status_col[record.status]}
-    //     </span>
-    //   ),
-    // },
+
     {
       key: "summa",
       dataIndex: "summa",
       title: "Сумма",
-      width: 180,
+      width: 120,
       sorter: (a, b) => a.sum - b.sum,
       render: (_, record) => (
         <span className={color(Number(record.status))}>{record.summa}</span>
       ),
+    },
+    {
+      key: "actions",
+      dataIndex: "actions",
+      title: "...",
+      width: 150,
+      align: "center",
+      render: (_, record) => {
+        if (record.status === 1 || record.status === 2 || record.status === 6) {
+          return (
+            <span
+              className={styles.tab_label + " " + bg_color(Number(7))}
+              onClick={() => onOpenCancelModal(record?.guid)}
+            >
+              <WarningOutlined /> Отменить
+            </span>
+          );
+        }
+        if (record.status === 7) {
+          return (
+            <span
+              className={styles.tab_label + " " + bg_color(Number(7))}
+              onClick={() => onOpenWarnModal(record?.guid)}
+            >
+              <CloseOutlined /> Удалить
+            </span>
+          );
+        }
+      },
     },
   ];
 

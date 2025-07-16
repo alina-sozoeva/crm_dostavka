@@ -7,22 +7,78 @@ import {
   useTakeOrderMutation,
   useUpdateStatusCourierMutation,
 } from "../../../../store";
-import { order_status } from "../../../../enums";
-import { AddOrderModal } from "../../../../components";
+import { order_status, pathName } from "../../../../enums";
+import {
+  AddOrderModal,
+  CancelModal,
+  WarningModal,
+} from "../../../../components";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import debounce from "lodash.debounce";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
 
+const bg_color = (status) => {
+  switch (status) {
+    case 1:
+      return styles.sinii;
+    case 2:
+      return styles.orange;
+    case 3:
+      return styles.blue;
+    case 4:
+      return styles.blue;
+    case 5:
+      return styles.green;
+    case 6:
+      return styles.purple;
+    case 7:
+      return styles.red;
+    default:
+      return "";
+  }
+};
+
+const color = (status) => {
+  switch (status) {
+    case 1:
+      return styles.sinii_text;
+    case 2:
+      return styles.orange_text;
+    case 3:
+      return styles.blue_text;
+    case 4:
+      return styles.blue_text;
+    case 5:
+      return styles.green_text;
+    case 6:
+      return styles.purple_text;
+    case 7:
+      return styles.red_text;
+    default:
+      return "";
+  }
+};
+
 export const OrderTable = () => {
-  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
   const { data: users } = useGetUsersQuery();
-  const [updateStatus] = useUpdateStatusCourierMutation();
+  const { data: allOrders } = useGetOrdersQuery({});
+
   const [takeOrder] = useTakeOrderMutation();
+  const userId = useSelector((state) => state.user.userId);
+
+  const [updateStatus] = useUpdateStatusCourierMutation();
+  const [openModal, setOpenModal] = useState(false);
   const [isStatus, setIsStatus] = useState();
   const [search, setSearch] = useState();
   const [courierId, setCourierId] = useState();
-  const { data: allOrders } = useGetOrdersQuery({});
+  const [openCancselModal, setOpenCancselModal] = useState(false);
+  const [openWarnModal, setOpenWarnModal] = useState(false);
+  const [orderGuid, setOrderGuid] = useState("");
 
   const {
     data: orders,
@@ -31,40 +87,8 @@ export const OrderTable = () => {
   } = useGetOrdersQuery({
     ...(search && { search }),
     ...(courierId && { code_sp_courier: courierId }),
-    ...(isStatus && { status: isStatus }),
+    ...(isStatus !== "7" && { status: isStatus }),
   });
-
-  const debouncedSetSearch = useMemo(
-    () => debounce((value) => setSearch(value), 400),
-    []
-  );
-
-  const handleSearchChange = (e) => {
-    debouncedSetSearch(e.target.value);
-  };
-
-  const onUpdateStatus = async (value, record) => {
-    try {
-      await takeOrder({
-        code_sp_courier: value,
-        guid_order: record?.guid,
-      });
-
-      await updateStatus({
-        code_user: value,
-        code_status: "2",
-        guid_order: record?.guid,
-      });
-    } catch (error) {
-      console.error("Ошибка при обновлении статуса или взятии заказа", error);
-    }
-
-    toast.success("Вы успешно назначили курьера!");
-  };
-
-  const onChange = (key) => {
-    setIsStatus(key);
-  };
 
   const filteredUsers = useMemo(() => {
     return users?.data
@@ -74,51 +98,6 @@ export const OrderTable = () => {
         value: item.codeid,
       }));
   }, [users]);
-
-  const bg_color = (status) => {
-    switch (status) {
-      case 1:
-        return styles.red;
-      case 2:
-        return styles.orange;
-      case 3:
-        return styles.green;
-      case 4:
-        return styles.blue;
-      case 5:
-        return styles.sinii;
-      case 6:
-        return styles.purple;
-      default:
-        return "";
-    }
-  };
-
-  const color = (status) => {
-    switch (status) {
-      case 1:
-        return styles.red_text;
-      case 2:
-        return styles.orange_text;
-      case 3:
-        return styles.green_text;
-      case 4:
-        return styles.blue_text;
-      case 5:
-        return styles.sinii_text;
-      case 6:
-        return styles.purple_text;
-      default:
-        return "";
-    }
-  };
-
-  const { columns } = useOrderColumns({
-    filteredUsers,
-    onUpdateStatus,
-    bg_color,
-    color,
-  });
 
   const statuses = useMemo(() => {
     const all = allOrders?.data || [];
@@ -139,6 +118,17 @@ export const OrderTable = () => {
           key: Number(key),
           label: `${label} (${statusCounts[key] || 0})`,
         })),
+      {
+        key: 0,
+        label: (
+          <span
+            className={styles.tab_label + " " + bg_color(7)}
+            onClick={() => navigate(pathName.cancelOders)}
+          >
+            Отменен ({statusCounts[7] || 0})
+          </span>
+        ),
+      },
     ];
   }, [allOrders]);
 
@@ -150,6 +140,71 @@ export const OrderTable = () => {
       </span>
     ),
   }));
+
+  const debouncedSetSearch = useMemo(
+    () => debounce((value) => setSearch(value), 400),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    debouncedSetSearch(e.target.value);
+  };
+
+  const onChange = (key) => {
+    setIsStatus(key);
+  };
+
+  const onOpenCancelModal = (guid) => {
+    setOpenCancselModal(true);
+    setOrderGuid(guid);
+  };
+
+  const onOpenWarnModal = (guid) => {
+    setOpenWarnModal(true);
+    setOrderGuid(guid);
+  };
+
+  const onCancelOrder = async () => {
+    try {
+      await updateStatus({
+        code_user: userId,
+        code_status: "7",
+        guid_order: orderGuid,
+      });
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса или взятии заказа", error);
+    }
+
+    toast.success("Вы успешно отменили заказ!");
+  };
+
+  const onUpdateStatus = async (value, guid) => {
+    try {
+      await takeOrder({
+        code_sp_courier: value,
+        guid_order: guid,
+      });
+
+      await updateStatus({
+        code_user: userId,
+        code_status: "2",
+        guid_order: guid,
+      });
+    } catch (error) {
+      console.error("Ошибка при обновлении статуса или взятии заказа", error);
+    }
+
+    toast.success("Вы успешно назначили курьера!");
+  };
+
+  const { columns } = useOrderColumns({
+    filteredUsers,
+    onUpdateStatus,
+    onOpenCancelModal,
+    onOpenWarnModal,
+    bg_color,
+    color,
+  });
 
   useEffect(() => {
     return () => {
@@ -189,7 +244,7 @@ export const OrderTable = () => {
               placeholder="Поиск по ФИО отправителя/получателя, номер телефона..."
               className={clsx(styles.search)}
               onChange={handleSearchChange}
-              />
+            />
             <Flex gap="small">
               <Select
                 allowClear
@@ -219,7 +274,7 @@ export const OrderTable = () => {
           dataSource={orders?.data || []}
           rowKey="guid"
           className={clsx(styles.table)}
-          scroll={{ x: 1950, y: 400 }}
+          scroll={{ x: 1950, y: 420 }}
           pagination={{
             pageSize: 16,
             showSizeChanger: false,
@@ -227,6 +282,17 @@ export const OrderTable = () => {
         />
       </div>
       <AddOrderModal open={openModal} onCancel={() => setOpenModal(false)} />
+      <CancelModal
+        open={openCancselModal}
+        onCancel={() => setOpenCancselModal(false)}
+        onConfirm={onCancelOrder}
+        orderGuid={orderGuid}
+      />
+      <WarningModal
+        title={"удалить заказ"}
+        open={openWarnModal}
+        onCancel={() => setOpenWarnModal(false)}
+      />
     </>
   );
 };

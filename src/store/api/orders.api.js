@@ -44,6 +44,14 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["OrdersList"],
     }),
+    addComment: builder.mutation({
+      query: (comment) => ({
+        url: "/orders/update-comment",
+        method: "POST",
+        body: comment,
+      }),
+      invalidatesTags: ["OrderList"],
+    }),
   }),
 });
 
@@ -52,4 +60,5 @@ export const {
   useUpdateStatusCourierMutation,
   useTakeOrderMutation,
   useAddOrderMutation,
+  useAddCommentMutation,
 } = ordersApi;

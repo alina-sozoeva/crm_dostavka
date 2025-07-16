@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
       { path: pathName.blackList, element: <Pages.WIPPage /> },
       { path: pathName.couriers, element: <Pages.CourierPage /> },
       { path: pathName.other, element: <Pages.NotFound /> },
+      { path: pathName.cancelOders, element: <Pages.CancelOrdersPage /> },
     ],
   },
 ]);

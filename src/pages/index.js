@@ -6,3 +6,4 @@ export * from "./courierPage";
 export * from "./trackingPage";
 export * from "./loginPage";
 export * from "./notificationsPage";
+export * from "./cancelOrdersPage";

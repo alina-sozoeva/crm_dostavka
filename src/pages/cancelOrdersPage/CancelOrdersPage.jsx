@@ -1,17 +1,21 @@
 import { DatePicker, Flex, Input, Table } from "antd";
 import { useMemo, useState } from "react";
 import { useGetOrdersQuery, useGetUsersQuery } from "../../store";
-import { useNotificationsColumns } from "./useNotificationsColumns";
-import styles from "./NotificationsPage.module.scss";
+// import { useNotificationsColumns } from "./useNotificationsColumns";
+import styles from "./CancelOrdersPage.module.scss";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
+import { useCancelOrdersColumns } from "./useCancelOrdersColumns";
+import { WarningModal } from "../../components";
 
-export const NotificationsPage = () => {
-  const { data: users } = useGetUsersQuery();
+export const CancelOrdersPage = () => {
   const [search, setSearch] = useState();
   const { data, isLoading, isFetching } = useGetOrdersQuery({
     ...(search && { search }),
+    ...{ status: "7" },
   });
+  const [openModal, setOpenModal] = useState(false);
+  const [orderGuid, setOrderGuid] = useState("");
 
   const debouncedSetSearch = useMemo(
     () => debounce((value) => setSearch(value), 400),
@@ -21,22 +25,13 @@ export const NotificationsPage = () => {
   const handleSearchChange = (e) => {
     debouncedSetSearch(e.target.value);
   };
-  const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.status === 1);
-  }, [data]);
 
-  const { columns } = useNotificationsColumns();
+  const onOpenWarnModal = (guid) => {
+    setOpenModal(true);
+    setOrderGuid(guid);
+  };
 
-  const filteredUsers = useMemo(() => {
-    return users?.data
-      .filter((item) => +item.code_sp_user_position === 2)
-      .map((item) => ({
-        value: item.codeid,
-        label: item.nameid,
-      }));
-  }, [users]);
-
-  console.log(filteredUsers, "filteredUsers");
+  const { columns } = useCancelOrdersColumns({ onOpenWarnModal });
 
   return (
     <>
@@ -62,11 +57,16 @@ export const NotificationsPage = () => {
           bordered
           loading={isLoading || isFetching}
           columns={columns}
-          dataSource={filteredData}
+          dataSource={data?.data}
           rowKey="guid"
           scroll={{ x: 1950 }}
         />
       </div>
+      <WarningModal
+        title={"удалить заказ"}
+        open={openModal}
+        onCancel={() => setOpenModal(false)}
+      />
     </>
   );
 };

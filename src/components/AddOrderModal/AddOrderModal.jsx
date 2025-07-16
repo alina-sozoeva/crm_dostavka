@@ -97,8 +97,6 @@ export const AddOrderModal = ({ open, onCancel }) => {
     }
   };
 
-  console.log(value, "value");
-
   return (
     <Modal centered open={open} onCancel={onCancel} width={900} footer={false}>
       <Typography.Title level={4}>Добавить заказ</Typography.Title>
