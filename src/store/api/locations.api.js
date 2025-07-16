@@ -13,16 +13,18 @@ export const locationsApi = createApi({
       providesTags: ["CountriesList"],
     }),
     getRegion: builder.query({
-      query: () => ({
+      query: ({ code_sp_country }) => ({
         url: "/locations/region",
         method: "GET",
+        params: { code_sp_country },
       }),
       providesTags: ["RegionList"],
     }),
     getCity: builder.query({
-      query: () => ({
+      query: ({ code_sp_country, code_sp_region }) => ({
         url: "/locations/city",
         method: "GET",
+        params: { code_sp_country, code_sp_region },
       }),
       providesTags: ["CityList"],
     }),

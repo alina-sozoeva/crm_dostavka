@@ -1,11 +1,11 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import { order_status } from "../../../../enums";
-import clsx from "clsx";
-import styles from "./OrderTable.module.scss";
+import { order_status, order_status_col } from "../../../../enums";
 import { Select } from "antd";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useGetUsersQuery } from "../../../../store";
+import styles from "./OrderTable.module.scss";
+import utc from "dayjs/plugin/utc";
+import dayjs from "dayjs";
+import clsx from "clsx";
 
 dayjs.extend(utc);
 
@@ -76,7 +76,7 @@ export const useOrderColumns = ({
       dataIndex: "delivery_to_time",
       title: "Дата/время",
       render: (text) => (
-        <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm")}</span>
+        <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}</span>
       ),
       sorter: (a, b) =>
         new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
@@ -86,7 +86,6 @@ export const useOrderColumns = ({
       key: "status",
       dataIndex: "status",
       title: "Курьер",
-      // align: "center",
       width: 200,
       render: (_, record) => {
         if (record.status === 1) {
@@ -123,7 +122,7 @@ export const useOrderColumns = ({
         <span
           className={styles.tab_label + " " + bg_color(Number(record.status))}
         >
-          {order_status[record.status]}
+          {order_status_col[record.status]}
         </span>
       ),
     },

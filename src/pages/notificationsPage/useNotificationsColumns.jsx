@@ -1,11 +1,5 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-
-import { Select } from "antd";
-import { useMemo } from "react";
-
-import { order_status } from "../../enums";
-import { useGetUsersQuery } from "../../store";
 import clsx from "clsx";
 import styles from "./NotificationsPage.module.scss";
 

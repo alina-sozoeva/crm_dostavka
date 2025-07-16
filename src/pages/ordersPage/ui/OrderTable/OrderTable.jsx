@@ -1,16 +1,5 @@
-import {
-  Button,
-  DatePicker,
-  Flex,
-  Input,
-  Select,
-  Spin,
-  Table,
-  Tabs,
-} from "antd";
+import { Button, DatePicker, Flex, Input, Select, Table, Tabs } from "antd";
 import { useOrderColumns } from "./useOrderColumns";
-import styles from "./OrderTable.module.scss";
-import clsx from "clsx";
 import { useMemo, useState } from "react";
 import {
   useGetOrdersQuery,
@@ -19,9 +8,11 @@ import {
   useUpdateStatusCourierMutation,
 } from "../../../../store";
 import { order_status } from "../../../../enums";
-import { useLocationsData } from "../../../../hooks";
+import { useLocationsData, useMapToOptions } from "../../../../hooks";
 import { AddOrderModal } from "../../../../components";
 import { toast } from "react-toastify";
+import styles from "./OrderTable.module.scss";
+import clsx from "clsx";
 
 export const OrderTable = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -34,42 +25,17 @@ export const OrderTable = () => {
   const [regionId, setRegionId] = useState();
   const [search, setSearch] = useState();
 
-  const { countries, regions, cities } = useLocationsData();
+  const { countries, regions, cities } = useLocationsData(countryId, regionId);
 
-  const mapCountries = useMemo(() => {
-    return countries?.data?.map((item) => ({
-      value: item.codeid,
-      label: item.country_name,
-    }));
-  }, [countries]);
+  const mapCountries = useMapToOptions(countries?.data, "country_name");
 
-  const mapRegions = useMemo(() => {
-    const filteredData = regions?.data || [];
+  const mapRegions = useMapToOptions(regions?.data, "region_name");
 
-    if (countryId) {
-      filteredData?.filter((item) => item?.code_country === countryId);
-    }
-
-    return filteredData?.map((item) => ({
-      value: item.codeid,
-      label: item.region_name,
-    }));
-  }, [regions, countryId]);
-
-  const mapCities = useMemo(() => {
-    const filteredData = cities?.data || [];
-
-    if (regionId) {
-      filteredData?.filter((item) => item.code_region === regionId);
-    }
-    return filteredData?.map((item) => ({
-      value: item.codeid,
-      label: item.gorod_name,
-    }));
-  }, [cities, regionId]);
+  const mapCities = useMapToOptions(cities?.data, "gorod_name", [
+    "code_region",
+  ]);
 
   const onUpdateStatus = async (value, record) => {
-    debugger;
     try {
       await takeOrder({
         code_sp_courier: value,
@@ -151,6 +117,8 @@ export const OrderTable = () => {
 
     return orders?.data;
   }, [orders, isStatus]);
+
+  console.log(filteredOrders, "filteredOrders");
 
   const onChange = (key) => {
     setIsStatus(key);
