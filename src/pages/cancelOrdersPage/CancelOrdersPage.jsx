@@ -1,5 +1,5 @@
 import { DatePicker, Flex, Input, Table } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetOrdersQuery, useGetUsersQuery } from "../../store";
 // import { useNotificationsColumns } from "./useNotificationsColumns";
 import styles from "./CancelOrdersPage.module.scss";
@@ -31,6 +31,12 @@ export const CancelOrdersPage = () => {
     setOrderGuid(guid);
   };
 
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSetSearch]);
+
   const { columns } = useCancelOrdersColumns({ onOpenWarnModal });
 
   return (
@@ -59,7 +65,7 @@ export const CancelOrdersPage = () => {
           columns={columns}
           dataSource={data?.data}
           rowKey="guid"
-          scroll={{ x: 1950 }}
+          scroll={{ x: 1400 }}
         />
       </div>
       <WarningModal

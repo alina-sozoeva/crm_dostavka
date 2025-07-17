@@ -25,7 +25,7 @@ export const MainLayout = () => {
   const { data } = useGetOrdersQuery({});
 
   const filteredData = useMemo(() => {
-    return data?.data?.filter((item) => item.status === 1);
+    return data?.data?.filter((item) => item.status === 1 && item.status === 7);
   }, [data]);
 
   const title = (() => {

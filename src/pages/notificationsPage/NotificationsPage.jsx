@@ -1,5 +1,5 @@
 import { DatePicker, Flex, Input, Table } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGetOrdersQuery, useGetUsersQuery } from "../../store";
 import { useNotificationsColumns } from "./useNotificationsColumns";
 import styles from "./NotificationsPage.module.scss";
@@ -22,7 +22,7 @@ export const NotificationsPage = () => {
     debouncedSetSearch(e.target.value);
   };
   const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.status === 1);
+    return data?.data.filter((item) => item.status === 1 && item.status === 7);
   }, [data]);
 
   const { columns } = useNotificationsColumns();
@@ -35,6 +35,12 @@ export const NotificationsPage = () => {
         label: item.nameid,
       }));
   }, [users]);
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSetSearch]);
 
   console.log(filteredUsers, "filteredUsers");
 
