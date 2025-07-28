@@ -15,7 +15,7 @@ import { useMemo, useState } from "react";
 import styles from "./AddOrderModal.module.scss";
 import clsx from "clsx";
 import { toast } from "react-toastify";
-import { useAddOrderMutation, useGetClientsQuery } from "../../store";
+import { useAddOrderMutation } from "../../store";
 import dayjs from "dayjs";
 
 export const AddOrderModal = ({ open, onCancel }) => {
@@ -88,7 +88,7 @@ export const AddOrderModal = ({ open, onCancel }) => {
         lat_to: 0,
         number_of_seats: 0,
         weight: 1,
-        delivery_to_time: dayjs().format("MM-DD-YYYY"),
+        delivery_to_time: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       });
 
       toast.success(<>Вы успешно добавили заказ!</>);

@@ -22,8 +22,9 @@ export const router = createBrowserRouter([
       { path: pathName.analytics, element: <Pages.WIPPage /> },
       { path: pathName.blackList, element: <Pages.WIPPage /> },
       { path: pathName.couriers, element: <Pages.CourierPage /> },
-      { path: pathName.other, element: <Pages.NotFound /> },
       { path: pathName.cancelOders, element: <Pages.CancelOrdersPage /> },
+      { path: pathName.clients, element: <Pages.ClientsPage /> },
+      { path: pathName.other, element: <Pages.NotFound /> },
     ],
   },
 ]);

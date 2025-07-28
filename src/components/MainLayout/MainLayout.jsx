@@ -11,12 +11,13 @@ import {
   TruckFilled,
 } from "@ant-design/icons";
 import { Button, Flex, Layout, Menu } from "antd";
-import clsx from "clsx";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import * as CustomHeader from "../Header";
-import styles from "./MainLayout.module.scss";
 import { pageName, pathName } from "../../enums";
 import { useGetOrdersQuery } from "../../store";
+import styles from "./MainLayout.module.scss";
+import * as CustomHeader from "../Header";
+import clsx from "clsx";
+import { RiEBike2Fill } from "react-icons/ri";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
@@ -25,7 +26,7 @@ export const MainLayout = () => {
   const { data } = useGetOrdersQuery({});
 
   const filteredData = useMemo(() => {
-    return data?.data?.filter((item) => item.status === 1 && item.status === 7);
+    return data?.data?.filter((item) => item.status === 1);
   }, [data]);
 
   const title = (() => {
@@ -79,7 +80,7 @@ export const MainLayout = () => {
             },
             {
               key: "3",
-              icon: <TeamOutlined />,
+              icon: <RiEBike2Fill />,
               label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
             },
             {
@@ -106,21 +107,11 @@ export const MainLayout = () => {
                 <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>
               ),
             },
-            // {
-            //   key: "6",
-            //   icon: <StarFilled />,
-            //   label: <Link to={pathName.reviews}>{pageName.reviews}</Link>,
-            // },
-            // {
-            //   key: "7",
-            //   icon: <BarChartOutlined />,
-            //   label: <Link to={pathName.analytics}>{pageName.analytics}</Link>,
-            // },
-            // {
-            //   key: "8",
-            //   icon: <UserDeleteOutlined />,
-            //   label: <Link to={pathName.blackList}>{pageName.blackList}</Link>,
-            // },
+            {
+              key: "7",
+              icon: <TeamOutlined />,
+              label: <Link to={pathName.clients}>{pageName.clients}</Link>,
+            },
           ]}
         />
       </Sider>

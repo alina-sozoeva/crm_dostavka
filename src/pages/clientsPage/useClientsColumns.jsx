@@ -5,10 +5,11 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import { Flex } from "antd";
-import styles from "./CourierPage.module.scss";
+import styles from "./ClientsPage.module.scss";
 import clsx from "clsx";
+import dayjs from "dayjs";
 
-export const useCourierColumns = () => {
+export const useClientsColumns = () => {
   const columns = [
     {
       key: "guid",
@@ -26,23 +27,22 @@ export const useCourierColumns = () => {
       title: "ФИО",
     },
     {
-      key: "nameid_sp_filial",
-      dataIndex: "nameid_sp_filial",
-      title: "Филиал",
-    },
-    {
       key: "phone",
       dataIndex: "phone",
       title: "Телефон",
     },
-    // {
-    //   key: "delivery",
-    //   dataIndex: "delivery",
-    //   title: "Доставка",
-    //   render: (_, __, index) => {
-    //     return index + 2;
-    //   },
-    // },
+    {
+      key: "email",
+      dataIndex: "email",
+      title: "Email",
+    },
+    {
+      key: "date_system",
+      dataIndex: "date_system",
+      title: "Дата регистрации",
+      render: (_, record, index) =>
+        dayjs(record.date_system).format("DD.MM.YYYY HH:MM"),
+    },
     {
       key: "id",
       dataIndex: "id",

@@ -35,6 +35,13 @@ export const useCancelOrdersColumns = ({ onOpenWarnModal }) => {
       render: (_, item) => <span>{item.fio_from}</span>,
     },
     {
+      key: "nameid_sp_courier",
+      dataIndex: "nameid_sp_courier",
+      title: "Курьер",
+      width: 200,
+      render: (_, item) => <span>{item.nameid_sp_courier}</span>,
+    },
+    {
       key: "from_to",
       dataIndex: "from_to",
       title: "Адрес отправителя",

@@ -21,8 +21,9 @@ export const NotificationsPage = () => {
   const handleSearchChange = (e) => {
     debouncedSetSearch(e.target.value);
   };
+
   const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.status === 1 && item.status === 7);
+    return data?.data.filter((item) => item.status === 1);
   }, [data]);
 
   const { columns } = useNotificationsColumns();

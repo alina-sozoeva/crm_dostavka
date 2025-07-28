@@ -7,3 +7,4 @@ export * from "./trackingPage";
 export * from "./loginPage";
 export * from "./notificationsPage";
 export * from "./cancelOrdersPage";
+export * from "./clientsPage";

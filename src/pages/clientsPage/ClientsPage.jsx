@@ -1,14 +1,16 @@
 import { Button, Flex, Input, Table } from "antd";
-import { useCourierColumns } from "./useCourierColumns";
-import styles from "./CourierPage.module.scss";
+// import { useCourierColumns } from "./useCourierColumns";
+import styles from "./ClientsPage.module.scss";
 import clsx from "clsx";
-import { useGetUsersQuery } from "../../store";
+// import { useGetUsersQuery } from "../../store";
 import { useMemo, useState } from "react";
-import { AddCourierModal } from "../../components";
+import { useClientsColumns } from "./useClientsColumns";
+import { useGetClientsQuery } from "../../store";
+// import { AddCourierModal } from "../../components";
 
-export const CourierPage = () => {
-  const { columns } = useCourierColumns();
-  const { data, isLoading } = useGetUsersQuery();
+export const ClientsPage = () => {
+  const { columns } = useClientsColumns();
+  const { data, isLoading } = useGetClientsQuery();
   const [openModal, setOpenModal] = useState(false);
 
   const filteredData = useMemo(() => {
@@ -28,11 +30,10 @@ export const CourierPage = () => {
           bordered
           loading={isLoading}
           columns={columns}
-          dataSource={filteredData}
+          dataSource={data?.data}
           rowKey="guid"
         />
       </Flex>
-      <AddCourierModal open={openModal} onCancel={() => setOpenModal(false)} />
     </main>
   );
 };

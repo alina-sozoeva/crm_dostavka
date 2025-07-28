@@ -88,8 +88,8 @@ export const useOrderColumns = ({
     },
 
     {
-      key: "status",
-      dataIndex: "status",
+      key: "code_sp_courier",
+      dataIndex: "code_sp_courier",
       title: "Курьер",
       width: 200,
       render: (_, record) => {

@@ -65,7 +65,7 @@ export const CancelOrdersPage = () => {
           columns={columns}
           dataSource={data?.data}
           rowKey="guid"
-          scroll={{ x: 1400 }}
+          scroll={{ x: 1600 }}
         />
       </div>
       <WarningModal

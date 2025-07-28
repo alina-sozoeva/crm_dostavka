@@ -30,6 +30,7 @@ export const pageName = {
   couriers: "Курьеры",
   login: "Логин",
   cancelOders: "Отмененные заказы",
+  clients: "Клиенты",
 };
 
 export const pathName = {
@@ -44,4 +45,5 @@ export const pathName = {
   couriers: "/couriers",
   login: "/login",
   cancelOders: "/cancel-orders",
+  clients: "/clients",
 };
