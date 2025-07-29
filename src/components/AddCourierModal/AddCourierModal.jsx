@@ -28,7 +28,7 @@ export const AddCourierModal = ({ open, onCancel }) => {
   };
 
   return (
-    <Modal centered open={open} onCancel={onCancel} footer={false}>
+    <Modal centered open={open} onCancel={onClose} footer={false}>
       <Typography.Title level={4}>Добавить курьера</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item

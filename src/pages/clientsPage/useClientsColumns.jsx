@@ -42,6 +42,7 @@ export const useClientsColumns = () => {
       title: "Дата регистрации",
       render: (_, record, index) =>
         dayjs(record.date_system).format("DD.MM.YYYY HH:MM"),
+      sorter: (a, b) => new Date(a.date_system) - new Date(b.date_system),
     },
     {
       key: "id",

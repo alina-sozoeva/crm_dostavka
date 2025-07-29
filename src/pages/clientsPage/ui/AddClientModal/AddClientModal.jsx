@@ -22,8 +22,6 @@ export const AddClientModal = ({ open, onCancel }) => {
   };
 
   const onFinish = (values) => {
-    console.log("111");
-
     addClient({
       codeid: "",
       code_sp_type_client: checkedUr ? 2 : 1,
@@ -42,10 +40,12 @@ export const AddClientModal = ({ open, onCancel }) => {
   const onClose = () => {
     onCancel();
     form.resetFields();
+    setCheckedFiz(true);
+    setCheckedUr(false);
   };
 
   return (
-    <Modal centered open={open} onCancel={onCancel} footer={false}>
+    <Modal centered open={open} onCancel={onClose} footer={false}>
       <Typography.Title level={4}>Добавить клиента</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Flex
