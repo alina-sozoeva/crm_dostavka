@@ -12,7 +12,15 @@ export const clientsApi = createApi({
       }),
       providesTags: ["ClientsList"],
     }),
+    addClient: builder.mutation({
+      query: (newClient) => ({
+        url: "/clients/add",
+        method: "POST",
+        body: newClient,
+      }),
+      invalidatesTags: ["ClientsList"],
+    }),
   }),
 });
 
-export const { useGetClientsQuery } = clientsApi;
+export const { useGetClientsQuery, useAddClientMutation } = clientsApi;

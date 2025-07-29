@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { useClientsColumns } from "./useClientsColumns";
 import { useGetClientsQuery } from "../../store";
+import { AddClientModal } from "./ui";
 // import { AddCourierModal } from "../../components";
 
 export const ClientsPage = () => {
@@ -34,6 +35,7 @@ export const ClientsPage = () => {
           rowKey="guid"
         />
       </Flex>
+      <AddClientModal open={openModal} onCancel={() => setOpenModal(false)} />
     </main>
   );
 };
