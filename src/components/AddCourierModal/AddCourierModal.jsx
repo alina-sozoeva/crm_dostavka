@@ -12,9 +12,9 @@ export const AddCourierModal = ({ open, onCancel }) => {
     addUser({
       codeid: "0",
       nameid: values.nameid,
-      phone: values.nameid,
-      login: values.nameid,
-      password: values.nameid,
+      phone: values.phone,
+      login: values.login,
+      password: values.password,
       code_sp_user_position: "2",
       code_sp_filial: "2",
     });
