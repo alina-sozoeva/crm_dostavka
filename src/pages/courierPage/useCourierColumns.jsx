@@ -35,6 +35,16 @@ export const useCourierColumns = () => {
       dataIndex: "phone",
       title: "Телефон",
     },
+    {
+      key: "login",
+      dataIndex: "login",
+      title: "Логин",
+    },
+    {
+      key: "password",
+      dataIndex: "password",
+      title: "Пароль",
+    },
     // {
     //   key: "delivery",
     //   dataIndex: "delivery",
