@@ -1,14 +1,9 @@
-import {
-  CalendarOutlined,
-  CheckSquareFilled,
-  CloseOutlined,
-  MessageOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Flex } from "antd";
 import styles from "./CourierPage.module.scss";
 import clsx from "clsx";
 
-export const useCourierColumns = () => {
+export const useCourierColumns = ({ onUpdate }) => {
   const columns = [
     {
       key: "guid",
@@ -26,11 +21,6 @@ export const useCourierColumns = () => {
       title: "ФИО",
     },
     {
-      key: "nameid_sp_filial",
-      dataIndex: "nameid_sp_filial",
-      title: "Филиал",
-    },
-    {
       key: "phone",
       dataIndex: "phone",
       title: "Телефон",
@@ -45,26 +35,18 @@ export const useCourierColumns = () => {
       dataIndex: "password",
       title: "Пароль",
     },
-    // {
-    //   key: "delivery",
-    //   dataIndex: "delivery",
-    //   title: "Доставка",
-    //   render: (_, __, index) => {
-    //     return index + 2;
-    //   },
-    // },
     {
       key: "id",
       dataIndex: "id",
       title: "...",
-      width: 120,
+      width: 80,
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
           <CloseOutlined className={clsx("text-red-500")} />
-          <MessageOutlined />
-          <CalendarOutlined />
-          <CheckSquareFilled className={clsx("text-blue-500")} />
+          <span onClick={() => onUpdate(record.codeid)}>
+            <EditOutlined />
+          </span>
         </Flex>
       ),
     },

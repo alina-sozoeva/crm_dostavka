@@ -5,11 +5,20 @@ import clsx from "clsx";
 import { useGetUsersQuery } from "../../store";
 import { useMemo, useState } from "react";
 import { AddCourierModal } from "../../components";
+import { EditCourierModal } from "./ui";
 
 export const CourierPage = () => {
-  const { columns } = useCourierColumns();
   const { data, isLoading } = useGetUsersQuery();
   const [openModal, setOpenModal] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [codeid, setcodeid] = useState();
+
+  const onUpdate = (codeid) => {
+    setOpenUpdate(true);
+    setcodeid(codeid);
+  };
+
+  const { columns } = useCourierColumns({ onUpdate });
 
   const filteredData = useMemo(() => {
     return data?.data.filter((item) => item.code_sp_user_position === 2);
@@ -33,6 +42,11 @@ export const CourierPage = () => {
         />
       </Flex>
       <AddCourierModal open={openModal} onCancel={() => setOpenModal(false)} />
+      <EditCourierModal
+        open={openUpdate}
+        onCancel={() => setOpenUpdate(false)}
+        codeid={codeid}
+      />
     </main>
   );
 };

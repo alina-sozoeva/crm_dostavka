@@ -1,0 +1,124 @@
+import { useForm } from "antd/es/form/Form";
+import {
+  useGetCountriesQuery,
+  useGetUsersQuery,
+  useUpdateUserMutation,
+} from "../../../../store";
+import { Flex, Form, Input, Modal, Typography } from "antd";
+import styles from "./EditCourierModal.module.scss";
+import clsx from "clsx";
+import { useEffect } from "react";
+
+export const EditCourierModal = ({ open, onCancel, codeid }) => {
+  const [form] = useForm();
+  const [updateUser] = useUpdateUserMutation();
+  const { data } = useGetUsersQuery();
+
+  const findUser = data?.data.find((item) => item.codeid === codeid);
+
+  console.log(data, "codedataid");
+
+  console.log(findUser, "findUser");
+
+  const onFinish = (values) => {
+    updateUser({
+      codeid: codeid,
+      nameid: values.nameid,
+      phone: values.phone,
+      login: values.login,
+      password: values.password,
+      code_sp_user_position: "2",
+      code_sp_filial: "2",
+    });
+    onCancel();
+    form.resetFields();
+  };
+
+  const onClose = () => {
+    onCancel();
+    form.resetFields();
+  };
+
+  useEffect(() => {
+    if (findUser) {
+      form.setFieldsValue({
+        codeid: codeid,
+        nameid: findUser.nameid,
+        phone: findUser.phone,
+        login: findUser.login,
+        password: findUser.password,
+        code_sp_user_position: "2",
+        code_sp_filial: "2",
+      });
+    }
+  }, [findUser, form, open]);
+
+  return (
+    <Modal centered open={open} onCancel={onClose} footer={false}>
+      <Typography.Title level={4}>Редактировать</Typography.Title>
+      <Form layout="vertical" form={form} onFinish={onFinish}>
+        <Form.Item
+          label="ФИО курьера"
+          name="nameid"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input placeholder="Введите ФИО" />
+        </Form.Item>
+        <Form.Item
+          label="Номер телефона"
+          name="phone"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input placeholder="Введите номер телефона" />
+        </Form.Item>
+        <Form.Item
+          label="Логин курьера"
+          name="login"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input placeholder="Введите логин курьера" />
+        </Form.Item>
+        <Form.Item
+          label="Пароль курьера"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input.Password placeholder="Введите пароль курьера" />
+        </Form.Item>
+
+        <Flex gap="small" justify="center">
+          <button type="submit" className={clsx(styles.confirm)}>
+            Подтвердить
+          </button>
+          <button
+            type="button"
+            className={clsx(styles.cancel)}
+            onClick={onClose}
+          >
+            Отмена
+          </button>
+        </Flex>
+      </Form>
+    </Modal>
+  );
+};
