@@ -2,6 +2,7 @@ import {
   CalendarOutlined,
   CheckSquareFilled,
   CloseOutlined,
+  EditOutlined,
   MessageOutlined,
 } from "@ant-design/icons";
 import { Flex } from "antd";
@@ -48,14 +49,14 @@ export const useClientsColumns = () => {
       key: "id",
       dataIndex: "id",
       title: "...",
-      width: 120,
+      width: 100,
       align: "center",
       render: () => (
         <Flex gap="middle" className={clsx(styles.actions)}>
+          <span>
+            <EditOutlined />
+          </span>
           <CloseOutlined className={clsx("text-red-500")} />
-          <MessageOutlined />
-          <CalendarOutlined />
-          <CheckSquareFilled className={clsx("text-blue-500")} />
         </Flex>
       ),
     },

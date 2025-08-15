@@ -274,7 +274,7 @@ export const OrderTable = () => {
           dataSource={orders?.data || []}
           rowKey="guid"
           className={clsx(styles.table)}
-          scroll={{ x: 1950, y: 420 }}
+          scroll={{ x: 2600, y: 420 }}
           pagination={{
             pageSize: 16,
             showSizeChanger: false,

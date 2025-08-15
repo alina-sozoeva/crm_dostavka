@@ -43,10 +43,10 @@ export const useCourierColumns = ({ onUpdate }) => {
       align: "center",
       render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
-          <CloseOutlined className={clsx("text-red-500")} />
           <span onClick={() => onUpdate(record.codeid)}>
             <EditOutlined />
           </span>
+          <CloseOutlined className={clsx("text-red-500")} />
         </Flex>
       ),
     },

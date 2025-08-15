@@ -33,6 +33,18 @@ export const useOrderColumns = ({
       render: (_, __, idx) => <span>{idx + 1}</span>,
     },
     {
+      key: "tracking_number",
+      dataIndex: "tracking_number",
+      title: "Трек номер",
+      width: 150,
+      align: "center",
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.tracking_number}
+        </span>
+      ),
+    },
+    {
       key: "fio_from_to",
       dataIndex: "fio_from_to",
       title: "Отправителя/получатель",
@@ -43,9 +55,32 @@ export const useOrderColumns = ({
       ),
     },
     {
+      key: "company_from",
+      dataIndex: "company_from",
+      title: "Компания отправителя",
+      width: 200,
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.company_from}
+        </span>
+      ),
+    },
+    {
+      key: "company_to",
+      dataIndex: "company_to",
+      title: "Компания получателя",
+      width: 200,
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.company_to}
+        </span>
+      ),
+    },
+    {
       key: "phone_from",
       dataIndex: "phone_from",
       title: "Tелефон отправителя",
+      width: 200,
       render: (_, record) => (
         <span className={color(Number(record.status))}>
           {record.phone_from}
@@ -56,6 +91,7 @@ export const useOrderColumns = ({
       key: "phone_to",
       dataIndex: "phone_to",
       title: "Tелефон получателя",
+      width: 200,
       render: (_, record) => (
         <span className={color(Number(record.status))}>{record.phone_to}</span>
       ),
@@ -74,10 +110,21 @@ export const useOrderColumns = ({
       ),
       onFilter: (value, record) => record.from.startsWith(value),
     },
+    // {
+    //   key: "postal_code_to",
+    //   dataIndex: "postal_code_to",
+    //   title: "Tелефон получателя",
+    //   render: (_, record) => (
+    //     <span className={color(Number(record.status))}>
+    //       {record.postal_code_to}
+    //     </span>
+    //   ),
+    // },
     {
       key: "delivery_to_time",
       dataIndex: "delivery_to_time",
       title: "Дата/время",
+      width: 200,
       render: (text, record) => (
         <span className={color(Number(record.status))}>
           {dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}
@@ -91,7 +138,7 @@ export const useOrderColumns = ({
       key: "code_sp_courier",
       dataIndex: "code_sp_courier",
       title: "Курьер",
-      width: 200,
+      width: 150,
       render: (_, record) => {
         if (record.status === 1) {
           return (
@@ -136,7 +183,7 @@ export const useOrderColumns = ({
       key: "actions",
       dataIndex: "actions",
       title: "...",
-      width: 150,
+      width: 140,
       align: "center",
       render: (_, record) => {
         if (record.status === 1 || record.status === 2 || record.status === 6) {

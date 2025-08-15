@@ -16,6 +16,12 @@ export const useNotificationsColumns = () => {
       render: (_, __, idx) => <span>{idx + 1}</span>,
     },
     {
+      key: "tracking_number",
+      dataIndex: "tracking_number",
+      title: "Трек номер",
+      width: 150,
+    },
+    {
       key: "fio_from_to",
       dataIndex: "fio_from_to",
       title: "Отправителя/получатель",

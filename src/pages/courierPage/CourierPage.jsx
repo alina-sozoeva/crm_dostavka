@@ -39,6 +39,11 @@ export const CourierPage = () => {
           columns={columns}
           dataSource={filteredData}
           rowKey="guid"
+          scroll={{ x: 1024 }}
+          pagination={{
+            pageSize: 16,
+            showSizeChanger: false,
+          }}
         />
       </Flex>
       <AddCourierModal open={openModal} onCancel={() => setOpenModal(false)} />

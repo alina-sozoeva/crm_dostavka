@@ -1,9 +1,5 @@
 import { useForm } from "antd/es/form/Form";
-import {
-  useGetCountriesQuery,
-  useGetUsersQuery,
-  useUpdateUserMutation,
-} from "../../../../store";
+import { useGetUsersQuery, useUpdateUserMutation } from "../../../../store";
 import { Flex, Form, Input, Modal, Typography } from "antd";
 import styles from "./EditCourierModal.module.scss";
 import clsx from "clsx";
@@ -47,8 +43,8 @@ export const EditCourierModal = ({ open, onCancel, codeid }) => {
         phone: findUser.phone,
         login: findUser.login,
         password: findUser.password,
-        code_sp_user_position: "2",
-        code_sp_filial: "2",
+        code_sp_user_position: findUser.code_sp_user_position,
+        code_sp_filial: findUser.code_sp_filial,
       });
     }
   }, [findUser, form, open]);

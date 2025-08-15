@@ -72,6 +72,10 @@ export const NotificationsPage = () => {
           dataSource={filteredData}
           rowKey="guid"
           scroll={{ x: 1950 }}
+          pagination={{
+            pageSize: 16,
+            showSizeChanger: false,
+          }}
         />
       </div>
     </>
