@@ -8,14 +8,25 @@ import { useClientsColumns } from "./useClientsColumns";
 import { useGetClientsQuery } from "../../store";
 import { AddClientModal } from "./ui";
 import { WarningModal } from "../../components";
+import debounce from "lodash.debounce";
 
 export const ClientsPage = () => {
-  const { data, isLoading } = useGetClientsQuery();
   const [openModal, setOpenModal] = useState(false);
   const [openWarnModal, setOpenWarnModal] = useState(false);
+  const [search, setSearch] = useState();
+  const { data, isLoading } = useGetClientsQuery({ search });
 
   const onOpenWarnModal = (guid) => {
     setOpenWarnModal(true);
+  };
+
+  const debouncedSetSearch = useMemo(
+    () => debounce((value) => setSearch(value), 400),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    debouncedSetSearch(e.target.value);
   };
 
   const { columns } = useClientsColumns({ onOpenWarnModal });
@@ -28,7 +39,11 @@ export const ClientsPage = () => {
     <main>
       <Flex gap="small" vertical className={clsx(styles.wrap)}>
         <Flex gap="small">
-          <Input placeholder="Поиск" style={{ width: "300px" }} />
+          <Input
+            placeholder="Поиск"
+            style={{ width: "300px" }}
+            onChange={handleSearchChange}
+          />
           <Button type="primary" onClick={() => setOpenModal(true)}>
             Добавить
           </Button>

@@ -6,9 +6,10 @@ export const clientsApi = createApi({
   tagTypes: ["ClientsList"],
   endpoints: (builder) => ({
     getClients: builder.query({
-      query: () => ({
+      query: ({ search }) => ({
         url: "/clients",
         method: "GET",
+        params: { search },
       }),
       providesTags: ["ClientsList"],
     }),

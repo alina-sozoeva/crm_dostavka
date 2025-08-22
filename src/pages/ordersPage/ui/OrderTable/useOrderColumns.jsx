@@ -1,7 +1,7 @@
 import { Select, Tooltip } from "antd";
 import { useMemo } from "react";
 import { useGetUsersQuery } from "../../../../store";
-import { CloseOutlined, WarningOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import styles from "./OrderTable.module.scss";
 import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
@@ -17,7 +17,7 @@ export const useOrderColumns = ({
   onOpenWarnModal,
   color,
 }) => {
-  const { data } = useGetUsersQuery();
+  const { data } = useGetUsersQuery({});
 
   const couriers = useMemo(() => {
     return data?.data?.filter((item) => item.code_sp_user_position === 2) || [];

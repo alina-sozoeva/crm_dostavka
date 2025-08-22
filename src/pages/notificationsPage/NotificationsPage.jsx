@@ -8,7 +8,7 @@ import debounce from "lodash.debounce";
 import { useWindowSize } from "../../hooks";
 
 export const NotificationsPage = () => {
-  const { data: users } = useGetUsersQuery();
+  const { data: users } = useGetUsersQuery({});
   const [search, setSearch] = useState();
   const { data, isLoading, isFetching } = useGetOrdersQuery({
     ...(search && { search }),

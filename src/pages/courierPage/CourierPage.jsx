@@ -6,14 +6,24 @@ import { useGetUsersQuery } from "../../store";
 import { useMemo, useState } from "react";
 import { AddCourierModal, WarningModal } from "../../components";
 import { EditCourierModal } from "./ui";
+import debounce from "lodash.debounce";
 
 export const CourierPage = () => {
-  const { data, isLoading } = useGetUsersQuery();
   const [openModal, setOpenModal] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [codeid, setcodeid] = useState();
   const [openWarnModal, setOpenWarnModal] = useState(false);
   const [search, setSearch] = useState();
+  const { data, isLoading } = useGetUsersQuery({ search });
+
+  const debouncedSetSearch = useMemo(
+    () => debounce((value) => setSearch(value), 400),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    debouncedSetSearch(e.target.value);
+  };
 
   const onUpdate = (codeid) => {
     setOpenUpdate(true);
@@ -34,7 +44,11 @@ export const CourierPage = () => {
     <main>
       <Flex gap="small" vertical className={clsx(styles.wrap)}>
         <Flex gap="small">
-          <Input placeholder="Поиск" style={{ width: "300px" }} />
+          <Input
+            placeholder="Поиск"
+            style={{ width: "300px" }}
+            onChange={handleSearchChange}
+          />
           <Button type="primary" onClick={() => setOpenModal(true)}>
             Добавить
           </Button>

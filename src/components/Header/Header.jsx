@@ -12,7 +12,7 @@ import clsx from "clsx";
 
 export const Header = () => {
   const dispatch = useDispatch();
-  const { data } = useGetUsersQuery();
+  const { data } = useGetUsersQuery({});
 
   const logOut = () => {
     dispatch(removeToken());

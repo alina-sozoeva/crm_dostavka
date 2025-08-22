@@ -8,7 +8,7 @@ import { useEffect } from "react";
 export const EditCourierModal = ({ open, onCancel, codeid }) => {
   const [form] = useForm();
   const [updateUser] = useUpdateUserMutation();
-  const { data } = useGetUsersQuery();
+  const { data } = useGetUsersQuery({});
 
   const findUser = data?.data.find((item) => item.codeid === codeid);
 

@@ -63,7 +63,7 @@ export const OrderTable = () => {
   const navigate = useNavigate();
   const { height: windowHeight } = useWindowSize();
 
-  const { data: users } = useGetUsersQuery();
+  const { data: users } = useGetUsersQuery({});
   const { data: allOrders } = useGetOrdersQuery({});
 
   const [takeOrder] = useTakeOrderMutation();

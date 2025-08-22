@@ -1,7 +1,6 @@
 import { DatePicker, Flex, Input, Table } from "antd";
 import { useEffect, useMemo, useState } from "react";
-import { useGetOrdersQuery, useGetUsersQuery } from "../../store";
-// import { useNotificationsColumns } from "./useNotificationsColumns";
+import { useGetOrdersQuery } from "../../store";
 import styles from "./CancelOrdersPage.module.scss";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
