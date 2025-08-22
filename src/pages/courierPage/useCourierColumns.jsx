@@ -45,7 +45,10 @@ export const useCourierColumns = ({ onUpdate, onOpenWarnModal }) => {
       render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
           <Tooltip title="Редактировать заказ">
-            <EditOutlined className={clsx("text-blue-600 cursor-pointer")} />
+            <EditOutlined
+              onClick={() => onUpdate(record.codeid)}
+              className={clsx("text-blue-600 cursor-pointer")}
+            />
           </Tooltip>
 
           <Tooltip title="Удалить заказ">

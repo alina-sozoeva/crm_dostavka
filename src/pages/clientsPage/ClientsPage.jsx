@@ -45,7 +45,7 @@ export const ClientsPage = () => {
       </Flex>
       <AddClientModal open={openModal} onCancel={() => setOpenModal(false)} />
       <WarningModal
-        title={"удалить курьера"}
+        title={"удалить клиента"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
       />
