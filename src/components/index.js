@@ -5,3 +5,4 @@ export * from "./AddCourierModal";
 export * from "./AddOrderModal";
 export * from "./CancelModal";
 export * from "./WarningModal";
+export * from "./AssignCourier";

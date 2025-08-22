@@ -1,25 +1,20 @@
-import { Flex, Form, Input, Modal } from "antd";
+import { Flex, Form, Input, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 
-import styles from "./CancelModal.module.scss";
+import styles from "./AssignCourier.module.scss";
 import clsx from "clsx";
 import { WarningOutlined } from "@ant-design/icons";
 import { useAddCommentMutation } from "../../store";
 
-export const CancelModal = ({ open, onCancel, onConfirm, orderGuid }) => {
+export const AssignCourier = ({ open, onCancel, onUpdateStatus, guid }) => {
   const [form] = useForm();
-  const [addComment] = useAddCommentMutation();
+
   const onClose = () => {
     onCancel();
     form.resetFields();
   };
 
-  const onFinish = (value) => {
-    onConfirm();
-    addComment({
-      cancel_comment: value.comment,
-      guid_order: orderGuid,
-    });
+  const onFinish = () => {
     onClose();
   };
 
@@ -33,7 +28,7 @@ export const CancelModal = ({ open, onCancel, onConfirm, orderGuid }) => {
       </Flex>
 
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        <Flex vertical>
+        <Flex vertical gap="middle">
           <Form.Item
             name="comment"
             rules={[
@@ -43,7 +38,24 @@ export const CancelModal = ({ open, onCancel, onConfirm, orderGuid }) => {
               },
             ]}
           >
-            <Input.TextArea placeholder="Напишите причину отмены заказа" />
+            <Select
+              allowClear
+              size="middle"
+              onChange={(value) => onUpdateStatus(value, guid)}
+              showSearch
+              optionFilterProp="label"
+              placeholder="Назначить курьера"
+              className={clsx(styles.assign)}
+              style={{ width: "100%" }}
+              dropdownMatchSelectWidth={false}
+              getPopupContainer={(trigger) => trigger.parentNode}
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              //   options={filteredUsers}
+            />{" "}
           </Form.Item>
 
           <Flex gap="small" justify="center">

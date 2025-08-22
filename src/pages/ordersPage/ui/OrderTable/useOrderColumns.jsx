@@ -15,7 +15,6 @@ export const useOrderColumns = ({
   onOpenCancelModal,
   onUpdateStatus,
   onOpenWarnModal,
-  bg_color,
   color,
 }) => {
   const { data } = useGetUsersQuery();
@@ -39,11 +38,7 @@ export const useOrderColumns = ({
       title: "Трек номер",
       width: 140,
       ellipsis: true,
-      render: (_, record) => (
-
-          <span>{record.tracking_number}</span>
-
-      ),
+      render: (_, record) => <span>{record.tracking_number}</span>,
     },
     {
       key: "fio_from_to",
@@ -52,11 +47,9 @@ export const useOrderColumns = ({
       width: 180,
       ellipsis: true,
       render: (_, record) => (
-
-          <span>
-            {record.fio_from}/{record.fio_to}
-          </span>
-
+        <span>
+          {record.fio_from}/{record.fio_to}
+        </span>
       ),
     },
     {
@@ -65,11 +58,7 @@ export const useOrderColumns = ({
       title: "Tел отпр",
       width: 140,
       ellipsis: true,
-      render: (_, record) => (
-
-          <span>{record.phone_from}</span>
-
-      ),
+      render: (_, record) => <span>{record.phone_from}</span>,
     },
     {
       key: "phone_to",
@@ -77,10 +66,7 @@ export const useOrderColumns = ({
       title: "Tел получ",
       width: 140,
       ellipsis: true,
-      render: (_, record) => (
-          <span>{record.phone_to}</span>
-
-      ),
+      render: (_, record) => <span>{record.phone_to}</span>,
     },
     {
       key: "code_sp_courier",
@@ -124,15 +110,11 @@ export const useOrderColumns = ({
       key: "from_to",
       dataIndex: "from_to",
       title: "Откуда/Куда",
-      width: 700,
+      width: 600,
       ellipsis: true,
       render: (_, record) => {
         const text = `${record.nameid_oblasty_from} обл., ${record.nameid_city_from}, ${record.address_from} / ${record.nameid_oblasty_to} обл., ${record.nameid_city_to}, ${record.address_to}`;
-        return (
-
-            <span>{text}</span>
-
-        );
+        return <span>{text}</span>;
       },
       onFilter: (value, record) => record.from.startsWith(value),
     },
@@ -181,7 +163,7 @@ export const useOrderColumns = ({
           return (
             <Tooltip title="Отменить заказ">
               <span
-                className={styles.btn}
+                className={clsx(styles.btn, "text-orange-500")}
                 role="button"
                 aria-label="Отменить заказ"
                 onClick={() => onOpenCancelModal(record?.guid)}
@@ -195,7 +177,7 @@ export const useOrderColumns = ({
           return (
             <Tooltip title="Удалить заказ">
               <span
-                className={styles.btn}
+                className={clsx(styles.btn)}
                 role="button"
                 aria-label="Удалить заказ"
                 onClick={() => onOpenWarnModal(record?.guid)}

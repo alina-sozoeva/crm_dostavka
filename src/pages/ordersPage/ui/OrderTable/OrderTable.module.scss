@@ -9,26 +9,6 @@
   &:hover {
     color: #1677ff;
   }
-
-  :global {
-    .ant-select-selector {
-      background-color: transparent !important;
-      border: 1px solid white !important;
-      box-shadow: none !important;
-    }
-
-    .ant-select-focused .ant-select-selector {
-      background-color: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-
-    .ant-select-open .ant-select-selector {
-      background-color: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-  }
 }
 
 .tabs {

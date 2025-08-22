@@ -23,12 +23,10 @@ import { useWindowSize } from "../../../../hooks";
 
 const bg_color = (status) => {
   switch (status) {
-    case 1:
-      return styles.sinii;
     case 2:
       return styles.orange;
     case 3:
-      return styles.blue;
+      return styles.sinii;
     case 4:
       return styles.blue;
     case 5:
@@ -44,12 +42,10 @@ const bg_color = (status) => {
 
 const color = (status) => {
   switch (status) {
-    case 1:
-      return styles.sinii_text;
     case 2:
       return styles.orange_text;
     case 3:
-      return styles.blue_text;
+      return styles.sinii_text;
     case 4:
       return styles.blue_text;
     case 5:
@@ -214,7 +210,6 @@ export const OrderTable = () => {
     onUpdateStatus,
     onOpenCancelModal,
     onOpenWarnModal,
-    bg_color,
     color,
   });
 
