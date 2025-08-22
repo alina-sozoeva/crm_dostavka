@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import debounce from "lodash.debounce";
 import styles from "./OrderTable.module.scss";
 import clsx from "clsx";
+import { useWindowSize } from "../../../../hooks";
 
 const bg_color = (status) => {
   switch (status) {
@@ -64,6 +65,7 @@ const color = (status) => {
 
 export const OrderTable = () => {
   const navigate = useNavigate();
+  const { height: windowHeight } = useWindowSize();
 
   const { data: users } = useGetUsersQuery();
   const { data: allOrders } = useGetOrdersQuery({});
@@ -80,6 +82,16 @@ export const OrderTable = () => {
   const [openWarnModal, setOpenWarnModal] = useState(false);
   const [orderGuid, setOrderGuid] = useState("");
 
+  const tableHeight = useMemo(() => {
+    const filterHeight = 150;
+    const pagePadding = 100;
+    const minHeight = 400;
+    const maxHeight = 800;
+
+    const availableHeight = windowHeight - filterHeight - pagePadding;
+    return Math.max(minHeight, Math.min(availableHeight, maxHeight));
+  }, [windowHeight]);
+
   const {
     data: orders,
     isLoading,
@@ -87,7 +99,7 @@ export const OrderTable = () => {
   } = useGetOrdersQuery({
     ...(search && { search }),
     ...(courierId && { code_sp_courier: courierId }),
-    ...(isStatus !== "7" && { status: isStatus }),
+    ...(isStatus !== 0 && { status: isStatus }),
   });
 
   const filteredUsers = useMemo(() => {
@@ -239,7 +251,7 @@ export const OrderTable = () => {
           </Flex>
         </Flex>
         <Flex justify="space-between">
-          <Flex gap="small" className={clsx("mb-4")}>
+          <Flex gap="small" className={clsx("mb-1")}>
             <Input
               placeholder="Поиск по ФИО отправителя/получателя, номер телефона..."
               className={clsx(styles.search)}
@@ -260,8 +272,6 @@ export const OrderTable = () => {
                 options={filteredUsers}
                 onChange={(value) => setCourierId(value)}
               />
-
-              {/* <DatePicker placeholder="Выберите дату" /> */}
             </Flex>
           </Flex>
         </Flex>
@@ -274,11 +284,13 @@ export const OrderTable = () => {
           dataSource={orders?.data || []}
           rowKey="guid"
           className={clsx(styles.table)}
-          scroll={{ x: 2600, y: 420 }}
-          pagination={{
-            pageSize: 16,
-            showSizeChanger: false,
+          pagination={false}
+          scroll={{
+            y: tableHeight,
           }}
+          onRow={(record) => ({
+            className: clsx(styles.table_row, bg_color(Number(record.status))),
+          })}
         />
       </div>
       <AddOrderModal open={openModal} onCancel={() => setOpenModal(false)} />

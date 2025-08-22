@@ -1,16 +1,11 @@
-import {
-  CalendarOutlined,
-  CheckSquareFilled,
-  CloseOutlined,
-  EditOutlined,
-  MessageOutlined,
-} from "@ant-design/icons";
-import { Flex } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import { Flex, Tooltip } from "antd";
 import styles from "./ClientsPage.module.scss";
 import clsx from "clsx";
 import dayjs from "dayjs";
+import { FaRegTrashAlt } from "react-icons/fa";
 
-export const useClientsColumns = () => {
+export const useClientsColumns = ({ onOpenWarnModal }) => {
   const columns = [
     {
       key: "guid",
@@ -53,10 +48,16 @@ export const useClientsColumns = () => {
       align: "center",
       render: () => (
         <Flex gap="middle" className={clsx(styles.actions)}>
-          <span>
-            <EditOutlined />
-          </span>
-          <CloseOutlined className={clsx("text-red-500")} />
+          <Tooltip title="Редактировать заказ">
+            <EditOutlined className={clsx("text-blue-600 cursor-pointer")} />
+          </Tooltip>
+
+          <Tooltip title="Удалить заказ">
+            <FaRegTrashAlt
+              onClick={() => onOpenWarnModal()}
+              className={clsx("text-red-600 cursor-pointer")}
+            />
+          </Tooltip>
         </Flex>
       ),
     },

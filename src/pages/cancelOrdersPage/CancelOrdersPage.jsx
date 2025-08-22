@@ -7,6 +7,7 @@ import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { useCancelOrdersColumns } from "./useCancelOrdersColumns";
 import { WarningModal } from "../../components";
+import { useWindowSize } from "../../hooks";
 
 export const CancelOrdersPage = () => {
   const [search, setSearch] = useState();
@@ -16,6 +17,7 @@ export const CancelOrdersPage = () => {
   });
   const [openModal, setOpenModal] = useState(false);
   const [orderGuid, setOrderGuid] = useState("");
+  const { height: windowHeight } = useWindowSize();
 
   const debouncedSetSearch = useMemo(
     () => debounce((value) => setSearch(value), 400),
@@ -38,6 +40,16 @@ export const CancelOrdersPage = () => {
   }, [debouncedSetSearch]);
 
   const { columns } = useCancelOrdersColumns({ onOpenWarnModal });
+
+  const tableHeight = useMemo(() => {
+    const filterHeight = 150;
+    const pagePadding = 100;
+    const minHeight = 400;
+    const maxHeight = 800;
+
+    const availableHeight = windowHeight - filterHeight - pagePadding;
+    return Math.max(minHeight, Math.min(availableHeight, maxHeight));
+  }, [windowHeight]);
 
   return (
     <>
@@ -65,11 +77,8 @@ export const CancelOrdersPage = () => {
           columns={columns}
           dataSource={data?.data}
           rowKey="guid"
-          scroll={{ x: 1800 }}
-          pagination={{
-            pageSize: 16,
-            showSizeChanger: false,
-          }}
+          scroll={{ x: 1000, y: tableHeight }}
+          pagination={false}
         />
       </div>
       <WarningModal

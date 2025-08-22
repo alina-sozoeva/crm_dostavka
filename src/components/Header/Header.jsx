@@ -43,9 +43,6 @@ export const Header = () => {
   return (
     <header className={clsx(styles.header, "pr-6")}>
       <Flex align="center" justify="center" gap="large">
-        <div>
-          <QuestionCircleFilled /> <span>Вопросы</span>
-        </div>
         <Dropdown menu={{ items }} trigger={["click"]}>
           <div onClick={(e) => e.preventDefault()}>
             <Space>
@@ -57,9 +54,6 @@ export const Header = () => {
             </Space>
           </div>
         </Dropdown>
-        <a href="https://www.ponyexpress.kg/" target="_blank">
-          <img src={logo_pony} alt={logo_pony} style={{ width: "100px" }} />
-        </a>
       </Flex>
     </header>
   );

@@ -46,16 +46,9 @@ export const CancelModal = ({ open, onCancel, onConfirm, orderGuid }) => {
             <Input.TextArea placeholder="Напишите причину отмены заказа" />
           </Form.Item>
 
-          <Flex gap="small" justify="end">
+          <Flex gap="small" justify="center">
             <button type="submit" className={clsx(styles.confirm)}>
               Подтвердить
-            </button>
-            <button
-              type="button"
-              className={clsx(styles.cancel)}
-              onClick={onClose}
-            >
-              Отмена
             </button>
           </Flex>
         </Flex>

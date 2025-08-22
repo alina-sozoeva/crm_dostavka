@@ -8,7 +8,9 @@ import styles from "./HomePage.module.scss";
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const { data } = useGetOrdersQuery();
+  const { data } = useGetOrdersQuery({});
+
+  console.log(data, "data");
 
   return (
     <main className={clsx("flex flex-col gap-10 w-full h-full")}>
@@ -31,7 +33,7 @@ export const HomePage = () => {
           </Flex>
 
           <div className="h-[70vh] p-2 flex flex-col gap-3 overflow-y-auto ">
-            {data?.data?.slice(0, 4).map((item) => (
+            {data?.data?.slice(0, 10).map((item) => (
               <OrderCard key={item?.guid} item={item} />
             ))}
           </div>

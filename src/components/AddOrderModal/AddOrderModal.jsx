@@ -356,13 +356,6 @@ export const AddOrderModal = ({ open, onCancel }) => {
           <button type="submit" className={clsx(styles.confirm)}>
             Подтвердить
           </button>
-          <button
-            type="button"
-            className={clsx(styles.cancel)}
-            onClick={onClose}
-          >
-            Отмена
-          </button>
         </Flex>
       </Form>
     </Modal>

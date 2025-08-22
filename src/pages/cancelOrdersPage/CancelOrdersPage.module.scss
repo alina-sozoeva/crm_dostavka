@@ -1,11 +1,106 @@
 .remove {
-  padding: 5px 10px;
-  border-radius: 10px;
   cursor: pointer;
-  background-color: rgba(242, 139, 130, 0.5);
   color: #a02020;
+  display: flex;
+  justify-content: center;
 }
 
 .search {
   width: 400px;
+}
+
+@media (max-width: 1400px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 600px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 500px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 400px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 350px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 300px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .table_wrapper {
+    :global {
+      .ant-table-wrapper {
+        .ant-table {
+          .ant-table-container {
+            .ant-table-body {
+              max-height: 250px;
+            }
+          }
+        }
+      }
+    }
+  }
 }

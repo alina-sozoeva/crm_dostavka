@@ -1,9 +1,10 @@
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { Flex } from "antd";
+import { Flex, Tooltip } from "antd";
 import styles from "./CourierPage.module.scss";
 import clsx from "clsx";
+import { FaRegTrashAlt } from "react-icons/fa";
 
-export const useCourierColumns = ({ onUpdate }) => {
+export const useCourierColumns = ({ onUpdate, onOpenWarnModal }) => {
   const columns = [
     {
       key: "guid",
@@ -43,10 +44,16 @@ export const useCourierColumns = ({ onUpdate }) => {
       align: "center",
       render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
-          <span onClick={() => onUpdate(record.codeid)}>
-            <EditOutlined />
-          </span>
-          <CloseOutlined className={clsx("text-red-500")} />
+          <Tooltip title="Редактировать заказ">
+            <EditOutlined className={clsx("text-blue-600 cursor-pointer")} />
+          </Tooltip>
+
+          <Tooltip title="Удалить заказ">
+            <FaRegTrashAlt
+              onClick={() => onOpenWarnModal()}
+              className={clsx("text-red-600 cursor-pointer")}
+            />
+          </Tooltip>
         </Flex>
       ),
     },

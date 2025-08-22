@@ -5,6 +5,7 @@ import { useNotificationsColumns } from "./useNotificationsColumns";
 import styles from "./NotificationsPage.module.scss";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
+import { useWindowSize } from "../../hooks";
 
 export const NotificationsPage = () => {
   const { data: users } = useGetUsersQuery();
@@ -12,6 +13,18 @@ export const NotificationsPage = () => {
   const { data, isLoading, isFetching } = useGetOrdersQuery({
     ...(search && { search }),
   });
+
+  const { height: windowHeight } = useWindowSize();
+
+  const tableHeight = useMemo(() => {
+    const filterHeight = 110;
+    const pagePadding = 100;
+    const minHeight = 400;
+    const maxHeight = 800;
+
+    const availableHeight = windowHeight - filterHeight - pagePadding;
+    return Math.max(minHeight, Math.min(availableHeight, maxHeight));
+  }, [windowHeight]);
 
   const debouncedSetSearch = useMemo(
     () => debounce((value) => setSearch(value), 400),
@@ -71,11 +84,8 @@ export const NotificationsPage = () => {
           columns={columns}
           dataSource={filteredData}
           rowKey="guid"
-          scroll={{ x: 1950 }}
-          pagination={{
-            pageSize: 16,
-            showSizeChanger: false,
-          }}
+          scroll={{ x: 1400, y: tableHeight }}
+          pagination={false}
         />
       </div>
     </>

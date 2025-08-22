@@ -10,8 +10,8 @@ export const useNotificationsColumns = () => {
     {
       key: "guid",
       dataIndex: "guid",
-      title: "№ заказа",
-      width: 100,
+      title: "№",
+      width: 50,
       align: "center",
       render: (_, __, idx) => <span>{idx + 1}</span>,
     },
@@ -19,28 +19,31 @@ export const useNotificationsColumns = () => {
       key: "tracking_number",
       dataIndex: "tracking_number",
       title: "Трек номер",
-      width: 150,
+      width: 120,
     },
     {
       key: "fio_from_to",
       dataIndex: "fio_from_to",
-      title: "Отправителя/получатель",
+      title: "Отпр/получ",
       render: (_, item) => (
         <span>
           {item.fio_from}/{item.fio_to}
         </span>
       ),
+      width: 150,
     },
     {
       key: "phone_from",
       dataIndex: "phone_from",
-      title: "Tелефон отправителя",
+      title: "Tел отпр",
+      width: 120,
     },
-    { key: "phone_to", dataIndex: "phone_to", title: "Tелефон получателя" },
+    { key: "phone_to", dataIndex: "phone_to", title: "Tел получ", width: 150 },
     {
       key: "from_to",
       dataIndex: "from_to",
       title: "Откуда/Куда",
+      width: 600,
       render: (_, record) => (
         <span>
           {record.nameid_oblasty_from} обл., {record.nameid_city_from},{" "}
@@ -66,6 +69,7 @@ export const useNotificationsColumns = () => {
       key: "delivery_to_time",
       dataIndex: "delivery_to_time",
       title: "Дата/время",
+      width: 120,
       render: (text) => (
         <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm")}</span>
       ),
@@ -76,7 +80,13 @@ export const useNotificationsColumns = () => {
       key: "summa",
       dataIndex: "summa",
       title: "Сумма",
+      width: 80,
       sorter: (a, b) => a.sum - b.sum,
+      render: (text) => (
+        <span>
+          <b>{Number(text).toLocaleString()}</b>
+        </span>
+      ),
     },
   ];
 

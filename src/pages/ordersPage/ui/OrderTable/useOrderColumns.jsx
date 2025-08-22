@@ -1,11 +1,12 @@
-import { Select } from "antd";
+import { Select, Tooltip } from "antd";
 import { useMemo } from "react";
 import { useGetUsersQuery } from "../../../../store";
+import { CloseOutlined, WarningOutlined } from "@ant-design/icons";
 import styles from "./OrderTable.module.scss";
 import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
 import clsx from "clsx";
-import { CloseOutlined, WarningOutlined } from "@ant-design/icons";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 dayjs.extend(utc);
 
@@ -36,119 +37,70 @@ export const useOrderColumns = ({
       key: "tracking_number",
       dataIndex: "tracking_number",
       title: "Трек номер",
-      width: 150,
-      align: "center",
+      width: 140,
+      ellipsis: true,
       render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.tracking_number}
-        </span>
+
+          <span>{record.tracking_number}</span>
+
       ),
     },
     {
       key: "fio_from_to",
       dataIndex: "fio_from_to",
-      title: "Отправителя/получатель",
+      title: "Отпр/получ",
+      width: 180,
+      ellipsis: true,
       render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.fio_from}/{record.fio_to}
-        </span>
-      ),
-    },
-    {
-      key: "company_from",
-      dataIndex: "company_from",
-      title: "Компания отправителя",
-      width: 200,
-      render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.company_from}
-        </span>
-      ),
-    },
-    {
-      key: "company_to",
-      dataIndex: "company_to",
-      title: "Компания получателя",
-      width: 200,
-      render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.company_to}
-        </span>
+
+          <span>
+            {record.fio_from}/{record.fio_to}
+          </span>
+
       ),
     },
     {
       key: "phone_from",
       dataIndex: "phone_from",
-      title: "Tелефон отправителя",
-      width: 200,
+      title: "Tел отпр",
+      width: 140,
+      ellipsis: true,
       render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.phone_from}
-        </span>
+
+          <span>{record.phone_from}</span>
+
       ),
     },
     {
       key: "phone_to",
       dataIndex: "phone_to",
-      title: "Tелефон получателя",
-      width: 200,
+      title: "Tел получ",
+      width: 140,
+      ellipsis: true,
       render: (_, record) => (
-        <span className={color(Number(record.status))}>{record.phone_to}</span>
-      ),
-    },
-    {
-      key: "from_to",
-      dataIndex: "from_to",
-      title: "Откуда/Куда",
-      width: 600,
-      render: (_, record) => (
-        <span className={color(Number(record.status))}>
-          {record.nameid_oblasty_from} обл., {record.nameid_city_from},{" "}
-          {record.address_from} / {record.nameid_oblasty_to} обл.,{" "}
-          {record.nameid_city_to}, {record.address_to}
-        </span>
-      ),
-      onFilter: (value, record) => record.from.startsWith(value),
-    },
-    // {
-    //   key: "postal_code_to",
-    //   dataIndex: "postal_code_to",
-    //   title: "Tелефон получателя",
-    //   render: (_, record) => (
-    //     <span className={color(Number(record.status))}>
-    //       {record.postal_code_to}
-    //     </span>
-    //   ),
-    // },
-    {
-      key: "delivery_to_time",
-      dataIndex: "delivery_to_time",
-      title: "Дата/время",
-      width: 200,
-      render: (text, record) => (
-        <span className={color(Number(record.status))}>
-          {dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}
-        </span>
-      ),
-      sorter: (a, b) =>
-        new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
-    },
+          <span>{record.phone_to}</span>
 
+      ),
+    },
     {
       key: "code_sp_courier",
       dataIndex: "code_sp_courier",
       title: "Курьер",
-      width: 150,
+      width: 200,
       render: (_, record) => {
         if (record.status === 1) {
           return (
             <Select
               allowClear
+              size="middle"
               onChange={(value) => onUpdateStatus(value, record?.guid)}
               showSearch
               optionFilterProp="label"
               placeholder="Назначить курьера"
               className={clsx(styles.assign)}
+              style={{ width: "100%" }}
+              dropdownMatchSelectWidth={false}
+              getPopupContainer={(trigger) => trigger.parentNode}
               filterSort={(optionA, optionB) =>
                 (optionA?.label ?? "")
                   .toLowerCase()
@@ -168,42 +120,89 @@ export const useOrderColumns = ({
         );
       },
     },
+    {
+      key: "from_to",
+      dataIndex: "from_to",
+      title: "Откуда/Куда",
+      width: 700,
+      ellipsis: true,
+      render: (_, record) => {
+        const text = `${record.nameid_oblasty_from} обл., ${record.nameid_city_from}, ${record.address_from} / ${record.nameid_oblasty_to} обл., ${record.nameid_city_to}, ${record.address_to}`;
+        return (
+
+            <span>{text}</span>
+
+        );
+      },
+      onFilter: (value, record) => record.from.startsWith(value),
+    },
+    // {
+    //   key: "postal_code_to",
+    //   dataIndex: "postal_code_to",
+    //   title: "Tелефон получателя",
+    //   render: (_, record) => (
+    //     <span >
+    //       {record.postal_code_to}
+    //     </span>
+    //   ),
+    // },
+    {
+      key: "delivery_to_time",
+      dataIndex: "delivery_to_time",
+      title: "Дата/время",
+      width: 190,
+      render: (text, record) => (
+        <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}</span>
+      ),
+      sorter: (a, b) =>
+        new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
+    },
 
     {
       key: "summa",
       dataIndex: "summa",
       title: "Сумма",
-      width: 120,
+      width: 110,
       sorter: (a, b) => a.sum - b.sum,
       render: (_, record) => (
-        <span className={color(Number(record.status))}>{record.summa}</span>
+        <span>
+          <b>{Number(record.summa).toLocaleString()}</b>
+        </span>
       ),
     },
     {
       key: "actions",
       dataIndex: "actions",
       title: "...",
-      width: 140,
+      width: 50,
       align: "center",
       render: (_, record) => {
         if (record.status === 1 || record.status === 2 || record.status === 6) {
           return (
-            <span
-              className={styles.tab_label + " " + bg_color(Number(7))}
-              onClick={() => onOpenCancelModal(record?.guid)}
-            >
-              <WarningOutlined /> Отменить
-            </span>
+            <Tooltip title="Отменить заказ">
+              <span
+                className={styles.btn}
+                role="button"
+                aria-label="Отменить заказ"
+                onClick={() => onOpenCancelModal(record?.guid)}
+              >
+                <CloseOutlined />
+              </span>
+            </Tooltip>
           );
         }
         if (record.status === 7) {
           return (
-            <span
-              className={styles.tab_label + " " + bg_color(Number(7))}
-              onClick={() => onOpenWarnModal(record?.guid)}
-            >
-              <CloseOutlined /> Удалить
-            </span>
+            <Tooltip title="Удалить заказ">
+              <span
+                className={styles.btn}
+                role="button"
+                aria-label="Удалить заказ"
+                onClick={() => onOpenWarnModal(record?.guid)}
+              >
+                <FaRegTrashAlt />
+              </span>
+            </Tooltip>
           );
         }
       },

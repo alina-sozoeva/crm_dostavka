@@ -66,7 +66,7 @@ export const MainLayout = () => {
             {
               key: "0",
               icon: <StockOutlined />,
-              label: <Link to={pathName.home}>Logistic Solutions</Link>,
+              label: <Link to={pathName.home}>Pony Express</Link>,
             },
             {
               key: "1",
@@ -85,6 +85,11 @@ export const MainLayout = () => {
             },
             {
               key: "4",
+              icon: <TeamOutlined />,
+              label: <Link to={pathName.clients}>{pageName.clients}</Link>,
+            },
+            {
+              key: "5",
               icon: <BellFilled />,
               label: (
                 <Link to={pathName.notifications}>
@@ -96,21 +101,16 @@ export const MainLayout = () => {
               ),
             },
             {
-              key: "5",
+              key: "6",
               icon: <EnvironmentFilled />,
               label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
             },
             {
-              key: "6",
+              key: "7",
               icon: <InfoCircleOutlined />,
               label: (
                 <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>
               ),
-            },
-            {
-              key: "7",
-              icon: <TeamOutlined />,
-              label: <Link to={pathName.clients}>{pageName.clients}</Link>,
             },
           ]}
         />
