@@ -1,30 +1,26 @@
 import { useForm } from "antd/es/form/Form";
-import { useGetUsersQuery, useUpdateUserMutation } from "../../../../store";
+import { useUpdateClientMutation } from "../../../../store";
 import { Flex, Form, Input, Modal, Typography } from "antd";
-import styles from "./EditCourierModal.module.scss";
+import styles from "./EditClientModal.module.scss";
 import clsx from "clsx";
 import { useEffect } from "react";
 
-export const EditCourierModal = ({ open, onCancel, codeid }) => {
+export const EditClientModal = ({ open, onCancel, record }) => {
   const [form] = useForm();
-  const [updateUser] = useUpdateUserMutation();
-  const { data } = useGetUsersQuery({});
+  const [updateClient] = useUpdateClientMutation();
 
-  const findUser = data?.data.find((item) => item.codeid === codeid);
-
-  console.log(data, "codedataid");
-
-  console.log(findUser, "findUser");
+  console.log(record, "record");
 
   const onFinish = (values) => {
-    updateUser({
-      codeid: codeid,
+    updateClient({
+      codeid: record?.codeid,
+      code_sp_user_position: record.code_sp_user_position,
+      inn: values.inn,
       nameid: values.nameid,
       phone: values.phone,
+      email: values.email,
       login: values.login,
       password: values.password,
-      code_sp_user_position: "2",
-      code_sp_filial: "2",
     });
     onCancel();
     form.resetFields();
@@ -36,25 +32,40 @@ export const EditCourierModal = ({ open, onCancel, codeid }) => {
   };
 
   useEffect(() => {
-    if (findUser) {
+    if (record) {
       form.setFieldsValue({
-        codeid: codeid,
-        nameid: findUser.nameid,
-        phone: findUser.phone,
-        login: findUser.login,
-        password: findUser.password,
-        code_sp_user_position: findUser.code_sp_user_position,
-        code_sp_filial: findUser.code_sp_filial,
+        codeid: record.codeid,
+        nameid: record.nameid,
+        inn: record.inn,
+        phone: record.phone,
+        login: record.login,
+        email: record.email,
+        password: record.password,
+        code_sp_user_position: record.code_sp_user_position,
       });
     }
-  }, [findUser, form, open]);
+  }, [record, form, open]);
 
   return (
     <Modal centered open={open} onCancel={onClose} footer={false}>
       <Typography.Title level={4}>Редактировать</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
+        {record?.code_sp_type_client === 2 && (
+          <Form.Item
+            label="ИНН"
+            name="inn"
+            rules={[
+              {
+                required: true,
+                message: "Это обязательное поле для заполнения!",
+              },
+            ]}
+          >
+            <Input placeholder="Введите ФИО" />
+          </Form.Item>
+        )}
         <Form.Item
-          label="ФИО курьера"
+          label="ФИО клиента"
           name="nameid"
           rules={[
             {
@@ -78,7 +89,19 @@ export const EditCourierModal = ({ open, onCancel, codeid }) => {
           <Input placeholder="Введите номер телефона" />
         </Form.Item>
         <Form.Item
-          label="Логин курьера"
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input placeholder="Введите email" />
+        </Form.Item>
+        <Form.Item
+          label="Логин клиента"
           name="login"
           rules={[
             {
@@ -87,10 +110,10 @@ export const EditCourierModal = ({ open, onCancel, codeid }) => {
             },
           ]}
         >
-          <Input placeholder="Введите логин курьера" />
+          <Input placeholder="Введите логин клиента" />
         </Form.Item>
         <Form.Item
-          label="Пароль курьера"
+          label="Пароль клиента"
           name="password"
           rules={[
             {
@@ -99,7 +122,7 @@ export const EditCourierModal = ({ open, onCancel, codeid }) => {
             },
           ]}
         >
-          <Input.Password placeholder="Введите пароль курьера" />
+          <Input.Password placeholder="Введите пароль клиента" />
         </Form.Item>
 
         <Flex gap="small" justify="center">

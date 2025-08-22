@@ -5,7 +5,7 @@ import clsx from "clsx";
 import dayjs from "dayjs";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-export const useClientsColumns = ({ onOpenWarnModal }) => {
+export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
   const columns = [
     {
       key: "guid",
@@ -46,10 +46,13 @@ export const useClientsColumns = ({ onOpenWarnModal }) => {
       title: "...",
       width: 100,
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
           <Tooltip title="Редактировать заказ">
-            <EditOutlined className={clsx("text-blue-600 cursor-pointer")} />
+            <EditOutlined
+              className={clsx("text-blue-600 cursor-pointer")}
+              onClick={() => onOpenEditModal(record)}
+            />
           </Tooltip>
 
           <Tooltip title="Удалить заказ">

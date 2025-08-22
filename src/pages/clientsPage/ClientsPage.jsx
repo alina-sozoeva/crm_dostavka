@@ -6,18 +6,25 @@ import clsx from "clsx";
 import { useMemo, useState } from "react";
 import { useClientsColumns } from "./useClientsColumns";
 import { useGetClientsQuery } from "../../store";
-import { AddClientModal } from "./ui";
+import { AddClientModal, EditClientModal } from "./ui";
 import { WarningModal } from "../../components";
 import debounce from "lodash.debounce";
 
 export const ClientsPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openWarnModal, setOpenWarnModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [search, setSearch] = useState();
   const { data, isLoading } = useGetClientsQuery({ search });
+  const [record, setRecordd] = useState();
 
   const onOpenWarnModal = (guid) => {
     setOpenWarnModal(true);
+  };
+
+  const onOpenEditModal = (record) => {
+    setOpenEditModal(true);
+    setRecordd(record);
   };
 
   const debouncedSetSearch = useMemo(
@@ -29,7 +36,7 @@ export const ClientsPage = () => {
     debouncedSetSearch(e.target.value);
   };
 
-  const { columns } = useClientsColumns({ onOpenWarnModal });
+  const { columns } = useClientsColumns({ onOpenWarnModal, onOpenEditModal });
 
   const filteredData = useMemo(() => {
     return data?.data.filter((item) => item.code_sp_user_position === 2);
@@ -63,6 +70,11 @@ export const ClientsPage = () => {
         title={"удалить клиента"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
+      />
+      <EditClientModal
+        open={openEditModal}
+        onCancel={() => setOpenEditModal(false)}
+        record={record}
       />
     </main>
   );

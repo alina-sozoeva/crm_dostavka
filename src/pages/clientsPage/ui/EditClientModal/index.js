@@ -1,2 +1,1 @@
-export * from "./AddClientModal";
 export * from "./EditClientModal";
