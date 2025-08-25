@@ -29,6 +29,14 @@ export const clientsApi = createApi({
       }),
       invalidatesTags: ["ClientsList"],
     }),
+    deleteClient: builder.mutation({
+      query: (codeid) => ({
+        url: "/delete/client",
+        method: "POST",
+        body: codeid,
+      }),
+      invalidatesTags: ["ClientsList"],
+    }),
   }),
 });
 
@@ -36,4 +44,5 @@ export const {
   useGetClientsQuery,
   useAddClientMutation,
   useUpdateClientMutation,
+  useDeleteClientMutation,
 } = clientsApi;

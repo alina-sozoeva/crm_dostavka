@@ -23,6 +23,11 @@ export const useCancelOrdersColumns = ({ onOpenWarnModal }) => {
       dataIndex: "tracking_number",
       title: "Трек номер",
       width: 100,
+      render: (_, record) => (
+        <span>
+          <b>{record?.tracking_number}</b>
+        </span>
+      ),
     },
     {
       key: "nameid_user_update",

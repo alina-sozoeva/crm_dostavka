@@ -3,12 +3,13 @@ import { Button, Flex, Input, Table } from "antd";
 import styles from "./ClientsPage.module.scss";
 import clsx from "clsx";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useClientsColumns } from "./useClientsColumns";
-import { useGetClientsQuery } from "../../store";
+import { useDeleteClientMutation, useGetClientsQuery } from "../../store";
 import { AddClientModal, EditClientModal } from "./ui";
 import { WarningModal } from "../../components";
 import debounce from "lodash.debounce";
+import { toast } from "react-toastify";
 
 export const ClientsPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,15 +17,28 @@ export const ClientsPage = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [search, setSearch] = useState();
   const { data, isLoading } = useGetClientsQuery({ search });
-  const [record, setRecordd] = useState();
+  const [record, setRecord] = useState();
+  const [deleteClient] = useDeleteClientMutation();
 
-  const onOpenWarnModal = (guid) => {
+  const onOpenWarnModal = (record) => {
+    console.log(record, "record");
     setOpenWarnModal(true);
+    setRecord(record);
   };
 
   const onOpenEditModal = (record) => {
     setOpenEditModal(true);
-    setRecordd(record);
+    setRecord(record);
+  };
+
+  const onConfirm = async () => {
+    try {
+      await deleteClient({ codeid: record?.codeid }).unwrap();
+
+      toast.success("Клиент удален!");
+    } catch (err) {
+      toast.error(err.data?.error || "Ошибка сервера");
+    }
   };
 
   const debouncedSetSearch = useMemo(
@@ -38,9 +52,11 @@ export const ClientsPage = () => {
 
   const { columns } = useClientsColumns({ onOpenWarnModal, onOpenEditModal });
 
-  const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.code_sp_user_position === 2);
-  }, [data]);
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSetSearch]);
 
   return (
     <main>
@@ -70,6 +86,7 @@ export const ClientsPage = () => {
         title={"удалить клиента"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
+        onConfirm={onConfirm}
       />
       <EditClientModal
         open={openEditModal}

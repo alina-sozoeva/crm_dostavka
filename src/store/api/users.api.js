@@ -48,6 +48,14 @@ export const usersApi = createApi({
       }),
       invalidatesTags: ["UsersList"],
     }),
+    deleteUser: builder.mutation({
+      query: (codeid) => ({
+        url: "/delete/courier",
+        method: "POST",
+        body: codeid,
+      }),
+      invalidatesTags: ["UsersList"],
+    }),
   }),
 });
 
@@ -56,4 +64,5 @@ export const {
   useLoginUserMutation,
   useAddUserMutation,
   useUpdateUserMutation,
+  useDeleteUserMutation,
 } = usersApi;

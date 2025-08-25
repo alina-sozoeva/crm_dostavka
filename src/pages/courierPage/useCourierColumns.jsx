@@ -53,7 +53,7 @@ export const useCourierColumns = ({ onUpdate, onOpenWarnModal }) => {
 
           <Tooltip title="Удалить заказ">
             <FaRegTrashAlt
-              onClick={() => onOpenWarnModal()}
+              onClick={() => onOpenWarnModal(record.codeid)}
               className={clsx("text-red-600 cursor-pointer")}
             />
           </Tooltip>

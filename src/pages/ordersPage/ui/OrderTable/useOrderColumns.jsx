@@ -38,7 +38,11 @@ export const useOrderColumns = ({
       title: "Трек номер",
       width: 140,
       ellipsis: true,
-      render: (_, record) => <span>{record.tracking_number}</span>,
+      render: (_, record) => (
+        <span>
+          <b>{record.tracking_number}</b>
+        </span>
+      ),
     },
     {
       key: "fio_from_to",

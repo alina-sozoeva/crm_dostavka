@@ -1,12 +1,13 @@
 import { DatePicker, Flex, Input, Table } from "antd";
 import { useEffect, useMemo, useState } from "react";
-import { useGetOrdersQuery } from "../../store";
+import { useDeleteOrderMutation, useGetOrdersQuery } from "../../store";
 import styles from "./CancelOrdersPage.module.scss";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { useCancelOrdersColumns } from "./useCancelOrdersColumns";
 import { WarningModal } from "../../components";
 import { useWindowSize } from "../../hooks";
+import { toast } from "react-toastify";
 
 export const CancelOrdersPage = () => {
   const [search, setSearch] = useState();
@@ -17,6 +18,7 @@ export const CancelOrdersPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [orderGuid, setOrderGuid] = useState("");
   const { height: windowHeight } = useWindowSize();
+  const [deleteOrder] = useDeleteOrderMutation();
 
   const debouncedSetSearch = useMemo(
     () => debounce((value) => setSearch(value), 400),
@@ -49,6 +51,15 @@ export const CancelOrdersPage = () => {
     const availableHeight = windowHeight - filterHeight - pagePadding;
     return Math.max(minHeight, Math.min(availableHeight, maxHeight));
   }, [windowHeight]);
+
+  const onDeleteOrder = async () => {
+    try {
+      await deleteOrder({ guid: orderGuid }).unwrap();
+      toast.success("Вы успешно удалили заказ!");
+    } catch (err) {
+      console.error("Ошибка при удалении заказа", err);
+    }
+  };
 
   return (
     <>
@@ -84,6 +95,7 @@ export const CancelOrdersPage = () => {
         title={"удалить заказ"}
         open={openModal}
         onCancel={() => setOpenModal(false)}
+        onConfirm={onDeleteOrder}
       />
     </>
   );

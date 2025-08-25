@@ -1,9 +1,12 @@
 import { EditOutlined } from "@ant-design/icons";
 import { Flex, Tooltip } from "antd";
+import { FaRegTrashAlt } from "react-icons/fa";
 import styles from "./ClientsPage.module.scss";
 import clsx from "clsx";
 import dayjs from "dayjs";
-import { FaRegTrashAlt } from "react-icons/fa";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
   const columns = [
@@ -37,7 +40,7 @@ export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
       dataIndex: "date_system",
       title: "Дата регистрации",
       render: (_, record, index) =>
-        dayjs(record.date_system).format("DD.MM.YYYY HH:MM"),
+        dayjs.utc(record.date_system).format("DD.MM.YYYY HH:mm"),
       sorter: (a, b) => new Date(a.date_system) - new Date(b.date_system),
     },
     {
@@ -57,7 +60,7 @@ export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
 
           <Tooltip title="Удалить заказ">
             <FaRegTrashAlt
-              onClick={() => onOpenWarnModal()}
+              onClick={() => onOpenWarnModal(record)}
               className={clsx("text-red-600 cursor-pointer")}
             />
           </Tooltip>

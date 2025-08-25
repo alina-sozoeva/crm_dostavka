@@ -20,6 +20,11 @@ export const useNotificationsColumns = () => {
       dataIndex: "tracking_number",
       title: "Трек номер",
       width: 120,
+      render: (_, record) => (
+        <span>
+          <b>{record?.tracking_number}</b>
+        </span>
+      ),
     },
     {
       key: "fio_from_to",

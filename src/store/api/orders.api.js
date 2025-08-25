@@ -50,7 +50,15 @@ export const ordersApi = createApi({
         method: "POST",
         body: comment,
       }),
-      invalidatesTags: ["OrderList"],
+      invalidatesTags: ["OrdersList"],
+    }),
+    deleteOrder: builder.mutation({
+      query: (guid) => ({
+        url: "/orders/delete",
+        method: "POST",
+        body: guid,
+      }),
+      invalidatesTags: ["OrdersList"],
     }),
   }),
 });
@@ -61,4 +69,5 @@ export const {
   useTakeOrderMutation,
   useAddOrderMutation,
   useAddCommentMutation,
+  useDeleteOrderMutation,
 } = ordersApi;

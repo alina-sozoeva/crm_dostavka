@@ -8,6 +8,11 @@ export const WarningModal = ({ title, open, onCancel, onConfirm }) => {
     onCancel();
   };
 
+  const onFinish = () => {
+    onConfirm();
+    onCancel();
+  };
+
   return (
     <Modal centered open={open} onCancel={onClose} footer={false} width={350}>
       <Flex vertical align="center" className={clsx("mb-4 gap-4")}>
@@ -21,7 +26,7 @@ export const WarningModal = ({ title, open, onCancel, onConfirm }) => {
         <button
           type="submit"
           className={clsx(styles.confirm)}
-          onClick={onCancel}
+          onClick={onFinish}
         >
           Подтвердить
         </button>

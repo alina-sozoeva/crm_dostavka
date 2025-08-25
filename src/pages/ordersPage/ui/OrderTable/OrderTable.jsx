@@ -2,6 +2,7 @@ import { Button, Flex, Input, Select, Table, Tabs } from "antd";
 import { useOrderColumns } from "./useOrderColumns";
 import { useEffect, useMemo, useState } from "react";
 import {
+  useDeleteOrderMutation,
   useGetOrdersQuery,
   useGetUsersQuery,
   useTakeOrderMutation,
@@ -77,6 +78,7 @@ export const OrderTable = () => {
   const [openCancselModal, setOpenCancselModal] = useState(false);
   const [openWarnModal, setOpenWarnModal] = useState(false);
   const [orderGuid, setOrderGuid] = useState("");
+  const [deleteOrder] = useDeleteOrderMutation();
 
   const tableHeight = useMemo(() => {
     const filterHeight = 150;
@@ -191,18 +193,26 @@ export const OrderTable = () => {
       await takeOrder({
         code_sp_courier: value,
         guid_order: guid,
-      });
+      }).unwrap();
 
       await updateStatus({
         code_user: userId,
         code_status: "2",
         guid_order: guid,
-      });
+      }).unwrap();
+      toast.success("Вы успешно назначили курьера!");
     } catch (error) {
       console.error("Ошибка при обновлении статуса или взятии заказа", error);
     }
+  };
 
-    toast.success("Вы успешно назначили курьера!");
+  const onDeleteOrder = async () => {
+    try {
+      await deleteOrder({ guid: orderGuid }).unwrap();
+      toast.success("Вы успешно удалили заказ!");
+    } catch (err) {
+      console.error("Ошибка при удалении заказа", err);
+    }
   };
 
   const { columns } = useOrderColumns({
@@ -299,6 +309,7 @@ export const OrderTable = () => {
         title={"удалить заказ"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
+        onConfirm={onDeleteOrder}
       />
     </>
   );

@@ -2,19 +2,21 @@ import { Button, Flex, Input, Table } from "antd";
 import { useCourierColumns } from "./useCourierColumns";
 import styles from "./CourierPage.module.scss";
 import clsx from "clsx";
-import { useGetUsersQuery } from "../../store";
-import { useMemo, useState } from "react";
+import { useDeleteUserMutation, useGetUsersQuery } from "../../store";
+import { useEffect, useMemo, useState } from "react";
 import { AddCourierModal, WarningModal } from "../../components";
 import { EditCourierModal } from "./ui";
 import debounce from "lodash.debounce";
+import { toast } from "react-toastify";
 
 export const CourierPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [codeid, setcodeid] = useState();
+  const [codeid, setCodeid] = useState();
   const [openWarnModal, setOpenWarnModal] = useState(false);
   const [search, setSearch] = useState();
   const { data, isLoading } = useGetUsersQuery({ search });
+  const [deleteUser] = useDeleteUserMutation();
 
   const debouncedSetSearch = useMemo(
     () => debounce((value) => setSearch(value), 400),
@@ -27,11 +29,12 @@ export const CourierPage = () => {
 
   const onUpdate = (codeid) => {
     setOpenUpdate(true);
-    setcodeid(codeid);
+    setCodeid(codeid);
   };
 
-  const onOpenWarnModal = (guid) => {
+  const onOpenWarnModal = (codeid) => {
     setOpenWarnModal(true);
+    setCodeid(codeid);
   };
 
   const { columns } = useCourierColumns({ onUpdate, onOpenWarnModal });
@@ -39,6 +42,22 @@ export const CourierPage = () => {
   const filteredData = useMemo(() => {
     return data?.data.filter((item) => item.code_sp_user_position === 2);
   }, [data]);
+
+  const onConfirm = async () => {
+    try {
+      await deleteUser({ codeid: codeid }).unwrap();
+
+      toast.success("Курьер удален!");
+    } catch (err) {
+      toast.error(err.data?.error || "Ошибка сервера");
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedSetSearch.cancel();
+    };
+  }, [debouncedSetSearch]);
 
   return (
     <main>
@@ -73,6 +92,7 @@ export const CourierPage = () => {
         title={"удалить курьера"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
+        onConfirm={onConfirm}
       />
     </main>
   );
