@@ -21,6 +21,11 @@
     .ant-tabs-nav {
       margin: 0 !important;
     }
+
+    .ant-tabs-tab,
+    .ant-tabs-tab {
+      margin: 0 0 0 5px !important;
+    }
   }
 }
 
@@ -34,6 +39,10 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
+}
+
+.action_btn {
+  padding: 5px;
 }
 
 .red {
@@ -71,6 +80,16 @@
   color: #702d7a !important;
 }
 
+.pink {
+  background-color: rgba(244, 143, 177, 0.5) !important;
+  color: #a03060 !important;
+}
+
+.gray {
+  background-color: rgba(189, 189, 189, 0.5) !important;
+  color: #4a4a4a !important;
+}
+
 .red_text {
   color: #a02020 !important;
 }
@@ -97,6 +116,14 @@
 
 .purple_text {
   color: #702d7a !important;
+}
+
+.pink_text {
+  color: #a03060 !important;
+}
+
+.gray_text {
+  color: #4a4a4a !important;
 }
 
 .table_wrapper {

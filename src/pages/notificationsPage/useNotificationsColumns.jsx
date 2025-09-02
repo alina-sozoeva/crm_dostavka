@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import clsx from "clsx";
 import styles from "./NotificationsPage.module.scss";
+import { order_status } from "../../enums";
 
 dayjs.extend(utc);
 
@@ -92,6 +93,13 @@ export const useNotificationsColumns = () => {
           <b>{Number(text).toLocaleString()}</b>
         </span>
       ),
+    },
+    {
+      key: "status",
+      dataIndex: "status",
+      title: "Статус",
+      width: 80,
+      render: (_, record) => <span>{order_status[record?.status]}</span>,
     },
   ];
 

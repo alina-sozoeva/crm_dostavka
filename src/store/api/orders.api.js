@@ -60,6 +60,18 @@ export const ordersApi = createApi({
       }),
       invalidatesTags: ["OrdersList"],
     }),
+    getPDF: builder.query({
+      query: ({ guid }) => ({
+        url: `/orders/${guid}/invoice.html`,
+        method: "GET",
+
+        responseHandler: async (response) => {
+          const blob = await response.blob();
+          return blob;
+        },
+      }),
+      providesTags: ["PDFList"],
+    }),
   }),
 });
 
@@ -70,4 +82,5 @@ export const {
   useAddOrderMutation,
   useAddCommentMutation,
   useDeleteOrderMutation,
+  useGetPDFQuery,
 } = ordersApi;

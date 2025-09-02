@@ -6,6 +6,9 @@ export const order_status = {
   // 4: "Курьер отдал заказ",
   5: "Доставлено",
   6: "Принял заказ",
+  // 7: "Отменен",
+  8: "Возврат",
+  9: "Возврат завершен",
 };
 
 export const order_status_short = {
@@ -17,6 +20,8 @@ export const order_status_short = {
   5: "Доставлен",
   6: "Принято",
   7: "Отменен",
+  8: "Возврат",
+  9: "Возврат завершен",
 };
 
 export const pageName = {

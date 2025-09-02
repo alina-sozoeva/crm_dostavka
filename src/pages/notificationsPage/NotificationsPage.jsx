@@ -7,6 +7,25 @@ import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { useWindowSize } from "../../hooks";
 
+const bg_color = (status) => {
+  switch (status) {
+    case 2:
+      return styles.orange;
+    case 3:
+      return styles.sinii;
+    case 4:
+      return styles.blue;
+    case 5:
+      return styles.green;
+    case 6:
+      return styles.purple;
+    case 7:
+      return styles.red;
+    default:
+      return "";
+  }
+};
+
 export const NotificationsPage = () => {
   const { data: users } = useGetUsersQuery({});
   const [search, setSearch] = useState();
@@ -36,7 +55,7 @@ export const NotificationsPage = () => {
   };
 
   const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.status === 1);
+    return data?.data.filter((item) => item.status === 1 || item.status === 8);
   }, [data]);
 
   const { columns } = useNotificationsColumns();
@@ -56,7 +75,7 @@ export const NotificationsPage = () => {
     };
   }, [debouncedSetSearch]);
 
-  console.log(filteredUsers, "filteredUsers");
+  console.log(filteredData, "filteredData");
 
   return (
     <>
@@ -86,6 +105,9 @@ export const NotificationsPage = () => {
           rowKey="guid"
           scroll={{ x: 1400, y: tableHeight }}
           pagination={false}
+          onRow={(record) => ({
+            className: clsx(record.status === 8 && styles.pink),
+          })}
         />
       </div>
     </>

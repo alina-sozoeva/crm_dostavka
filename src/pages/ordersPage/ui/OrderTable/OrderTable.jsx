@@ -36,6 +36,10 @@ const bg_color = (status) => {
       return styles.purple;
     case 7:
       return styles.red;
+    case 8:
+      return styles.pink;
+    case 9:
+      return styles.gray;
     default:
       return "";
   }
@@ -55,6 +59,10 @@ const color = (status) => {
       return styles.purple_text;
     case 7:
       return styles.red_text;
+    case 8:
+      return styles.pink_text;
+    case 8:
+      return styles.gray_text;
     default:
       return "";
   }
@@ -79,6 +87,7 @@ export const OrderTable = () => {
   const [openWarnModal, setOpenWarnModal] = useState(false);
   const [orderGuid, setOrderGuid] = useState("");
   const [deleteOrder] = useDeleteOrderMutation();
+  const [loading, setLoading] = useState(false);
 
   const tableHeight = useMemo(() => {
     const filterHeight = 150;
@@ -215,12 +224,62 @@ export const OrderTable = () => {
     }
   };
 
+  const handlePrint = async (guid) => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.REACT_APP_MAIN_URL}/pdf/${guid}/invoice.html`
+      );
+      if (!response.ok) throw new Error("Ошибка загрузки HTML");
+
+      let html = await response.text();
+
+      let iframe = document.getElementById("print-iframe");
+      if (!iframe) {
+        iframe = document.createElement("iframe");
+        iframe.style.position = "fixed";
+        iframe.style.right = "0";
+        iframe.style.bottom = "0";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "0";
+        iframe.id = "print-iframe";
+        document.body.appendChild(iframe);
+      }
+
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+
+      const images = doc.querySelectorAll("img");
+      await Promise.all(
+        Array.from(images).map((img) => {
+          return new Promise((resolve) => {
+            if (img.complete) resolve();
+            else img.onload = img.onerror = resolve;
+          });
+        })
+      );
+
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+    } catch (err) {
+      console.error("Ошибка при печати:", err);
+      alert("Не удалось загрузить документ для печати");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const { columns } = useOrderColumns({
     filteredUsers,
     onUpdateStatus,
     onOpenCancelModal,
     onOpenWarnModal,
     color,
+    handlePrint,
   });
 
   useEffect(() => {
@@ -245,18 +304,10 @@ export const OrderTable = () => {
               items={coloredTabs}
               onChange={onChange}
             />
-
-            <Button
-              className={clsx("mt-2 ml-2")}
-              type="primary"
-              onClick={() => setOpenModal(true)}
-            >
-              Добавить заказ
-            </Button>
           </Flex>
         </Flex>
         <Flex justify="space-between">
-          <Flex gap="small" className={clsx("mb-1")}>
+          <Flex gap="small" align="center" className={clsx("mb-1")}>
             <Input
               placeholder="Поиск по ФИО отправителя/получателя, номер телефона..."
               className={clsx(styles.search)}
@@ -278,6 +329,13 @@ export const OrderTable = () => {
                 onChange={(value) => setCourierId(value)}
               />
             </Flex>
+            <Button
+              className={clsx("")}
+              type="primary"
+              onClick={() => setOpenModal(true)}
+            >
+              Добавить заказ
+            </Button>
           </Flex>
         </Flex>
       </Flex>

@@ -1,7 +1,7 @@
-import { Select, Tooltip } from "antd";
+import { Flex, Select, Tooltip } from "antd";
 import { useMemo } from "react";
 import { useGetUsersQuery } from "../../../../store";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, DownloadOutlined } from "@ant-design/icons";
 import styles from "./OrderTable.module.scss";
 import utc from "dayjs/plugin/utc";
 import dayjs from "dayjs";
@@ -16,6 +16,7 @@ export const useOrderColumns = ({
   onUpdateStatus,
   onOpenWarnModal,
   color,
+  handlePrint,
 }) => {
   const { data } = useGetUsersQuery({});
 
@@ -30,7 +31,9 @@ export const useOrderColumns = ({
       title: "№",
       width: 50,
       align: "center",
-      render: (_, __, idx) => <span>{idx + 1}</span>,
+      render: (_, record, idx) => (
+        <span className={color(Number(record.status))}>{idx + 1}</span>
+      ),
     },
     {
       key: "tracking_number",
@@ -39,7 +42,7 @@ export const useOrderColumns = ({
       width: 140,
       ellipsis: true,
       render: (_, record) => (
-        <span>
+        <span className={color(Number(record.status))}>
           <b>{record.tracking_number}</b>
         </span>
       ),
@@ -51,7 +54,7 @@ export const useOrderColumns = ({
       width: 180,
       ellipsis: true,
       render: (_, record) => (
-        <span>
+        <span className={color(Number(record.status))}>
           {record.fio_from}/{record.fio_to}
         </span>
       ),
@@ -62,7 +65,11 @@ export const useOrderColumns = ({
       title: "Tел отпр",
       width: 140,
       ellipsis: true,
-      render: (_, record) => <span>{record.phone_from}</span>,
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>
+          {record.phone_from}
+        </span>
+      ),
     },
     {
       key: "phone_to",
@@ -70,7 +77,9 @@ export const useOrderColumns = ({
       title: "Tел получ",
       width: 140,
       ellipsis: true,
-      render: (_, record) => <span>{record.phone_to}</span>,
+      render: (_, record) => (
+        <span className={color(Number(record.status))}>{record.phone_to}</span>
+      ),
     },
     {
       key: "code_sp_courier",
@@ -78,7 +87,7 @@ export const useOrderColumns = ({
       title: "Курьер",
       width: 200,
       render: (_, record) => {
-        if (record.status === 1) {
+        if (record.status === 1 || record.status === 8) {
           return (
             <Select
               allowClear
@@ -118,7 +127,7 @@ export const useOrderColumns = ({
       ellipsis: true,
       render: (_, record) => {
         const text = `${record.nameid_oblasty_from} обл., ${record.nameid_city_from}, ${record.address_from} / ${record.nameid_oblasty_to} обл., ${record.nameid_city_to}, ${record.address_to}`;
-        return <span>{text}</span>;
+        return <span className={color(Number(record.status))}>{text}</span>;
       },
       onFilter: (value, record) => record.from.startsWith(value),
     },
@@ -138,7 +147,9 @@ export const useOrderColumns = ({
       title: "Дата/время",
       width: 190,
       render: (text, record) => (
-        <span>{dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}</span>
+        <span className={color(Number(record.status))}>
+          {dayjs.utc(text).format("DD.MM.YYYY HH:mm:ss")}
+        </span>
       ),
       sorter: (a, b) =>
         new Date(a.delivery_to_time) - new Date(b.delivery_to_time),
@@ -149,48 +160,77 @@ export const useOrderColumns = ({
       dataIndex: "summa",
       title: "Сумма",
       width: 110,
-      sorter: (a, b) => a.sum - b.sum,
+      sorter: (a, b) => Number(a.summa) - Number(b.summa),
       render: (_, record) => (
-        <span>
+        <span className={color(Number(record.status))}>
           <b>{Number(record.summa).toLocaleString()}</b>
         </span>
       ),
     },
     {
+      key: "payment_status",
+      dataIndex: "payment_status",
+      title: "Статус оплаты",
+      width: 110,
+      render: (_, record) => {
+        record.payment_status === 1 ? (
+          <span className={color(Number(record.status))}>Оплачено</span>
+        ) : (
+          <span className={color(Number(record.status))}>Не оплачено</span>
+        );
+      },
+    },
+    {
       key: "actions",
       dataIndex: "actions",
       title: "...",
-      width: 50,
+      width: 40,
       align: "center",
       render: (_, record) => {
-        if (record.status === 1 || record.status === 2 || record.status === 6) {
-          return (
-            <Tooltip title="Отменить заказ">
-              <span
-                className={clsx(styles.btn, "text-orange-500")}
-                role="button"
-                aria-label="Отменить заказ"
-                onClick={() => onOpenCancelModal(record?.guid)}
-              >
-                <CloseOutlined />
-              </span>
-            </Tooltip>
-          );
-        }
-        if (record.status === 7) {
-          return (
-            <Tooltip title="Удалить заказ">
-              <span
-                className={clsx(styles.btn)}
-                role="button"
-                aria-label="Удалить заказ"
-                onClick={() => onOpenWarnModal(record?.guid)}
-              >
-                <FaRegTrashAlt />
-              </span>
-            </Tooltip>
-          );
-        }
+        return (
+          <Flex gap="small">
+            {(record.status === 1 ||
+              record.status === 2 ||
+              record.status === 6) && (
+              <Tooltip title="Отменить заказ">
+                <span
+                  className={clsx(styles.btn, "text-orange-500")}
+                  role="button"
+                  aria-label="Отменить заказ"
+                  onClick={() => onOpenCancelModal(record?.guid)}
+                >
+                  <CloseOutlined />
+                </span>
+              </Tooltip>
+            )}
+            {record.status === 7 && (
+              <Tooltip title="Удалить заказ">
+                <span
+                  className={clsx(styles.btn, "text-red-500")}
+                  role="button"
+                  aria-label="Удалить заказ"
+                  onClick={() => onOpenWarnModal(record?.guid)}
+                >
+                  <FaRegTrashAlt />
+                </span>
+              </Tooltip>
+            )}
+            {record.status !== 1 &&
+              record.status !== 7 &&
+              record.status !== 8 && (
+                <Tooltip title="Скачать PDF">
+                  <span
+                    className={clsx(styles.btn, "text-blue-500")}
+                    role="button"
+                    aria-label="Скачать PDF"
+                    onClick={() => handlePrint(record?.guid)}
+                  >
+                    <DownloadOutlined />
+                  </span>
+                </Tooltip>
+              )}
+          </Flex>
+        );
       },
     },
   ];

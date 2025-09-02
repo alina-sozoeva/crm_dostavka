@@ -26,7 +26,7 @@ export const OrderCard = ({ item }) => {
   return (
     <Flex key={item?.guid} vertical gap="small" className={clsx(styles.card)}>
       <Flex gap="large" align="center">
-        <span className={clsx("font-bold")}>{item.guid}</span>
+        <span className={clsx("font-bold")}>{item.tracking_number}</span>
         <button className={clsx(styles.btn)}>
           {order_status_short[Number(item.status)]}
         </button>
