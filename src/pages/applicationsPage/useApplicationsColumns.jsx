@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { EditOutlined } from "@ant-design/icons";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { order_status } from "../../enums";
 
 dayjs.extend(utc);
 
@@ -43,6 +44,13 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
       key: "courier_phone",
       dataIndex: "courier_phone",
       title: "Телефона курьера",
+    },
+    {
+      key: "status",
+      dataIndex: "status",
+      title: "Статус",
+      width: 150,
+      render: (_, record) => <span>{order_status[record?.status]}</span>,
     },
     {
       key: "date_system",
