@@ -1,24 +1,23 @@
-import { EditOutlined } from "@ant-design/icons";
 import { Flex, Tooltip } from "antd";
-import { FaRegTrashAlt } from "react-icons/fa";
-import styles from "./ClientsPage.module.scss";
+
+import styles from "./ApplicationsPage.module.scss";
 import clsx from "clsx";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { EditOutlined } from "@ant-design/icons";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 dayjs.extend(utc);
 
-export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
+export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
   const columns = [
     {
       key: "guid",
       dataIndex: "guid",
       title: "№",
+      width: 50,
       align: "center",
-      width: 30,
-      render: (_, __, index) => {
-        return index + 1;
-      },
+      render: (_, __, idx) => <span>{idx + 1}</span>,
     },
     {
       key: "nameid",
@@ -28,33 +27,43 @@ export const useClientsColumns = ({ onOpenWarnModal, onOpenEditModal }) => {
     {
       key: "phone",
       dataIndex: "phone",
-      title: "Телефон",
+      title: "Телефон получателя",
     },
     {
-      key: "email",
-      dataIndex: "email",
-      title: "Email",
+      key: "address_to",
+      dataIndex: "address_to",
+      title: "Куда",
+    },
+    {
+      key: "courier_name",
+      dataIndex: "courier_name",
+      title: "Курьер",
+    },
+    {
+      key: "courier_phone",
+      dataIndex: "courier_phone",
+      title: "Телефона курьера",
     },
     {
       key: "date_system",
       dataIndex: "date_system",
-      title: "Дата регистрации",
+      title: "Дата/время",
       render: (_, record, index) =>
         dayjs.utc(record.date_system).format("DD.MM.YYYY HH:mm"),
       sorter: (a, b) => new Date(a.date_system) - new Date(b.date_system),
     },
     {
-      key: "id",
-      dataIndex: "id",
+      key: "guid",
+      dataIndex: "guid",
       title: "...",
-      width: 100,
+      width: 80,
       align: "center",
       render: (_, record) => (
         <Flex gap="middle" className={clsx(styles.actions)}>
           <Tooltip title="Редактировать заказ">
             <EditOutlined
+              onClick={() => onUpdate(record)}
               className={clsx("text-blue-600 cursor-pointer")}
-              onClick={() => onOpenEditModal(record)}
             />
           </Tooltip>
 

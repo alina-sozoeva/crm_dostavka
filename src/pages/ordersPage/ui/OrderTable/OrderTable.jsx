@@ -61,7 +61,7 @@ const color = (status) => {
       return styles.red_text;
     case 8:
       return styles.pink_text;
-    case 8:
+    case 9:
       return styles.gray_text;
     default:
       return "";

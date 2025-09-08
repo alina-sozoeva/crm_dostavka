@@ -37,8 +37,8 @@ export const useCourierColumns = ({ onUpdate, onOpenWarnModal }) => {
       title: "Пароль",
     },
     {
-      key: "id",
-      dataIndex: "id",
+      key: "guid",
+      dataIndex: "guid",
       title: "...",
       width: 80,
       align: "center",

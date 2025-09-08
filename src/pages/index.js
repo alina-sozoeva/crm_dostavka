@@ -8,3 +8,4 @@ export * from "./loginPage";
 export * from "./notificationsPage";
 export * from "./cancelOrdersPage";
 export * from "./clientsPage";
+export * from "./applicationsPage";

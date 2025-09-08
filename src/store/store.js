@@ -1,5 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { clientsApi, locationsApi, ordersApi, usersApi } from "./api";
+import {
+  applicationsApi,
+  clientsApi,
+  locationsApi,
+  ordersApi,
+  usersApi,
+} from "./api";
 import { userSlice } from "./slices";
 
 export const store = configureStore({
@@ -8,6 +14,7 @@ export const store = configureStore({
     [usersApi.reducerPath]: usersApi.reducer,
     [locationsApi.reducerPath]: locationsApi.reducer,
     [clientsApi.reducerPath]: clientsApi.reducer,
+    [applicationsApi.reducerPath]: applicationsApi.reducer,
     user: userSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -16,5 +23,6 @@ export const store = configureStore({
       usersApi.middleware,
       locationsApi.middleware,
       clientsApi.middleware,
+      applicationsApi.middleware,
     ]),
 });

@@ -98,7 +98,7 @@ export const useNotificationsColumns = () => {
       key: "status",
       dataIndex: "status",
       title: "Статус",
-      width: 80,
+      width: 100,
       render: (_, record) => <span>{order_status[record?.status]}</span>,
     },
   ];

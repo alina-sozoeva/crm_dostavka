@@ -18,6 +18,7 @@ import styles from "./MainLayout.module.scss";
 import * as CustomHeader from "../Header";
 import clsx from "clsx";
 import { RiEBike2Fill } from "react-icons/ri";
+import { LuFilePen } from "react-icons/lu";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
@@ -49,6 +50,8 @@ export const MainLayout = () => {
         return pageName.blackList;
       case pathName.cancelOders:
         return pageName.cancelOders;
+      case pathName.applications:
+        return pageName.applications;
       default:
         return pageName.home;
     }
@@ -110,6 +113,13 @@ export const MainLayout = () => {
               icon: <InfoCircleOutlined />,
               label: (
                 <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>
+              ),
+            },
+            {
+              key: "8",
+              icon: <LuFilePen />,
+              label: (
+                <Link to={pathName.applications}>{pageName.applications}</Link>
               ),
             },
           ]}

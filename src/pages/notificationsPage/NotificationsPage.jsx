@@ -7,25 +7,6 @@ import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { useWindowSize } from "../../hooks";
 
-const bg_color = (status) => {
-  switch (status) {
-    case 2:
-      return styles.orange;
-    case 3:
-      return styles.sinii;
-    case 4:
-      return styles.blue;
-    case 5:
-      return styles.green;
-    case 6:
-      return styles.purple;
-    case 7:
-      return styles.red;
-    default:
-      return "";
-  }
-};
-
 export const NotificationsPage = () => {
   const { data: users } = useGetUsersQuery({});
   const [search, setSearch] = useState();
@@ -74,8 +55,6 @@ export const NotificationsPage = () => {
       debouncedSetSearch.cancel();
     };
   }, [debouncedSetSearch]);
-
-  console.log(filteredData, "filteredData");
 
   return (
     <>
