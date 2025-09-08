@@ -19,12 +19,14 @@ import * as CustomHeader from "../Header";
 import clsx from "clsx";
 import { RiEBike2Fill } from "react-icons/ri";
 import { LuFilePen } from "react-icons/lu";
+import { useSelector } from "react-redux";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const { data } = useGetOrdersQuery({});
+  const userId = useSelector((state) => state.user.userId);
 
   const filteredData = useMemo(() => {
     return data?.data?.filter((item) => item.status === 1 || item.status === 8);
@@ -57,6 +59,80 @@ export const MainLayout = () => {
     }
   })();
 
+  const menuItems = useMemo(() => {
+    if (userId === "9") {
+      return [
+        {
+          key: "0",
+          icon: <StockOutlined />,
+          label: <Link to={pathName.home}>Pony Express</Link>,
+        },
+        {
+          key: pathName.applications,
+          icon: <LuFilePen />,
+          label: (
+            <Link to={pathName.applications}>{pageName.applications}</Link>
+          ),
+        },
+      ];
+    }
+
+    return [
+      {
+        key: "0",
+        icon: <StockOutlined />,
+        label: <Link to={pathName.home}>Pony Express</Link>,
+      },
+      {
+        key: pathName.home,
+        icon: <HomeFilled />,
+        label: <Link to={pathName.home}>{pageName.home}</Link>,
+      },
+      {
+        key: pathName.orders,
+        icon: <TruckFilled />,
+        label: <Link to={pathName.orders}>{pageName.orders}</Link>,
+      },
+      {
+        key: pathName.couriers,
+        icon: <RiEBike2Fill />,
+        label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
+      },
+      {
+        key: pathName.clients,
+        icon: <TeamOutlined />,
+        label: <Link to={pathName.clients}>{pageName.clients}</Link>,
+      },
+      {
+        key: pathName.notifications,
+        icon: <BellFilled />,
+        label: (
+          <Link to={pathName.notifications}>
+            <Flex justify="space-between">
+              <span>{pageName.notifications}</span>
+              <span>{filteredData?.length}</span>
+            </Flex>
+          </Link>
+        ),
+      },
+      {
+        key: pathName.tracking,
+        icon: <EnvironmentFilled />,
+        label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
+      },
+      {
+        key: pathName.cancelOders,
+        icon: <InfoCircleOutlined />,
+        label: <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>,
+      },
+      {
+        key: pathName.applications,
+        icon: <LuFilePen />,
+        label: <Link to={pathName.applications}>{pageName.applications}</Link>,
+      },
+    ];
+  }, [userId]);
+
   return (
     <Layout className={clsx("h-screen")}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -65,64 +141,7 @@ export const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "0",
-              icon: <StockOutlined />,
-              label: <Link to={pathName.home}>Pony Express</Link>,
-            },
-            {
-              key: "1",
-              icon: <HomeFilled />,
-              label: <Link to={pathName.home}>{pageName.home}</Link>,
-            },
-            {
-              key: "2",
-              icon: <TruckFilled />,
-              label: <Link to={pathName.orders}>{pageName.orders}</Link>,
-            },
-            {
-              key: "3",
-              icon: <RiEBike2Fill />,
-              label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
-            },
-            {
-              key: "4",
-              icon: <TeamOutlined />,
-              label: <Link to={pathName.clients}>{pageName.clients}</Link>,
-            },
-            {
-              key: "5",
-              icon: <BellFilled />,
-              label: (
-                <Link to={pathName.notifications}>
-                  <Flex justify="space-between">
-                    <span>{pageName.notifications}</span>
-                    <span>{filteredData?.length}</span>
-                  </Flex>
-                </Link>
-              ),
-            },
-            {
-              key: "6",
-              icon: <EnvironmentFilled />,
-              label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
-            },
-            {
-              key: "7",
-              icon: <InfoCircleOutlined />,
-              label: (
-                <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>
-              ),
-            },
-            {
-              key: "8",
-              icon: <LuFilePen />,
-              label: (
-                <Link to={pathName.applications}>{pageName.applications}</Link>
-              ),
-            },
-          ]}
+          items={menuItems}
         />
       </Sider>
 

@@ -4,51 +4,64 @@ import { MainLayout } from "../components";
 import { pathName } from "../enums";
 import { PrivateRoute } from "./PrivateRoute";
 
-const withPrivateRoute = (element) => <PrivateRoute>{element}</PrivateRoute>;
+const withPrivateRoute = (element, allowedRoles) => (
+  <PrivateRoute allowedRoles={allowedRoles}>{element}</PrivateRoute>
+);
 
 export const router = createBrowserRouter([
   { path: pathName.login, element: <Pages.LoginPage /> },
   {
-    element: withPrivateRoute(<MainLayout />),
+    element: withPrivateRoute(<MainLayout />, ["1", "9"]),
     children: [
-      { path: pathName.home, element: withPrivateRoute(<Pages.HomePage />) },
+      {
+        path: pathName.home,
+        element: withPrivateRoute(<Pages.HomePage />, ["1", "9"]),
+      },
       {
         path: pathName.orders,
-        element: withPrivateRoute(<Pages.OrdersPage />),
+        element: withPrivateRoute(<Pages.OrdersPage />, ["1"]),
       },
       {
         path: pathName.notifications,
-        element: withPrivateRoute(<Pages.NotificationsPage />),
+        element: withPrivateRoute(<Pages.NotificationsPage />, ["1"]),
       },
       {
         path: pathName.tracking,
-        element: withPrivateRoute(<Pages.TrackingPage />),
+        element: withPrivateRoute(<Pages.TrackingPage />, ["1"]),
       },
-      { path: pathName.reviews, element: withPrivateRoute(<Pages.WIPPage />) },
+      {
+        path: pathName.reviews,
+        element: withPrivateRoute(<Pages.WIPPage />, ["1"]),
+      },
       {
         path: pathName.analytics,
-        element: withPrivateRoute(<Pages.WIPPage />),
+        element: withPrivateRoute(<Pages.WIPPage />, ["1"]),
       },
       {
         path: pathName.blackList,
-        element: withPrivateRoute(<Pages.WIPPage />),
+        element: withPrivateRoute(<Pages.WIPPage />, ["1"]),
       },
       {
         path: pathName.couriers,
-        element: withPrivateRoute(<Pages.CourierPage />),
+        element: withPrivateRoute(<Pages.CourierPage />, ["1"]),
       },
       {
         path: pathName.cancelOders,
-        element: withPrivateRoute(<Pages.CancelOrdersPage />),
+        element: withPrivateRoute(<Pages.CancelOrdersPage />, ["1"]),
       },
       {
         path: pathName.clients,
-        element: withPrivateRoute(<Pages.ClientsPage />),
+        element: withPrivateRoute(<Pages.ClientsPage />, ["1"]),
       },
-      { path: pathName.other, element: withPrivateRoute(<Pages.NotFound />) },
+
       {
         path: pathName.applications,
-        element: withPrivateRoute(<Pages.ApplicationsPage />),
+        element: withPrivateRoute(<Pages.ApplicationsPage />, ["1", "9"]),
+      },
+
+      {
+        path: pathName.other,
+        element: withPrivateRoute(<Pages.NotFound />, ["1", "9"]),
       },
     ],
   },
