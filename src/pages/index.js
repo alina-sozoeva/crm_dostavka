@@ -9,3 +9,4 @@ export * from "./notificationsPage";
 export * from "./cancelOrdersPage";
 export * from "./clientsPage";
 export * from "./applicationsPage";
+export * from "./operatorPage";

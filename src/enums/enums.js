@@ -1,3 +1,5 @@
+import { OperatorPage } from "../pages";
+
 export const order_status = {
   0: "Все",
   1: "Новый заказ",
@@ -37,6 +39,7 @@ export const pageName = {
   cancelOders: "Отмененные заказы",
   clients: "Клиенты",
   applications: "Заявки",
+  operators: "Операторы",
 };
 
 export const pathName = {
@@ -53,4 +56,5 @@ export const pathName = {
   cancelOders: "/cancel-orders",
   clients: "/clients",
   applications: "/applications",
+  operators: "/operators",
 };

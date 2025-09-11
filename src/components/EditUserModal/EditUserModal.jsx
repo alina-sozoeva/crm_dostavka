@@ -1,22 +1,28 @@
-import { Flex, Form, Input, Modal, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
-import styles from "./AddCourierModal.module.scss";
-import clsx from "clsx";
-import { useAddUserMutation } from "../../store";
 
-export const AddCourierModal = ({ open, onCancel }) => {
+import { Flex, Form, Input, Modal, Typography } from "antd";
+import { useEffect } from "react";
+import { useGetUsersQuery, useUpdateUserMutation } from "../../store";
+
+import styles from "./EditUserModal.module.scss";
+import clsx from "clsx";
+
+export const EditUserModal = ({ title, open, onCancel, codeid }) => {
   const [form] = useForm();
-  const [addUser] = useAddUserMutation();
+  const [updateUser] = useUpdateUserMutation();
+  const { data } = useGetUsersQuery({ codeid });
+
+  const findUser = data?.data[0];
 
   const onFinish = (values) => {
-    addUser({
-      codeid: "0",
+    updateUser({
+      codeid: codeid,
       nameid: values.nameid,
       phone: values.phone,
       login: values.login,
       password: values.password,
-      code_sp_user_position: "2",
-      code_sp_filial: "2",
+      code_sp_user_position: findUser.code_sp_user_position,
+      code_sp_filial: findUser.code_sp_filial,
     });
     onCancel();
     form.resetFields();
@@ -27,12 +33,26 @@ export const AddCourierModal = ({ open, onCancel }) => {
     form.resetFields();
   };
 
+  useEffect(() => {
+    if (findUser) {
+      form.setFieldsValue({
+        codeid: codeid,
+        nameid: findUser.nameid,
+        phone: findUser.phone,
+        login: findUser.login,
+        password: findUser.password,
+        code_sp_user_position: findUser.code_sp_user_position,
+        code_sp_filial: findUser.code_sp_filial,
+      });
+    }
+  }, [findUser, form, open, codeid]);
+
   return (
     <Modal centered open={open} onCancel={onClose} footer={false}>
-      <Typography.Title level={4}>Добавить курьера</Typography.Title>
+      <Typography.Title level={4}>Редактировать</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item
-          label="ФИО курьера"
+          label={`ФИО ${title}`}
           name="nameid"
           rules={[
             {
@@ -56,7 +76,7 @@ export const AddCourierModal = ({ open, onCancel }) => {
           <Input placeholder="Введите номер телефона" />
         </Form.Item>
         <Form.Item
-          label="Логин курьера"
+          label={`Логин ${title}`}
           name="login"
           rules={[
             {
@@ -65,10 +85,10 @@ export const AddCourierModal = ({ open, onCancel }) => {
             },
           ]}
         >
-          <Input placeholder="Введите логин курьера" />
+          <Input placeholder={`Введите логин ${title}`} />
         </Form.Item>
         <Form.Item
-          label="Пароль курьера"
+          label={`Пароль ${title}`}
           name="password"
           rules={[
             {
@@ -77,7 +97,7 @@ export const AddCourierModal = ({ open, onCancel }) => {
             },
           ]}
         >
-          <Input.Password placeholder="Введите пароль курьера" />
+          <Input.Password placeholder={`Введите пароль ${title}`} />
         </Form.Item>
 
         <Flex gap="small" justify="center">

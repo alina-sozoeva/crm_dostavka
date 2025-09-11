@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 export const EditAppModal = ({ open, onCancel, record }) => {
   const [form] = useForm();
   const [updateClient] = useUpdateApplicationMutation();
-  const { data: users } = useGetUsersQuery({});
+  const { data: users } = useGetUsersQuery({ codeid: record?.code_sp_courier });
 
   const onFinish = (values) => {
     console.log(values.code_sp_courier, "values");
@@ -39,9 +39,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
     form.resetFields();
   };
 
-  const findUser = users?.data.find(
-    (item) => +item.codeid === +record?.code_sp_courier
-  );
+  const findUser = users?.data[0];
 
   useEffect(() => {
     if (record) {

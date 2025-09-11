@@ -17,7 +17,7 @@ export const WarningModal = ({ title, open, onCancel, onConfirm }) => {
     <Modal centered open={open} onCancel={onClose} footer={false} width={350}>
       <Flex vertical align="center" className={clsx("mb-4 gap-4")}>
         <ExclamationCircleOutlined className={clsx(styles.icon)} />
-        <span className={clsx("text-ьв font-bold")}>
+        <span className={clsx("text-center font-bold")}>
           Вы действительно хотите {title}?
         </span>
       </Flex>

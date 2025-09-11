@@ -1,15 +1,15 @@
 import { Button, Flex, Input, Table } from "antd";
-import { useCourierColumns } from "./useCourierColumns";
-import styles from "./CourierPage.module.scss";
+import styles from "./OperatorPage.module.scss";
 import clsx from "clsx";
 import { useDeleteUserMutation, useGetUsersQuery } from "../../store";
 import { useEffect, useMemo, useState } from "react";
-import { AddUserModal, EditUserModal, WarningModal } from "../../components";
 
 import debounce from "lodash.debounce";
 import { toast } from "react-toastify";
+import { AddUserModal, EditUserModal, WarningModal } from "../../components";
+import { useOperatorColumns } from "./useOperatorColumns";
 
-export const CourierPage = () => {
+export const OperatorPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [codeid, setCodeid] = useState();
@@ -37,17 +37,16 @@ export const CourierPage = () => {
     setCodeid(codeid);
   };
 
-  const { columns } = useCourierColumns({ onUpdate, onOpenWarnModal });
+  const { columns } = useOperatorColumns({ onUpdate, onOpenWarnModal });
 
   const filteredData = useMemo(() => {
-    return data?.data.filter((item) => item.code_sp_user_position === 2);
+    return data?.data.filter((item) => item.code_sp_user_position === 3);
   }, [data]);
 
   const onConfirm = async () => {
     try {
       await deleteUser({ codeid: codeid }).unwrap();
-
-      toast.success("Курьер удален!");
+      toast.success("Оператор удален!");
     } catch (err) {
       toast.error(err.data?.error || "Ошибка сервера");
     }
@@ -83,10 +82,10 @@ export const CourierPage = () => {
         />
       </Flex>
       <AddUserModal
-        title={"курьера"}
+        title={"оператора"}
         open={openModal}
         onCancel={() => setOpenModal(false)}
-        position={2}
+        position={3}
       />
       <EditUserModal
         open={openUpdate}
@@ -94,7 +93,7 @@ export const CourierPage = () => {
         codeid={codeid}
       />
       <WarningModal
-        title={"удалить курьера"}
+        title={"удалить оператора"}
         open={openWarnModal}
         onCancel={() => setOpenWarnModal(false)}
         onConfirm={onConfirm}

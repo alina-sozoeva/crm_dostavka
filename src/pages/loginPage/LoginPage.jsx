@@ -19,8 +19,8 @@ export const LoginPage = () => {
         password: values.password,
       }).unwrap();
 
-      form.resetFields();
       navigate("/");
+      form.resetFields();
     } catch (error) {
       if (error.status === 401) {
         toast.error("Неверный пароль или логин!");

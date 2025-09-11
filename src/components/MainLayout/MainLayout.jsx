@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BellFilled,
   EnvironmentFilled,
@@ -13,24 +13,40 @@ import {
 import { Button, Flex, Layout, Menu } from "antd";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { pageName, pathName } from "../../enums";
-import { useGetOrdersQuery } from "../../store";
+import { useGetApplicationsQuery, useGetOrdersQuery } from "../../store";
 import styles from "./MainLayout.module.scss";
 import * as CustomHeader from "../Header";
 import clsx from "clsx";
 import { RiEBike2Fill } from "react-icons/ri";
 import { LuFilePen } from "react-icons/lu";
 import { useSelector } from "react-redux";
+import { MdOutlineHeadsetMic, MdOutlineSupportAgent } from "react-icons/md";
 
 const { Header, Sider, Content } = Layout;
 export const MainLayout = () => {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [prevLength, setPrevLength] = useState(0);
+  const [bellColor, setBellColor] = useState("");
   const { data } = useGetOrdersQuery({});
+  const { data: apps } = useGetApplicationsQuery({});
   const userId = useSelector((state) => state.user.userId);
 
   const filteredData = useMemo(() => {
     return data?.data?.filter((item) => item.status === 1 || item.status === 8);
   }, [data]);
+
+  useEffect(() => {
+    if (filteredData?.length > prevLength) {
+      setBellColor("green");
+    } else {
+      setBellColor("");
+    }
+
+    setPrevLength(filteredData?.length || 0);
+  }, [filteredData?.length, prevLength]);
+
+  console.log(apps?.data?.length);
 
   const title = (() => {
     switch (location.pathname) {
@@ -104,8 +120,14 @@ export const MainLayout = () => {
         label: <Link to={pathName.clients}>{pageName.clients}</Link>,
       },
       {
+        key: pathName.operators,
+        icon: <MdOutlineHeadsetMic />,
+        label: <Link to={pathName.operators}>{pageName.operators}</Link>,
+      },
+      {
         key: pathName.notifications,
-        icon: <BellFilled />,
+        icon: <BellFilled style={{ color: bellColor }} />,
+
         label: (
           <Link to={pathName.notifications}>
             <Flex justify="space-between">
@@ -128,10 +150,17 @@ export const MainLayout = () => {
       {
         key: pathName.applications,
         icon: <LuFilePen />,
-        label: <Link to={pathName.applications}>{pageName.applications}</Link>,
+        label: (
+          <Link to={pathName.applications}>
+            <Flex justify="space-between">
+              <span>{pageName.applications}</span>
+              <span>{apps?.data?.length}</span>
+            </Flex>
+          </Link>
+        ),
       },
     ];
-  }, [userId]);
+  }, [userId, bellColor, filteredData?.length, apps?.data?.length]);
 
   return (
     <Layout className={clsx("h-screen")}>

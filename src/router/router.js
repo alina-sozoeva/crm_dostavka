@@ -3,19 +3,27 @@ import * as Pages from "../pages";
 import { MainLayout } from "../components";
 import { pathName } from "../enums";
 import { PrivateRoute } from "./PrivateRoute";
+import { PublicRoute } from "./PublicRoute";
 
 const withPrivateRoute = (element, allowedRoles) => (
   <PrivateRoute allowedRoles={allowedRoles}>{element}</PrivateRoute>
 );
 
 export const router = createBrowserRouter([
-  { path: pathName.login, element: <Pages.LoginPage /> },
   {
-    element: withPrivateRoute(<MainLayout />, ["1", "9"]),
+    path: pathName.login,
+    element: (
+      <PublicRoute>
+        <Pages.LoginPage />
+      </PublicRoute>
+    ),
+  },
+  {
+    element: withPrivateRoute(<MainLayout />, ["1", "3"]),
     children: [
       {
         path: pathName.home,
-        element: withPrivateRoute(<Pages.HomePage />, ["1", "9"]),
+        element: withPrivateRoute(<Pages.HomePage />, ["1", "3"]),
       },
       {
         path: pathName.orders,
@@ -56,12 +64,15 @@ export const router = createBrowserRouter([
 
       {
         path: pathName.applications,
-        element: withPrivateRoute(<Pages.ApplicationsPage />, ["1", "9"]),
+        element: withPrivateRoute(<Pages.ApplicationsPage />, ["1", "3"]),
       },
-
       {
         path: pathName.other,
-        element: withPrivateRoute(<Pages.NotFound />, ["1", "9"]),
+        element: withPrivateRoute(<Pages.NotFound />, ["1", "3"]),
+      },
+      {
+        path: pathName.operators,
+        element: withPrivateRoute(<Pages.OperatorPage />, ["1"]),
       },
     ],
   },

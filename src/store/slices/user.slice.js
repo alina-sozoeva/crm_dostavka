@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   token: localStorage.getItem("tokenUser"),
   userId: localStorage.getItem("userId"),
+  userPos: localStorage.getItem("userPos"),
 };
 
 export const userSlice = createSlice({
@@ -17,6 +18,10 @@ export const userSlice = createSlice({
       state.userId = action.payload;
       localStorage.setItem("userId", state.userId);
     },
+    setUserPos: (state, action) => {
+      state.userPos = action.payload;
+      localStorage.setItem("userPos", state.userPos);
+    },
     removeToken: (state) => {
       state.token = null;
       state.userId = null;
@@ -26,6 +31,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addToken, removeToken, setUserId } = userSlice.actions;
+export const { addToken, removeToken, setUserId, setUserPos } =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { addToken, setUserId } from "../slices";
+import { addToken, setUserId, setUserPos } from "../slices";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
@@ -7,10 +7,10 @@ export const usersApi = createApi({
   tagTypes: ["UsersList"],
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: ({ search }) => ({
+      query: ({ search, codeid }) => ({
         url: "/users",
         method: "GET",
-        params: { search },
+        params: { search, codeid },
       }),
       providesTags: ["UsersList"],
     }),
@@ -25,6 +25,7 @@ export const usersApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(addToken(data?.data?.hash));
           dispatch(setUserId(data?.data?.codeid));
+          dispatch(setUserPos(data?.data?.code_sp_user_position));
         } catch (err) {
           console.error("Login failed", err);
         }
