@@ -111,7 +111,7 @@ export const AddAppModal = ({ open, onCancel }) => {
         {checkedUr && (
           <Form.Item
             name="nameid_ur"
-            label="Наименование"
+            label="Наименование компании"
             rules={[
               {
                 required: true,
@@ -125,7 +125,7 @@ export const AddAppModal = ({ open, onCancel }) => {
         {checkedFiz && (
           <Form.Item
             name="nameid_fiz"
-            label="ФИО"
+            label="Контактное лицо"
             rules={[
               {
                 required: true,
@@ -138,7 +138,7 @@ export const AddAppModal = ({ open, onCancel }) => {
         )}
 
         <Form.Item
-          label="Номер телефона"
+          label="Телефон получателя"
           name="phone"
           rules={[
             {
@@ -188,7 +188,7 @@ export const AddAppModal = ({ open, onCancel }) => {
         </Flex>
         <Form.Item
           name="address_to"
-          label="Куда"
+          label="Адрес Забора"
           rules={[
             {
               required: true,

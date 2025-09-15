@@ -90,7 +90,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         {+record?.code_sp_type_client === 1 && (
           <Form.Item
             name="nameid_fiz"
-            label="ФИО"
+            label="Контактное лицо"
             rules={[
               {
                 required: true,
@@ -103,7 +103,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         )}
 
         <Form.Item
-          label="Номер телефона"
+          label="Телефон получателя"
           name="phone"
           rules={[
             {
@@ -158,7 +158,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         </Flex>
         <Form.Item
           name="address_to"
-          label="Куда"
+          label="Адрес Забора"
           rules={[
             {
               required: true,
