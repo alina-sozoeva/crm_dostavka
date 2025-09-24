@@ -3,11 +3,20 @@ import {
   useGetUsersQuery,
   useUpdateApplicationMutation,
 } from "../../../../store";
-import { Checkbox, Flex, Form, Input, Modal, Select, Typography } from "antd";
+import {
+  Checkbox,
+  DatePicker,
+  Flex,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Typography,
+} from "antd";
 import styles from "./EditAppModal.module.scss";
 import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo } from "react";
+import dayjs from "dayjs";
 
 export const EditAppModal = ({ open, onCancel, record }) => {
   const [form] = useForm();
@@ -21,7 +30,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
       guid: record?.guid,
       code_user: record.code_user,
       status: record?.status,
-      nameid: values.nameid_ur || values.nameid_fiz,
+      nameid: values.nameid,
       phone: values.phone,
       weight: values.weight,
       number_of_seats: values.number_of_seats,
@@ -29,6 +38,10 @@ export const EditAppModal = ({ open, onCancel, record }) => {
       code_sp_type_client: record?.code_sp_type_client,
       delivery_type: record?.delivery_type,
       address_to: values.address_to,
+      planned_date: values.planned_date
+        ? values.planned_date.format("YYYY-MM-DD")
+        : null,
+      comment: values.comment || null,
     });
     onCancel();
     form.resetFields();
@@ -47,8 +60,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         guid: record.guid,
         code_user: record.code_user,
         status: record.status,
-        nameid_ur: record.code_sp_type_client === 2 && record.nameid,
-        nameid_fiz: record.code_sp_type_client === 1 && record.nameid,
+        nameid: record.nameid,
         phone: record.phone,
         weight: record.weight,
         number_of_seats: record.number_of_seats,
@@ -56,6 +68,8 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         code_sp_type_client: record.code_sp_type_client,
         delivery_type: record.delivery_type,
         address_to: record.address_to,
+        planned_date: record.planned_date ? dayjs(record.planned_date) : null,
+        comment: record.comment,
       });
     }
   }, [record, form, open, findUser]);
@@ -70,7 +84,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
   }, [users]);
 
   return (
-    <Modal centered open={open} onCancel={onClose} footer={false} width={400}>
+    <Modal centered open={open} onCancel={onClose} footer={false} width={500}>
       <Typography.Title level={4}>Редактировать заявку</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item
@@ -152,6 +166,13 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         >
           <Input placeholder="Введите адрес" />
         </Form.Item>
+        <Form.Item label="Дата заявки" name="planned_date">
+          <DatePicker
+            placeholder="Введите вес закза"
+            style={{ width: "100%" }}
+            format="DD-MM-YYYY"
+          />
+        </Form.Item>
 
         <Form.Item
           label="Курьер"
@@ -178,6 +199,9 @@ export const EditAppModal = ({ open, onCancel, record }) => {
 
             // onChange={(value) => setCourierId(value)}
           />
+        </Form.Item>
+        <Form.Item name="comment" label="Примечание">
+          <Input.TextArea rows={4} placeholder="Введите комментарий" />
         </Form.Item>
         <Flex gap="small" justify="center">
           <button type="submit" className={clsx(styles.confirm)}>

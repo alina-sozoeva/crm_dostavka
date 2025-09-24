@@ -1,4 +1,13 @@
-import { Checkbox, Flex, Form, Input, Modal, Select, Typography } from "antd";
+import {
+  Checkbox,
+  DatePicker,
+  Flex,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Typography,
+} from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useAddApplicationMutation, useGetUsersQuery } from "../../../../store";
 import styles from "./AddAppModal.module.scss";
@@ -48,6 +57,10 @@ export const AddAppModal = ({ open, onCancel }) => {
       code_sp_type_client: 1,
       delivery_type: checkedDoc ? 1 : 2,
       address_to: values.address_to,
+      planned_date: values.planned_date
+        ? values.planned_date.format("YYYY-MM-DD")
+        : null,
+      comment: values.comment || null,
     });
 
     onCancel();
@@ -72,13 +85,6 @@ export const AddAppModal = ({ open, onCancel }) => {
     <Modal centered open={open} onCancel={onClose} footer={false} width={500}>
       <Typography.Title level={4}>Добавить заявку</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        <Flex
-          className={clsx(styles.form_general, "my-2")}
-          gap="small"
-          align="center"
-          vertical
-        ></Flex>
-
         <Form.Item
           name="nameid"
           label="Контактное лицо"
@@ -104,18 +110,18 @@ export const AddAppModal = ({ open, onCancel }) => {
         >
           <Input placeholder="Введите номер телефона" />
         </Form.Item>
-        <Flex gap="small" align="center">
-          <Form.Item label="Тип" name="delivery_type">
-            <Flex>
-              <Checkbox checked={checkedDoc} onChange={onCheckedDoc}>
-                Документы
-              </Checkbox>
-              <Checkbox checked={checkedPac} onChange={onCheckedPac}>
-                Посылка
-              </Checkbox>
-            </Flex>
-          </Form.Item>
 
+        <Form.Item label="Тип" name="delivery_type">
+          <Flex>
+            <Checkbox checked={checkedDoc} onChange={onCheckedDoc}>
+              Документы
+            </Checkbox>
+            <Checkbox checked={checkedPac} onChange={onCheckedPac}>
+              Посылка
+            </Checkbox>
+          </Flex>
+        </Form.Item>
+        <Flex gap="small" align="center">
           <Form.Item
             label="Вес"
             name="weight"
@@ -126,7 +132,7 @@ export const AddAppModal = ({ open, onCancel }) => {
               },
             ]}
           >
-            <Input placeholder="Введите вес закза" style={{ width: "100%" }} />
+            <Input placeholder="Введите вес закза" style={{ width: "140px" }} />
           </Form.Item>
           <Form.Item
             label="Места"
@@ -138,7 +144,17 @@ export const AddAppModal = ({ open, onCancel }) => {
               },
             ]}
           >
-            <Input placeholder="Введите кол-во мест" />
+            <Input
+              placeholder="Введите кол-во мест"
+              style={{ width: "140px" }}
+            />
+          </Form.Item>
+          <Form.Item label="Дата заявки" name="planned_date">
+            <DatePicker
+              placeholder="Введите вес закза"
+              style={{ width: "140px" }}
+              format="DD-MM-YYYY"
+            />
           </Form.Item>
         </Flex>
         <Form.Item
@@ -178,6 +194,9 @@ export const AddAppModal = ({ open, onCancel }) => {
             options={filteredUsers}
             // onChange={(value) => setCourierId(value)}
           />
+        </Form.Item>
+        <Form.Item name="comment" label="Примечание">
+          <Input.TextArea rows={4} placeholder="Введите комментарий" />
         </Form.Item>
         <Flex gap="small" justify="center">
           <button type="submit" className={clsx(styles.confirm)}>

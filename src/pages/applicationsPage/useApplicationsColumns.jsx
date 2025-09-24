@@ -24,31 +24,37 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
       key: "nameid",
       dataIndex: "nameid",
       title: "Контактное лицо",
+      width: 150,
     },
     {
       key: "operator_name",
       dataIndex: "operator_name",
       title: "Оператор",
+      width: 150,
     },
     {
       key: "phone",
       dataIndex: "phone",
-      title: "Телефон получателя",
+      title: "Телефон",
+      width: 200,
     },
     {
       key: "address_to",
       dataIndex: "address_to",
       title: "Адрес Забора",
+      width: 250,
     },
     {
       key: "courier_name",
       dataIndex: "courier_name",
       title: "Курьер",
+      width: 150,
     },
     {
       key: "courier_phone",
       dataIndex: "courier_phone",
       title: "Телефона курьера",
+      width: 200,
     },
     {
       key: "status",
@@ -60,19 +66,42 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
     {
       key: "date_system",
       dataIndex: "date_system",
-      title: "Дата/время",
+      title: "Дата создания",
+      align: "center",
+      width: 150,
       render: (_, record, index) =>
         dayjs.utc(record.date_system).format("DD.MM.YYYY HH:mm"),
-      sorter: (a, b) => new Date(a.date_system) - new Date(b.date_system),
+    },
+    {
+      key: "planned_date",
+      dataIndex: "planned_date",
+      title: "Дата заявки",
+      align: "center",
+      width: 100,
+      render: (_, record, index) =>
+        record.planned_date
+          ? dayjs.utc(record.planned_date).format("DD.MM.YYYY")
+          : "-",
+    },
+    {
+      key: "comment",
+      dataIndex: "comment",
+      title: "Примечание",
+      width: 200,
     },
     {
       key: "guid",
       dataIndex: "guid",
       title: "...",
-      width: 80,
+      width: 50,
       align: "center",
       render: (_, record) => (
-        <Flex gap="middle" className={clsx(styles.actions)}>
+        <Flex
+          align="center"
+          justify="center"
+          gap="middle"
+          className={clsx(styles.actions)}
+        >
           <Tooltip title="Редактировать заказ">
             <EditOutlined
               onClick={() => onUpdate(record)}
@@ -80,12 +109,14 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
             />
           </Tooltip>
 
-          <Tooltip title="Удалить заказ">
-            <FaRegTrashAlt
-              onClick={() => onOpenWarnModal(record)}
-              className={clsx("text-red-600 cursor-pointer")}
-            />
-          </Tooltip>
+          {+record?.status === 3 && (
+            <Tooltip title="Удалить заказ">
+              <FaRegTrashAlt
+                onClick={() => onOpenWarnModal(record)}
+                className={clsx("text-red-600 cursor-pointer")}
+              />
+            </Tooltip>
+          )}
         </Flex>
       ),
     },

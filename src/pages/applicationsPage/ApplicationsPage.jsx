@@ -19,6 +19,8 @@ export const ApplicationsPage = () => {
   const { data } = useGetApplicationsQuery({});
   const [remove] = useDeleteApplicationsMutation();
 
+  console.log(data);
+
   const [openAdd, setOpenAdd] = useState(false);
   const [openWarm, setOpenWarm] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
