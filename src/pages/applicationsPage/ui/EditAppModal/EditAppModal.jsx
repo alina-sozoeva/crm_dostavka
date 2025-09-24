@@ -101,7 +101,7 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         </Form.Item>
 
         <Form.Item
-          label="Телефон получателя"
+          label="Телефон"
           name="phone"
           rules={[
             {

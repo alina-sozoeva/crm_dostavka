@@ -14,6 +14,7 @@ import clsx from "clsx";
 import debounce from "lodash.debounce";
 import { AddAppModal, EditAppModal } from "./ui";
 import { useApplicationsColumns } from "./useApplicationsColumns";
+import dayjs from "dayjs";
 
 export const ApplicationsPage = () => {
   const { data } = useGetApplicationsQuery({});
@@ -91,6 +92,23 @@ export const ApplicationsPage = () => {
           rowKey="guid"
           scroll={{ x: 1000, y: tableHeight }}
           pagination={false}
+          onRow={(record) => {
+            const planned = record.planned_date
+              ? dayjs(record.planned_date)
+              : null;
+            const dateSys = record.date_system
+              ? dayjs(record.date_system)
+              : null;
+
+            const shouldHighlight =
+              +record.status === 2 &&
+              ((planned && planned.isBefore(dayjs(), "day")) ||
+                (dateSys && dayjs().isAfter(dateSys.add(1, "day"), "day")));
+
+            return {
+              className: shouldHighlight ? clsx(styles.table_row) : "",
+            };
+          }}
         />
       </div>
       <WarningModal

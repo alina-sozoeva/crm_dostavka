@@ -99,7 +99,7 @@ export const AddAppModal = ({ open, onCancel }) => {
         </Form.Item>
 
         <Form.Item
-          label="Телефон получателя"
+          label="Телефон"
           name="phone"
           rules={[
             {
