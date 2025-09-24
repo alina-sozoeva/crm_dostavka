@@ -73,34 +73,18 @@ export const EditAppModal = ({ open, onCancel, record }) => {
     <Modal centered open={open} onCancel={onClose} footer={false} width={400}>
       <Typography.Title level={4}>Редактировать заявку</Typography.Title>
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        {+record?.code_sp_type_client === 2 && (
-          <Form.Item
-            name="nameid_ur"
-            label="Наименование"
-            rules={[
-              {
-                required: true,
-                message: "Это обязательное поле для заполнения!",
-              },
-            ]}
-          >
-            <Input placeholder="Введите наименование" />
-          </Form.Item>
-        )}
-        {+record?.code_sp_type_client === 1 && (
-          <Form.Item
-            name="nameid_fiz"
-            label="Контактное лицо"
-            rules={[
-              {
-                required: true,
-                message: "Это обязательное поле для заполнения!",
-              },
-            ]}
-          >
-            <Input placeholder="Введите ФИО" />
-          </Form.Item>
-        )}
+        <Form.Item
+          name="nameid"
+          label="Контактное лицо"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
+        >
+          <Input placeholder="Введите ФИО" />
+        </Form.Item>
 
         <Form.Item
           label="Телефон получателя"

@@ -12,21 +12,8 @@ export const AddAppModal = ({ open, onCancel }) => {
   const [add] = useAddApplicationMutation();
   const userId = useSelector((state) => state.user.userId);
 
-  const [checkedUr, setCheckedUr] = useState(false);
-  const [checkedFiz, setCheckedFiz] = useState(true);
-
   const [checkedDoc, setCheckedDoc] = useState(true);
   const [checkedPac, setCheckedPac] = useState(false);
-
-  const onChangeUr = (e) => {
-    setCheckedUr(e.target.checked);
-    setCheckedFiz(false);
-  };
-
-  const onChangeFiz = (e) => {
-    setCheckedFiz(e.target.checked);
-    setCheckedUr(false);
-  };
 
   const onCheckedDoc = (e) => {
     setCheckedDoc(e.target.checked);
@@ -37,6 +24,8 @@ export const AddAppModal = ({ open, onCancel }) => {
     setCheckedPac(e.target.checked);
     setCheckedDoc(false);
   };
+
+  console.log(userId, "userId");
 
   const onFinish = async (values) => {
     console.log(values, "values");
@@ -51,12 +40,12 @@ export const AddAppModal = ({ open, onCancel }) => {
       guid: guid,
       code_user: userId,
       status: 2,
-      nameid: checkedUr ? values.nameid_ur : values.nameid_fiz,
+      nameid: values.nameid,
       phone: values.phone,
       weight: values.weight,
       number_of_seats: values.number_of_seats,
       code_sp_courier: values.code_sp_courier,
-      code_sp_type_client: checkedUr ? 2 : 1,
+      code_sp_type_client: 1,
       delivery_type: checkedDoc ? 1 : 2,
       address_to: values.address_to,
     });
@@ -68,8 +57,6 @@ export const AddAppModal = ({ open, onCancel }) => {
   const onClose = () => {
     onCancel();
     form.resetFields();
-    setCheckedFiz(true);
-    setCheckedUr(false);
   };
 
   const filteredUsers = useMemo(() => {
@@ -90,52 +77,20 @@ export const AddAppModal = ({ open, onCancel }) => {
           gap="small"
           align="center"
           vertical
+        ></Flex>
+
+        <Form.Item
+          name="nameid"
+          label="Контактное лицо"
+          rules={[
+            {
+              required: true,
+              message: "Это обязательное поле для заполнения!",
+            },
+          ]}
         >
-          <Flex className={clsx(styles.checked_wrap)}>
-            <Checkbox
-              className={clsx(checkedFiz && styles.checked, styles.check)}
-              checked={checkedFiz}
-              onChange={onChangeFiz}
-            >
-              Физ. лицо
-            </Checkbox>
-            <Checkbox
-              className={clsx(checkedUr && styles.checked, styles.check)}
-              checked={checkedUr}
-              onChange={onChangeUr}
-            >
-              Юр. лицо
-            </Checkbox>
-          </Flex>
-        </Flex>
-        {checkedUr && (
-          <Form.Item
-            name="nameid_ur"
-            label="Наименование компании"
-            rules={[
-              {
-                required: true,
-                message: "Это обязательное поле для заполнения!",
-              },
-            ]}
-          >
-            <Input placeholder="Введите наименование" />
-          </Form.Item>
-        )}
-        {checkedFiz && (
-          <Form.Item
-            name="nameid_fiz"
-            label="Контактное лицо"
-            rules={[
-              {
-                required: true,
-                message: "Это обязательное поле для заполнения!",
-              },
-            ]}
-          >
-            <Input placeholder="Введите ФИО" />
-          </Form.Item>
-        )}
+          <Input placeholder="Введите ФИО" />
+        </Form.Item>
 
         <Form.Item
           label="Телефон получателя"

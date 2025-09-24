@@ -31,6 +31,9 @@ export const MainLayout = () => {
   const { data } = useGetOrdersQuery({});
   const { data: apps } = useGetApplicationsQuery({});
   const userId = useSelector((state) => state.user.userId);
+  const userPos = useSelector((state) => state.user.userPos);
+
+  console.log(typeof userPos, "userPos");
 
   const filteredData = useMemo(() => {
     return data?.data?.filter((item) => item.status === 1 || item.status === 8);
@@ -76,7 +79,7 @@ export const MainLayout = () => {
   })();
 
   const menuItems = useMemo(() => {
-    if (userId === "9") {
+    if (+userPos === 3) {
       return [
         {
           key: "0",
@@ -91,76 +94,76 @@ export const MainLayout = () => {
           ),
         },
       ];
+    } else {
+      return [
+        {
+          key: "0",
+          icon: <StockOutlined />,
+          label: <Link to={pathName.home}>Pony Express</Link>,
+        },
+        {
+          key: pathName.home,
+          icon: <HomeFilled />,
+          label: <Link to={pathName.home}>{pageName.home}</Link>,
+        },
+        {
+          key: pathName.orders,
+          icon: <TruckFilled />,
+          label: <Link to={pathName.orders}>{pageName.orders}</Link>,
+        },
+        {
+          key: pathName.couriers,
+          icon: <RiEBike2Fill />,
+          label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
+        },
+        {
+          key: pathName.clients,
+          icon: <TeamOutlined />,
+          label: <Link to={pathName.clients}>{pageName.clients}</Link>,
+        },
+        {
+          key: pathName.operators,
+          icon: <MdOutlineHeadsetMic />,
+          label: <Link to={pathName.operators}>{pageName.operators}</Link>,
+        },
+        {
+          key: pathName.notifications,
+          icon: <BellFilled style={{ color: bellColor }} />,
+
+          label: (
+            <Link to={pathName.notifications}>
+              <Flex justify="space-between">
+                <span>{pageName.notifications}</span>
+                <span>{filteredData?.length}</span>
+              </Flex>
+            </Link>
+          ),
+        },
+        {
+          key: pathName.tracking,
+          icon: <EnvironmentFilled />,
+          label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
+        },
+        {
+          key: pathName.cancelOders,
+          icon: <InfoCircleOutlined />,
+          label: <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>,
+        },
+        {
+          key: pathName.applications,
+          icon: <LuFilePen />,
+          label: (
+            <Link to={pathName.applications}>
+              <Flex justify="space-between">
+                <span>{pageName.applications}</span>
+                <span>{apps?.data?.length}</span>
+              </Flex>
+            </Link>
+          ),
+        },
+      ];
     }
-
-    return [
-      {
-        key: "0",
-        icon: <StockOutlined />,
-        label: <Link to={pathName.home}>Pony Express</Link>,
-      },
-      {
-        key: pathName.home,
-        icon: <HomeFilled />,
-        label: <Link to={pathName.home}>{pageName.home}</Link>,
-      },
-      {
-        key: pathName.orders,
-        icon: <TruckFilled />,
-        label: <Link to={pathName.orders}>{pageName.orders}</Link>,
-      },
-      {
-        key: pathName.couriers,
-        icon: <RiEBike2Fill />,
-        label: <Link to={pathName.couriers}>{pageName.couriers}</Link>,
-      },
-      {
-        key: pathName.clients,
-        icon: <TeamOutlined />,
-        label: <Link to={pathName.clients}>{pageName.clients}</Link>,
-      },
-      {
-        key: pathName.operators,
-        icon: <MdOutlineHeadsetMic />,
-        label: <Link to={pathName.operators}>{pageName.operators}</Link>,
-      },
-      {
-        key: pathName.notifications,
-        icon: <BellFilled style={{ color: bellColor }} />,
-
-        label: (
-          <Link to={pathName.notifications}>
-            <Flex justify="space-between">
-              <span>{pageName.notifications}</span>
-              <span>{filteredData?.length}</span>
-            </Flex>
-          </Link>
-        ),
-      },
-      {
-        key: pathName.tracking,
-        icon: <EnvironmentFilled />,
-        label: <Link to={pathName.tracking}>{pageName.tracking}</Link>,
-      },
-      {
-        key: pathName.cancelOders,
-        icon: <InfoCircleOutlined />,
-        label: <Link to={pathName.cancelOders}>{pageName.cancelOders}</Link>,
-      },
-      {
-        key: pathName.applications,
-        icon: <LuFilePen />,
-        label: (
-          <Link to={pathName.applications}>
-            <Flex justify="space-between">
-              <span>{pageName.applications}</span>
-              <span>{apps?.data?.length}</span>
-            </Flex>
-          </Link>
-        ),
-      },
-    ];
-  }, [userId, bellColor, filteredData?.length, apps?.data?.length]);
+  }, [userPos, bellColor, filteredData?.length, apps?.data?.length]);
 
   return (
     <Layout className={clsx("h-screen")}>
@@ -169,6 +172,7 @@ export const MainLayout = () => {
         <Menu
           theme="dark"
           mode="inline"
+          selectedKeys={[location.pathname]}
           defaultSelectedKeys={["1"]}
           items={menuItems}
         />

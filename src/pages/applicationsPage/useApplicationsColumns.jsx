@@ -23,7 +23,12 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
     {
       key: "nameid",
       dataIndex: "nameid",
-      title: "Наименование/ФИО",
+      title: "Контактное лицо",
+    },
+    {
+      key: "operator_name",
+      dataIndex: "operator_name",
+      title: "Оператор",
     },
     {
       key: "phone",
@@ -33,7 +38,7 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
     {
       key: "address_to",
       dataIndex: "address_to",
-      title: "Куда",
+      title: "Адрес Забора",
     },
     {
       key: "courier_name",
