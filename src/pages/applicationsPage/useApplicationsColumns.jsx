@@ -10,7 +10,11 @@ import { order_status } from "../../enums";
 
 dayjs.extend(utc);
 
-export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
+export const useApplicationsColumns = ({
+  onUpdate,
+  onOpenWarnModal,
+  userPos,
+}) => {
   const columns = [
     {
       key: "guid",
@@ -30,37 +34,37 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
       key: "operator_name",
       dataIndex: "operator_name",
       title: "Оператор",
-      width: 150,
+      width: 100,
     },
     {
       key: "phone",
       dataIndex: "phone",
       title: "Телефон",
-      width: 200,
+      width: 130,
     },
     {
       key: "address_to",
       dataIndex: "address_to",
       title: "Адрес Забора",
-      width: 250,
+      width: 200,
     },
     {
       key: "courier_name",
       dataIndex: "courier_name",
       title: "Курьер",
-      width: 150,
+      width: 120,
     },
     {
       key: "courier_phone",
       dataIndex: "courier_phone",
       title: "Телефона курьера",
-      width: 200,
+      width: 130,
     },
     {
       key: "status",
       dataIndex: "status",
       title: "Статус",
-      width: 150,
+      width: 120,
       render: (_, record) => <span>{order_status[record?.status]}</span>,
     },
     {
@@ -68,7 +72,7 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
       dataIndex: "date_system",
       title: "Дата создания",
       align: "center",
-      width: 150,
+      width: 120,
       render: (_, record, index) =>
         dayjs.utc(record.date_system).format("DD.MM.YYYY HH:mm"),
     },
@@ -87,7 +91,7 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
       key: "comment",
       dataIndex: "comment",
       title: "Примечание",
-      width: 200,
+      width: 250,
     },
     {
       key: "guid",
@@ -109,7 +113,7 @@ export const useApplicationsColumns = ({ onUpdate, onOpenWarnModal }) => {
             />
           </Tooltip>
 
-          {+record?.status === 3 && (
+          {(userPos !== 3 || (userPos === 3 && record?.status === 3)) && (
             <Tooltip title="Удалить заказ">
               <FaRegTrashAlt
                 onClick={() => onOpenWarnModal(record)}

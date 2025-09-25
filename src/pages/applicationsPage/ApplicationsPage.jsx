@@ -15,12 +15,14 @@ import debounce from "lodash.debounce";
 import { AddAppModal, EditAppModal } from "./ui";
 import { useApplicationsColumns } from "./useApplicationsColumns";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 export const ApplicationsPage = () => {
-  const { data } = useGetApplicationsQuery({});
-  const [remove] = useDeleteApplicationsMutation();
+  const { data: apps } = useGetApplicationsQuery({});
+  const userPos = useSelector((state) => state.user.userPos);
+  const userId = useSelector((state) => state.user.userId);
 
-  console.log(data);
+  const [remove] = useDeleteApplicationsMutation();
 
   const [openAdd, setOpenAdd] = useState(false);
   const [openWarm, setOpenWarm] = useState(false);
@@ -55,7 +57,21 @@ export const ApplicationsPage = () => {
     });
   };
 
-  const { columns } = useApplicationsColumns({ onUpdate, onOpenWarnModal });
+  const { columns } = useApplicationsColumns({
+    onUpdate,
+    onOpenWarnModal,
+    userPos,
+  });
+
+  const filteredApps = () => {
+    if (+userPos === 1) {
+      return apps?.data;
+    } else {
+      return apps?.data.filter((item) => +item?.operator_codeid === +userId);
+    }
+  };
+
+  console.log(filteredApps(), "filteredApps");
 
   return (
     <>
@@ -88,9 +104,9 @@ export const ApplicationsPage = () => {
           bordered
           // loading={isLoading || isFetching}
           columns={columns}
-          dataSource={data?.data}
+          dataSource={filteredApps()}
           rowKey="guid"
-          scroll={{ x: 1000, y: tableHeight }}
+          scroll={{ x: 1200, y: tableHeight }}
           pagination={false}
           onRow={(record) => {
             const planned = record.planned_date

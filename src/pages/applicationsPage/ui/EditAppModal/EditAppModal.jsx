@@ -3,16 +3,7 @@ import {
   useGetUsersQuery,
   useUpdateApplicationMutation,
 } from "../../../../store";
-import {
-  Checkbox,
-  DatePicker,
-  Flex,
-  Form,
-  Input,
-  Modal,
-  Select,
-  Typography,
-} from "antd";
+import { DatePicker, Flex, Form, Input, Modal, Select, Typography } from "antd";
 import styles from "./EditAppModal.module.scss";
 import clsx from "clsx";
 import { useEffect, useMemo } from "react";
@@ -21,7 +12,7 @@ import dayjs from "dayjs";
 export const EditAppModal = ({ open, onCancel, record }) => {
   const [form] = useForm();
   const [updateClient] = useUpdateApplicationMutation();
-  const { data: users } = useGetUsersQuery({ codeid: record?.code_sp_courier });
+  const { data: users } = useGetUsersQuery({});
 
   const onFinish = (values) => {
     console.log(values.code_sp_courier, "values");
@@ -52,7 +43,9 @@ export const EditAppModal = ({ open, onCancel, record }) => {
     form.resetFields();
   };
 
-  const findUser = users?.data[0];
+  const findUser = users?.data?.find(
+    (item) => +item.codeid === +record?.code_sp_courier
+  );
 
   useEffect(() => {
     if (record) {
@@ -82,6 +75,8 @@ export const EditAppModal = ({ open, onCancel, record }) => {
         value: item.codeid,
       }));
   }, [users]);
+
+  console.log(filteredUsers, "filteredUsers");
 
   return (
     <Modal centered open={open} onCancel={onClose} footer={false} width={500}>
